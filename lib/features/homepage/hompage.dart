@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,14 +9,74 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 24.h,
-          )
-        ],
-      )),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 30.h,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(25.sp),
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 150,
+                        child: Container(
+                          width: Adaptive.w(100),
+                          height: 5.h,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Good Morning',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                'Christian Okorie',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: Adaptive.w(10),
+                            height: 5.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7.sp),
+                                color: Colors.grey.shade600),
+                            child: LineIcon.bell(
+                              color: Colors.white,
+                              size: 18.sp,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

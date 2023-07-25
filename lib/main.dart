@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       return ResponsiveSizer(builder: (context, orientation, screenType) {
         return MaterialApp(
           title: 'Flutter Demo',
+          debugShowCheckedModeBanner: true,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
