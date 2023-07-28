@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'features/homepage/hompage.dart';
 
+final nameProvider = Provider((ref) => 'Chris');
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
