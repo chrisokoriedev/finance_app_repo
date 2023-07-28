@@ -1,4 +1,3 @@
-import 'package:expense_app/main.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
