@@ -38,8 +38,8 @@ class DashboardHeader extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Consumer(
-                            builder: (context, watch, child) {
-                              final greeting = watch.watch(greetingProvider);
+                            builder: (context, ref, child) {
+                              final greeting = ref.watch(greetingProvider);
                               String greetingText = '';
 
                               switch (greeting) {
