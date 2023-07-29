@@ -15,7 +15,7 @@ class Statistics extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var selectedTab = ref.watch(selectedTabProvider);
+    final selectedTab = ref.watch(selectedTabProvider);
 
     return Scaffold(
       body: CustomScrollView(
