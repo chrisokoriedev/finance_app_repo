@@ -20,7 +20,7 @@ class CreateExpenseView extends ConsumerWidget {
     final expenseDescriprition = TextEditingController();
     List<String> expenseListType = ['Expense', 'Income', 'Debt'];
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
-    final chooseExpense = ref.watch(expenseItemType.notifier);
+    final chooseExpense = ref.watch(expenseItemType);
     return Scaffold(
       body: Stack(
         children: [
@@ -85,7 +85,7 @@ class CreateExpenseView extends ConsumerWidget {
                           color: AppColor.kGreyColor.withOpacity(0.3),
                           borderRadius: customBorderRadius(10)),
                       child: DropdownButton<String>(
-                        value: chooseExpense.state,
+                        value: chooseExpense,
                         isExpanded: true,
                         hint: Text(
                           'Type',
