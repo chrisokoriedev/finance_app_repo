@@ -1,16 +1,21 @@
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CreateExpenseView extends StatelessWidget {
+final selectedDateTime = StateProvider<DateTime>((ref) => DateTime.now());
+
+class CreateExpenseView extends ConsumerWidget {
   const CreateExpenseView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final expenseAmount = TextEditingController();
     final expenseDescriprition = TextEditingController();
+    final choosedDate = ref.watch(selectedDateTime);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -66,13 +71,28 @@ class CreateExpenseView extends StatelessWidget {
                       maxlength: 30,
                     ),
                     Gap(2.h),
-                    Container(
-                      width: double.infinity,
-                      height: 5.h,
-                      decoration: BoxDecoration(
-                          color: AppColor.kGreyColor.withOpacity(0.3),
-                          borderRadius: customBorderRadius(10)),
-                    )
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2001),
+                            lastDate: DateTime(2080));
+                        if (newDate != null) {
+                          ref.read(selectedDateTime.notifier).state = newDate;
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        height: 5.h,
+                        decoration: BoxDecoration(
+                            color: AppColor.kGreyColor.withOpacity(0.3),
+                            borderRadius: customBorderRadius(10)),
+                        child: Text(
+                            'Day: ${choosedDate.day} -${choosedDate.month} - ${choosedDate.year} '),
+                      ),
+                    ),
                   ],
                 ),
               ),

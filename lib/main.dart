@@ -1,3 +1,4 @@
+import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -17,11 +18,13 @@ class MyApp extends StatelessWidget {
     return Builder(builder: (context) {
       return ResponsiveSizer(builder: (context, orientation, screenType) {
         return MaterialApp.router(
-           routerConfig: AppRouter.router,
+          routerConfig: AppRouter.router,
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColor.kBlueColor,
+            ),
             useMaterial3: true,
           ),
           // home: const BottomComponent(),
