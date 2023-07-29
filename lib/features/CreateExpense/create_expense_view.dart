@@ -1,21 +1,29 @@
+import 'package:expense_app/main.dart';
+import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-final selectedDateTime = StateProvider<DateTime>((ref) => DateTime.now());
+final selectedDateTimeStateProvider =
+    StateProvider<DateTime>((ref) => DateTime.now());
+final expenseItemType = StateProvider<String>((ref) => 'Expense');
 
 class CreateExpenseView extends ConsumerWidget {
   const CreateExpenseView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expenseAmount = TextEditingController();
-    final expenseDescriprition = TextEditingController();
-    final choosedDate = ref.watch(selectedDateTime);
-
+    final expenseAmountController = TextEditingController();
+    final expenseTitleController = TextEditingController();
+    final expenseDescripritionController = TextEditingController();
+    List<String> expenseListType = ['Expense', 'Income', 'Debt'];
+    final choosedDate = ref.watch(selectedDateTimeStateProvider);
+    final chooseExpense = ref.watch(expenseItemType);
     return Scaffold(
       body: Stack(
         children: [
@@ -24,12 +32,37 @@ class CreateExpenseView extends ConsumerWidget {
               Container(
                 width: double.infinity,
                 height: 32.h,
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 7.h),
                 decoration: BoxDecoration(
                   color: AppColor.kBlackColor,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(30.sp),
                   ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: LineIcon.arrowLeft(
+                        color: AppColor.kWhitColor,
+                        size: 20.sp,
+                      ),
+                    ),
+                    Text(
+                      'Create',
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: AppColor.kWhitColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    LineIcon.book(
+                      color: AppColor.kWhitColor,
+                      size: 20.sp,
+                    )
+                  ],
                 ),
               ),
             ],
@@ -41,7 +74,6 @@ class CreateExpenseView extends ConsumerWidget {
             child: Center(
               child: Container(
                 width: 80.w,
-                height: 50.h,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
                 decoration: BoxDecoration(
                     color: AppColor.kWhitColor,
@@ -55,31 +87,89 @@ class CreateExpenseView extends ConsumerWidget {
                     ]),
                 child: Column(
                   children: [
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      height: 5.h,
+                      decoration: BoxDecoration(
+                          color: AppColor.kGreyColor.withOpacity(0.3),
+                          borderRadius: customBorderRadius(10)),
+                      child: DropdownButton<String>(
+                        value: chooseExpense,
+                        isExpanded: true,
+                        hint: Text(
+                          'Type',
+                          style: TextStyle(
+                              fontSize: 14.sp, color: AppColor.kBlackColor),
+                        ),
+                        selectedItemBuilder: (context) => expenseListType
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e,
+                                  style: TextStyle(
+                                      fontSize: 13.9.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        items: expenseListType
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e,
+                                  style: TextStyle(
+                                      fontSize: 13.9.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          ref.read(expenseItemType.notifier).state = value!;
+                        },
+                      ),
+                    ),
+                    Gap(2.5.h),
                     CustomTextFormField(
-                      textEditingController: expenseDescriprition,
-                      hintText: 'amount',
+                      textEditingController: expenseTitleController,
+                      hintText: 'Title',
+                      textInputType: TextInputType.text,
+                      maxLine: 1,
+                      maxlength: 12,
+                    ),
+                    Gap(2.5.h),
+                    CustomTextFormField(
+                      textEditingController: expenseAmountController,
+                      hintText: 'Amount',
                       textInputType: TextInputType.number,
                       maxLine: 1,
-                      maxlength: 10,
+                      maxlength: 8,
                     ),
-                    Gap(2.h),
+                    Gap(2.5.h),
                     CustomTextFormField(
-                      textEditingController: expenseAmount,
+                      textEditingController: expenseDescripritionController,
                       hintText: 'Explain',
                       textInputType: TextInputType.text,
                       maxLine: 3,
                       maxlength: 30,
                     ),
-                    Gap(2.h),
+                    Gap(2.5.h),
                     GestureDetector(
                       onTap: () async {
                         DateTime? newDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate:
+                                ref.read(selectedDateTimeStateProvider),
                             firstDate: DateTime(2001),
                             lastDate: DateTime(2080));
                         if (newDate != null) {
-                          ref.read(selectedDateTime.notifier).state = newDate;
+                          ref
+                              .read(selectedDateTimeStateProvider.notifier)
+                              .state = newDate;
                         }
                       },
                       child: Container(
@@ -90,7 +180,38 @@ class CreateExpenseView extends ConsumerWidget {
                             color: AppColor.kGreyColor.withOpacity(0.3),
                             borderRadius: customBorderRadius(10)),
                         child: Text(
-                            'Day: ${choosedDate.day} -${choosedDate.month} - ${choosedDate.year} '),
+                          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                    Gap(3.h),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(
+                            Size(double.maxFinite, 2.h),
+                          ),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: customBorderRadius(10))),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => AppColor.kBlackColor)),
+                      onPressed: () {
+                        var add = CreateExpenseModel(
+                            expenseTitleController.text,
+                            expenseAmountController.text,
+                            chooseExpense,
+                            expenseDescripritionController.text,
+                            choosedDate);
+                        boxUse.add(add);
+                      },
+                      child: Text(
+                        'Create',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColor.kWhitColor,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -102,4 +223,6 @@ class CreateExpenseView extends ConsumerWidget {
       ),
     );
   }
+
+  void save() {}
 }

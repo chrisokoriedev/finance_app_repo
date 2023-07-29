@@ -1,4 +1,3 @@
-import 'package:expense_app/features/HeaderDashboard/controller/time_controller.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import 'controller/time_controller.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({
