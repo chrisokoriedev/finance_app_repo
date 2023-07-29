@@ -32,7 +32,7 @@ class BottomComponent extends ConsumerWidget {
       body: screenChangeList[selectedTab],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColor.kGreyColor,
+        backgroundColor: AppColor.kDarkGreyColor,
         child: LineIcon.plus(
           color: AppColor.kWhitColor,
           size: 18.sp,

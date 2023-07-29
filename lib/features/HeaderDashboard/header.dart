@@ -76,7 +76,7 @@ class DashboardHeader extends StatelessWidget {
                         height: 5.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.sp),
-                            color: Colors.grey.shade900),
+                            color: AppColor.kDarkGreyColor),
                         child: LineIcon.bell(
                           color: AppColor.kWhitColor,
                           size: 18.sp,
@@ -95,7 +95,6 @@ class DashboardHeader extends StatelessWidget {
           child: Container(
             width: Adaptive.w(85),
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-            height: 18.h,
             decoration: BoxDecoration(
                 color: Colors.grey.shade900,
                 borderRadius: BorderRadius.circular(15.sp),
