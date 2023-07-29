@@ -25,7 +25,7 @@ class DashboardHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColor.kBlackColor,
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(25.sp),
+                  bottom: Radius.circular(30.sp),
                 ),
               ),
               child: Stack(
@@ -91,79 +91,82 @@ class DashboardHeader extends StatelessWidget {
         ),
         Positioned(
           top: 180,
-          left: 29,
-          child: Container(
-            width: Adaptive.w(85),
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-            decoration: BoxDecoration(
-                color: Colors.grey.shade900,
-                borderRadius: BorderRadius.circular(15.sp),
-                boxShadow: [
-                  BoxShadow(
-                      color: AppColor.kBlackColor.withOpacity(0.4),
-                      offset: const Offset(0, 6),
-                      blurRadius: 12,
-                      spreadRadius: 6)
-                ]),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total Balance',
-                      style: TextStyle(
-                          color: AppColor.kWhitColor,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    LineIcon.horizontalEllipsis(
-                      color: AppColor.kWhitColor,
-                      size: 16.sp,
-                    )
-                  ],
-                ),
-                Gap(0.3.h),
-                Text(
-                  '\$ 2000.00',
-                  style: TextStyle(
-                      color: AppColor.kWhitColor,
-                      fontSize: 18.sp,
-                      letterSpacing: 1.6,
-                      fontWeight: FontWeight.w500),
-                ),
-                Gap(1.5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BuildExpenseDashBoardComponent(
-                      title: 'Income',
-                      icon: LineIcon.arrowUp(
-                        size: 17.sp,
-                        color: AppColor.kGreenColor,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: Container(
+              width: Adaptive.w(85),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade900,
+                  borderRadius: BorderRadius.circular(15.sp),
+                  boxShadow: [
+                    BoxShadow(
+                        color: AppColor.kBlackColor.withOpacity(0.4),
+                        offset: const Offset(0, 6),
+                        blurRadius: 12,
+                        spreadRadius: 6)
+                  ]),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total Balance',
+                        style: TextStyle(
+                            color: AppColor.kWhitColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400),
                       ),
-                      amount: '1000',
-                    ),
-                    BuildExpenseDashBoardComponent(
-                      title: 'Debt',
-                      icon: LineIcon.arrowRight(
-                        size: 17.sp,
-                        color: AppColor.kBlueColor,
+                      LineIcon.horizontalEllipsis(
+                        color: AppColor.kWhitColor,
+                        size: 16.sp,
+                      )
+                    ],
+                  ),
+                  Gap(0.3.h),
+                  Text(
+                    '\$ 2000.00',
+                    style: TextStyle(
+                        color: AppColor.kWhitColor,
+                        fontSize: 18.sp,
+                        letterSpacing: 1.6,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Gap(1.5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BuildExpenseDashBoardComponent(
+                        title: 'Income',
+                        icon: LineIcon.arrowUp(
+                          size: 17.sp,
+                          color: AppColor.kGreenColor,
+                        ),
+                        amount: '1000',
                       ),
-                      amount: '200',
-                    ),
-                    BuildExpenseDashBoardComponent(
-                      title: 'Expense',
-                      icon: LineIcon.arrowDown(
-                        size: 17.sp,
-                        color: AppColor.kredColor,
+                      BuildExpenseDashBoardComponent(
+                        title: 'Debt',
+                        icon: LineIcon.arrowRight(
+                          size: 17.sp,
+                          color: AppColor.kBlueColor,
+                        ),
+                        amount: '200',
                       ),
-                      amount: '11',
-                    ),
-                  ],
-                )
-              ],
+                      BuildExpenseDashBoardComponent(
+                        title: 'Expense',
+                        icon: LineIcon.arrowDown(
+                          size: 17.sp,
+                          color: AppColor.kredColor,
+                        ),
+                        amount: '11',
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -4,6 +4,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'colors.dart';
 
+BorderRadius customBorderRadius(double amount) =>
+    BorderRadius.circular(amount.sp);
+
 class BuildExpenseDashBoardComponent extends StatelessWidget {
   final String title;
   final Widget icon;
@@ -50,6 +53,53 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class CustomTextFormField extends StatelessWidget {
+  final TextEditingController textEditingController;
+  final String hintText;
+  final TextInputType textInputType;
+  final int maxLine;
+  final int maxlength;
+  const CustomTextFormField({
+    super.key,
+    required this.textEditingController,
+    required this.hintText,
+    required this.textInputType,
+    required this.maxLine,
+    required this.maxlength,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      keyboardType: textInputType,
+      controller: textEditingController,
+      maxLines: maxLine,
+      maxLength: maxlength,
+      style: TextStyle(
+          fontSize: 13.sp,
+          color: AppColor.kDarkGreyColor,
+          fontWeight: FontWeight.w600),
+      cursorWidth: 1.w,
+      cursorColor: AppColor.kDarkGreyColor,
+      cursorRadius: Radius.circular(10.sp),
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        counterText: '',
+        fillColor: AppColor.kGreyColor.withOpacity(0.3),
+        filled: true,
+        hintText: hintText,
+        hintStyle: TextStyle(fontSize: 13.sp, color: AppColor.kDarkGreyColor),
+        isCollapsed: true,
+        contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: customBorderRadius(10),
+        ),
+      ),
     );
   }
 }
