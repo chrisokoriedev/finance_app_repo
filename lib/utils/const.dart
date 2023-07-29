@@ -80,7 +80,7 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLine,
       maxLength: maxlength,
       style: TextStyle(
-          fontSize: 13.sp,
+          fontSize: 14.sp,
           color: AppColor.kDarkGreyColor,
           fontWeight: FontWeight.w600),
       cursorWidth: 1.w,
@@ -92,7 +92,7 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: AppColor.kGreyColor.withOpacity(0.3),
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 13.sp, color: AppColor.kDarkGreyColor),
+        hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.kDarkGreyColor),
         isCollapsed: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
         border: OutlineInputBorder(
