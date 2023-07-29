@@ -1,9 +1,8 @@
-import 'package:expense_app/features/statistics/statistics.dart';
+import 'package:expense_app/features/homepage/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import 'features/homepage/hompage.dart';
 
 final nameProvider = Provider((ref) => 'Chris');
 void main() {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const Statistics(),
+          home: const BottomComponent(),
         );
       });
     });

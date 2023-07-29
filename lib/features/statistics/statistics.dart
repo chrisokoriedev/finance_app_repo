@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import 'chart_view.dart';
 import 'model/day_model.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
@@ -23,14 +24,17 @@ class Statistics extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gap(5.h),
-                  Text(
-                    'Statistics',
-                    style: TextStyle(
-                      fontSize: 17.sp,
-                      color: AppColor.kBlackColor,
-                      fontWeight: FontWeight.w700,
+                  Center(
+                    child: Text(
+                      'Statistics',
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: AppColor.kBlackColor,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   Gap(2.h),
@@ -72,7 +76,7 @@ class Statistics extends ConsumerWidget {
                             Text(
                               'Expense',
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -84,7 +88,25 @@ class Statistics extends ConsumerWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  Gap(2.5.h),
+                  const ChartComponent(),
+                  Gap(2.5.h),
+                  Row(
+                    children: [
+                      Text(
+                        'Top Spending',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColor.kBlackColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Gap(1.w),
+                      LineIcon.wallet(size: 16.sp,)
+                    ],
+                  ),
+                 
                 ],
               ),
             ),
