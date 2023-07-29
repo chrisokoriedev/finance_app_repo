@@ -1,9 +1,11 @@
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
 import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -37,7 +39,7 @@ class BottomComponent extends ConsumerWidget {
           color: AppColor.kWhitColor,
           size: 18.sp,
         ),
-        onPressed: () {},
+        onPressed: () => context.push(AppRouter.createExpenseView),
       ),
       bottomNavigationBar: BottomAppBar(
         color: AppColor.kBlackColor,

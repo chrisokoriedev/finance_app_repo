@@ -1,8 +1,8 @@
-import 'package:expense_app/features/homepage/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import 'utils/routes.dart';
 
 final nameProvider = Provider((ref) => 'Chris');
 void main() {
@@ -16,14 +16,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       return ResponsiveSizer(builder: (context, orientation, screenType) {
-        return MaterialApp(
+        return MaterialApp.router(
+           routerConfig: AppRouter.router,
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const BottomComponent(),
+          // home: const BottomComponent(),
         );
       });
     });
