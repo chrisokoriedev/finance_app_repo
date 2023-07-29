@@ -7,6 +7,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'utils/routes.dart';
 
 final nameProvider = Provider((ref) => 'Chris');
+final boxUse = Hive.box<CreateExpenseModel>('data');
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CreateExpenseModelAdapter());

@@ -1,3 +1,5 @@
+import 'package:expense_app/main.dart';
+import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,9 @@ class CreateExpenseView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expenseAmount = TextEditingController();
-    final expenseDescriprition = TextEditingController();
+    final expenseAmountController = TextEditingController();
+    final expenseTitleController = TextEditingController();
+    final expenseDescripritionController = TextEditingController();
     List<String> expenseListType = ['Expense', 'Income', 'Debt'];
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemType);
@@ -132,15 +135,23 @@ class CreateExpenseView extends ConsumerWidget {
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
-                      textEditingController: expenseDescriprition,
-                      hintText: 'Amount',
-                      textInputType: TextInputType.number,
+                      textEditingController: expenseTitleController,
+                      hintText: 'Title',
+                      textInputType: TextInputType.text,
                       maxLine: 1,
-                      maxlength: 10,
+                      maxlength: 12,
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
-                      textEditingController: expenseAmount,
+                      textEditingController: expenseAmountController,
+                      hintText: 'Amount',
+                      textInputType: TextInputType.number,
+                      maxLine: 1,
+                      maxlength: 8,
+                    ),
+                    Gap(2.5.h),
+                    CustomTextFormField(
+                      textEditingController: expenseDescripritionController,
                       hintText: 'Explain',
                       textInputType: TextInputType.text,
                       maxLine: 3,
@@ -186,7 +197,15 @@ class CreateExpenseView extends ConsumerWidget {
                                   borderRadius: customBorderRadius(10))),
                           backgroundColor: MaterialStateColor.resolveWith(
                               (states) => AppColor.kBlackColor)),
-                      onPressed: () {},
+                      onPressed: () {
+                        var add = CreateExpenseModel(
+                            expenseTitleController.text,
+                            expenseAmountController.text,
+                            chooseExpense,
+                            expenseDescripritionController.text,
+                            choosedDate);
+                        boxUse.add(add);
+                      },
                       child: Text(
                         'Create',
                         style: TextStyle(
@@ -204,4 +223,6 @@ class CreateExpenseView extends ConsumerWidget {
       ),
     );
   }
+
+  void save() {}
 }
