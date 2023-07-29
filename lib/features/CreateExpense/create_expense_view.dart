@@ -47,6 +47,14 @@ class CreateExpenseView extends ConsumerWidget {
                         size: 20.sp,
                       ),
                     ),
+                    Text(
+                      'Create',
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: AppColor.kWhitColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     LineIcon.book(
                       color: AppColor.kWhitColor,
                       size: 20.sp,
@@ -63,7 +71,6 @@ class CreateExpenseView extends ConsumerWidget {
             child: Center(
               child: Container(
                 width: 80.w,
-                height: 54.h,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
                 decoration: BoxDecoration(
                     color: AppColor.kWhitColor,
@@ -169,14 +176,17 @@ class CreateExpenseView extends ConsumerWidget {
                       ),
                     ),
                     Gap(3.h),
-                    Container(
-                      width: 80.w,
-                      height: 5.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: AppColor.kDarkGreyColor,
-                        borderRadius: customBorderRadius(10),
-                      ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(
+                            Size(double.maxFinite, 2.h),
+                          ),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: customBorderRadius(10))),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => AppColor.kBlackColor)),
+                      onPressed: () {},
                       child: Text(
                         'Create',
                         style: TextStyle(
@@ -184,7 +194,7 @@ class CreateExpenseView extends ConsumerWidget {
                             color: AppColor.kWhitColor,
                             fontWeight: FontWeight.bold),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
