@@ -58,7 +58,7 @@ class CreateExpenseView extends ConsumerWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    LineIcon.book(
+                    LineIcon.blackberry(
                       color: AppColor.kWhitColor,
                       size: 20.sp,
                     )
@@ -96,6 +96,7 @@ class CreateExpenseView extends ConsumerWidget {
                           borderRadius: customBorderRadius(10)),
                       child: DropdownButton<String>(
                         value: chooseExpense,
+                        underline: Container(),
                         isExpanded: true,
                         hint: Text(
                           'Type',
@@ -223,6 +224,4 @@ class CreateExpenseView extends ConsumerWidget {
       ),
     );
   }
-
-  void save() {}
 }

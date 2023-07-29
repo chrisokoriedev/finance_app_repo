@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return ResponsiveSizer(builder: (context, orientation, screenType) {
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
         return MaterialApp.router(
           routerConfig: AppRouter.router,
           title: 'Flutter Demo',
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
         );
-      });
-    });
+      },
+    );
   }
 }
