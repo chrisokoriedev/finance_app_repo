@@ -22,12 +22,12 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            scaffoldBackgroundColor: AppColor.kWhitColor,
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppColor.kBlueColor,
             ),
             useMaterial3: true,
           ),
-          // home: const BottomComponent(),
         );
       });
     });

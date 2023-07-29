@@ -63,7 +63,7 @@ class CreateExpenseView extends ConsumerWidget {
             child: Center(
               child: Container(
                 width: 80.w,
-                height: 50.h,
+                height: 54.h,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
                 decoration: BoxDecoration(
                     color: AppColor.kWhitColor,
@@ -168,6 +168,23 @@ class CreateExpenseView extends ConsumerWidget {
                         ),
                       ),
                     ),
+                    Gap(3.h),
+                    Container(
+                      width: 80.w,
+                      height: 5.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColor.kDarkGreyColor,
+                        borderRadius: customBorderRadius(10),
+                      ),
+                      child: Text(
+                        'Create',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColor.kWhitColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
                   ],
                 ),
               ),
