@@ -9,7 +9,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 final selectedDateTimeStateProvider =
     StateProvider<DateTime>((ref) => DateTime.now());
-final expenseItemType = StateProvider<String>((ref) => '');
+final expenseItemType = StateProvider<String>((ref) => 'Expense');
 
 class CreateExpenseView extends ConsumerWidget {
   const CreateExpenseView({super.key});
@@ -85,6 +85,7 @@ class CreateExpenseView extends ConsumerWidget {
                           color: AppColor.kGreyColor.withOpacity(0.3),
                           borderRadius: customBorderRadius(10)),
                       child: DropdownButton<String>(
+                        value: chooseExpense.state,
                         isExpanded: true,
                         hint: Text(
                           'Type',
@@ -118,9 +119,7 @@ class CreateExpenseView extends ConsumerWidget {
                             )
                             .toList(),
                         onChanged: (value) {
-                          // print(value!);
                           ref.read(expenseItemType.notifier).state = value!;
-                          print(chooseExpense.state);
                         },
                       ),
                     ),
