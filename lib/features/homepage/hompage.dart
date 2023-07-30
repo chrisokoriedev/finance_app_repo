@@ -131,7 +131,7 @@ class HomePage extends ConsumerWidget {
                           color: AppColor.kredColor,
                           size: 18.sp,
                         ),
-                  trailing: Text(history.amount),
+                  trailing: Text(history.amount,style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w600),),
                 ),
               );
             },

@@ -11,7 +11,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 final selectedDateTimeStateProvider =
     StateProvider<DateTime>((ref) => DateTime.now());
-final expenseItemTypeProvider = StateProvider<String>((ref) => 'Expense');
+final expenseItemTypeProvider = StateProvider<String>((ref) => 'Income');
 final expenseSubItemTypeProvider =
     StateProvider<String>((ref) => 'Transportation');
 
@@ -134,7 +134,7 @@ class CreateExpenseView extends ConsumerWidget {
                       hintText: 'Amount',
                       textInputType: TextInputType.number,
                       maxLine: 1,
-                      maxlength: 8,
+                      maxlength: 5,
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
@@ -148,14 +148,12 @@ class CreateExpenseView extends ConsumerWidget {
                     BuildDateTimeCoMponent(choosedDate: choosedDate),
                     Gap(3.h),
                     BuildCreateDataComponent(
-                      expenseTitleController: expenseTitleController,
-                      expenseDescripritionController:
-                          expenseDescripritionController,
-                      expenseAmountController: expenseAmountController,
-                      chooseExpense: chooseExpense,
-                      choosedDate: choosedDate,
-                      chooseSubExpense: chooseSubExpense,
-                    ),
+                        expenseTitleController: expenseTitleController,
+                        expenseDescripritionController:
+                            expenseDescripritionController,
+                        expenseAmountController: expenseAmountController,
+                        chooseExpense: chooseExpense,
+                        choosedDate: choosedDate, chooseSubExpense: chooseSubExpense,),
                   ],
                 ),
               ),
@@ -292,8 +290,7 @@ class BuildCreateDataComponent extends StatelessWidget {
     required this.expenseDescripritionController,
     required this.expenseAmountController,
     required this.chooseExpense,
-    required this.choosedDate,
-    required this.chooseSubExpense,
+    required this.choosedDate, required this.chooseSubExpense,
   });
 
   final TextEditingController expenseTitleController;
@@ -318,14 +315,14 @@ class BuildCreateDataComponent extends StatelessWidget {
         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
+              
           var add = CreateExpenseModel(
               expenseTitleController.text,
               expenseAmountController.text,
               chooseExpense,
               expenseDescripritionController.text,
-              choosedDate,
-              chooseSubExpense);
-          // CreateExpenseModel(name, amount, expenseType, explain, dateTime, expenseSubList)
+              choosedDate,chooseSubExpense);
+              // CreateExpenseModel(name, amount, expenseType, explain, dateTime, expenseSubList)
           boxUse.add(add);
           context.pop();
         } else {
