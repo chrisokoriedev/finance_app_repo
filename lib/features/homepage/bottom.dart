@@ -29,8 +29,8 @@ class BottomComponent extends ConsumerWidget {
     final screenChangeList = [
       const HomePage(),
       const Statistics(),
-      CalendarListView(),
-      Container()
+      Container(),
+      Container(),
     ];
     return Scaffold(
       body: screenChangeList[selectedTab],

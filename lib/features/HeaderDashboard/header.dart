@@ -26,7 +26,7 @@ class DashboardHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColor.kBlackColor,
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30.sp),
+                  bottom: Radius.circular(10.sp),
                 ),
               ),
               child: Stack(
