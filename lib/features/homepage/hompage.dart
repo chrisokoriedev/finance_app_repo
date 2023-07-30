@@ -80,6 +80,7 @@ class HomePage extends ConsumerWidget {
                   bool confirm = await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
+                      surfaceTintColor: AppColor.kBlackColor,
                       backgroundColor: AppColor.kWhitColor,
                       title: const Text('Confirm Delete'),
                       content: const Text(

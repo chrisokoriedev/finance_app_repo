@@ -13,6 +13,14 @@ class CreateExpenseModel extends HiveObject {
   String explain;
   @HiveField(4)
   DateTime dateTime;
+  @HiveField(5)
+  String expenseSubList;
   CreateExpenseModel(
-      this.name, this.amount, this.expenseType, this.explain, this.dateTime);
+    this.name,
+    this.amount,
+    this.expenseType,
+    this.explain,
+    this.dateTime,
+    this.expenseSubList,
+  );
 }

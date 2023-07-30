@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: AppColor.kWhitColor,
+            canvasColor: AppColor.kWhitColor,
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppColor.kBlueColor,
             ),
