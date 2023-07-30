@@ -3,6 +3,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../utils/colors.dart';
@@ -101,7 +102,36 @@ class HomePage extends ConsumerWidget {
                   history.delete();
                 },
                 key: ObjectKey(history),
-                child: ListTile(title: Text(history.name)),
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        '${history.expenseType}\tfor\t${history.name}',
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  subtitle: Text(
+                    history.explain,
+                    style: TextStyle(
+                        color: AppColor.kDarkGreyColor,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  leading: history.expenseType == "Income"
+                      ? LineIcon.wallet(
+                          color: AppColor.kGreenColor,
+                          size: 18.sp,
+                        )
+                      : LineIcon.alternateWavyMoneyBill(
+                          color: AppColor.kredColor,
+                          size: 18.sp,
+                        ),
+                  trailing: Text(history.amount),
+                ),
               );
             },
           ))

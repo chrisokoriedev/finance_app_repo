@@ -87,54 +87,24 @@ class CreateExpenseView extends ConsumerWidget {
                     ]),
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 2.w),
-                      height: 5.h,
-                      decoration: BoxDecoration(
-                          color: AppColor.kGreyColor.withOpacity(0.3),
-                          borderRadius: customBorderRadius(10)),
-                      child: DropdownButton<String>(
-                        value: chooseExpense,
-                        underline: Container(),
-                        isExpanded: true,
-                        hint: Text(
-                          'Type',
-                          style: TextStyle(
-                              fontSize: 14.sp, color: AppColor.kBlackColor),
-                        ),
-                        selectedItemBuilder: (context) => expenseListType
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(
-                                  e,
-                                  style: TextStyle(
-                                      fontSize: 13.9.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        items: expenseListType
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(
-                                  e,
-                                  style: TextStyle(
-                                      fontSize: 13.9.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          ref.read(expenseItemType.notifier).state = value!;
-                        },
-                      ),
-                    ),
+                    ExpenseTypeComponent(
+                        chooseExpense: chooseExpense,
+                        expenseListType: expenseListType),
                     Gap(2.5.h),
+                    chooseExpense == 'Expense'
+                        ? Column(
+                            children: [
+                              ExpenseTypeComponent(
+                                  chooseExpense: chooseExpense,
+                                  expenseListType: expenseListType),
+                              Gap(2.5.h),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Container(),
+                            ],
+                          ),
                     CustomTextFormField(
                       textEditingController: expenseTitleController,
                       hintText: 'Title',
@@ -159,84 +129,179 @@ class CreateExpenseView extends ConsumerWidget {
                       maxlength: 30,
                     ),
                     Gap(2.5.h),
-                    GestureDetector(
-                      onTap: () async {
-                        DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate:
-                                ref.read(selectedDateTimeStateProvider),
-                            firstDate: DateTime(2001),
-                            lastDate: DateTime(2080));
-                        if (newDate != null) {
-                          ref
-                              .read(selectedDateTimeStateProvider.notifier)
-                              .state = newDate;
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                            color: AppColor.kGreyColor.withOpacity(0.3),
-                            borderRadius: customBorderRadius(10)),
-                        child: Text(
-                          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
-                          style: TextStyle(
-                              fontSize: 15.sp, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
+                    BuildDateTimeCoMponent(choosedDate: choosedDate),
                     Gap(3.h),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          fixedSize: MaterialStateProperty.all(
-                            Size(double.maxFinite, 2.h),
-                          ),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: customBorderRadius(10))),
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => AppColor.kBlackColor)),
-                      onPressed: () {
-                        if (expenseTitleController.text.isNotEmpty &&
-                            expenseDescripritionController.text.isNotEmpty &&
-                            expenseDescripritionController.text.isNotEmpty) {
-                          var add = CreateExpenseModel(
-                              expenseTitleController.text,
-                              expenseAmountController.text,
-                              chooseExpense,
-                              expenseDescripritionController.text,
-                              choosedDate);
-                          boxUse.add(add);
-                          context.pop();
-                        } else {
-                          SnackBar snackBar = SnackBar(
-                            backgroundColor: AppColor.kDarkGreyColor,
-                            content: Text(
-                              'Enter All Field',
-                              style: TextStyle(
-                                  fontSize: 14.sp, color: AppColor.kWhitColor),
-                            ),
-                            showCloseIcon: true,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      },
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColor.kWhitColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    BuildCreateDataComponent(
+                        expenseTitleController: expenseTitleController,
+                        expenseDescripritionController:
+                            expenseDescripritionController,
+                        expenseAmountController: expenseAmountController,
+                        chooseExpense: chooseExpense,
+                        choosedDate: choosedDate),
                   ],
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ExpenseTypeComponent extends ConsumerWidget {
+  const ExpenseTypeComponent({
+    super.key,
+    required this.chooseExpense,
+    required this.expenseListType,
+  });
+
+  final String chooseExpense;
+  final List<String> expenseListType;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 2.w),
+      height: 5.h,
+      decoration: BoxDecoration(
+          color: AppColor.kGreyColor.withOpacity(0.3),
+          borderRadius: customBorderRadius(10)),
+      child: DropdownButton<String>(
+        value: chooseExpense,
+        underline: Container(),
+        isExpanded: true,
+        hint: Text(
+          'Type',
+          style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
+        ),
+        selectedItemBuilder: (context) => expenseListType
+            .map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Text(
+                  e,
+                  style:
+                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+                ),
+              ),
+            )
+            .toList(),
+        items: expenseListType
+            .map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Text(
+                  e,
+                  style:
+                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+                ),
+              ),
+            )
+            .toList(),
+        onChanged: (value) {
+          ref.read(expenseItemType.notifier).state = value!;
+        },
+      ),
+    );
+  }
+}
+
+class BuildCreateDataComponent extends StatelessWidget {
+  const BuildCreateDataComponent({
+    super.key,
+    required this.expenseTitleController,
+    required this.expenseDescripritionController,
+    required this.expenseAmountController,
+    required this.chooseExpense,
+    required this.choosedDate,
+  });
+
+  final TextEditingController expenseTitleController;
+  final TextEditingController expenseDescripritionController;
+  final TextEditingController expenseAmountController;
+  final String chooseExpense;
+  final DateTime choosedDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          fixedSize: MaterialStateProperty.all(
+            Size(double.maxFinite, 2.h),
+          ),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
+          backgroundColor:
+              MaterialStateColor.resolveWith((states) => AppColor.kBlackColor)),
+      onPressed: () {
+        if (expenseTitleController.text.isNotEmpty &&
+            expenseDescripritionController.text.isNotEmpty &&
+            expenseDescripritionController.text.isNotEmpty) {
+          var add = CreateExpenseModel(
+              expenseTitleController.text,
+              expenseAmountController.text,
+              chooseExpense,
+              expenseDescripritionController.text,
+              choosedDate);
+          boxUse.add(add);
+          context.pop();
+        } else {
+          SnackBar snackBar = SnackBar(
+            backgroundColor: AppColor.kDarkGreyColor,
+            content: Text(
+              'Enter All Field',
+              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
+            ),
+            showCloseIcon: true,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
+      child: Text(
+        'Create',
+        style: TextStyle(
+            fontSize: 14.sp,
+            color: AppColor.kWhitColor,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class BuildDateTimeCoMponent extends ConsumerWidget {
+  const BuildDateTimeCoMponent({
+    super.key,
+    required this.choosedDate,
+  });
+
+  final DateTime choosedDate;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () async {
+        DateTime? newDate = await showDatePicker(
+            context: context,
+            initialDate: ref.read(selectedDateTimeStateProvider),
+            firstDate: DateTime(2001),
+            lastDate: DateTime(2080));
+        if (newDate != null) {
+          ref.read(selectedDateTimeStateProvider.notifier).state = newDate;
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        alignment: Alignment.center,
+        height: 5.h,
+        decoration: BoxDecoration(
+            color: AppColor.kGreyColor.withOpacity(0.3),
+            borderRadius: customBorderRadius(10)),
+        child: Text(
+          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
+          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
