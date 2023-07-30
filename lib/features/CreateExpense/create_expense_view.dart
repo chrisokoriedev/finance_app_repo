@@ -199,13 +199,29 @@ class CreateExpenseView extends ConsumerWidget {
                           backgroundColor: MaterialStateColor.resolveWith(
                               (states) => AppColor.kBlackColor)),
                       onPressed: () {
-                        var add = CreateExpenseModel(
-                            expenseTitleController.text,
-                            expenseAmountController.text,
-                            chooseExpense,
-                            expenseDescripritionController.text,
-                            choosedDate);
-                        boxUse.add(add);
+                        if (expenseTitleController.text.isNotEmpty &&
+                            expenseDescripritionController.text.isNotEmpty &&
+                            expenseDescripritionController.text.isNotEmpty) {
+                          var add = CreateExpenseModel(
+                              expenseTitleController.text,
+                              expenseAmountController.text,
+                              chooseExpense,
+                              expenseDescripritionController.text,
+                              choosedDate);
+                          boxUse.add(add);
+                          context.pop();
+                        } else {
+                          SnackBar snackBar = SnackBar(
+                            backgroundColor: AppColor.kDarkGreyColor,
+                            content: Text(
+                              'Enter All Field',
+                              style: TextStyle(
+                                  fontSize: 14.sp, color: AppColor.kWhitColor),
+                            ),
+                            showCloseIcon: true,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       },
                       child: Text(
                         'Create',
