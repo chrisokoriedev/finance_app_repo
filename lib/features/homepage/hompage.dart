@@ -16,7 +16,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(itemProvider);
     return Scaffold(
         body: ValueListenableBuilder(
       valueListenable: boxUse.listenable(),
@@ -60,6 +59,23 @@ class HomePage extends ConsumerWidget {
             childCount: boxUse.length,
             (context, index) {
               var history = boxUse.values.toList()[index];
+              Icon iconData;
+              if (history.expenseType == "Income") {
+                iconData = LineIcon.wallet(
+                  size: 18.sp,
+                  color: AppColor.kGreenColor,
+                );
+              } else if (history.expenseType == "Expense") {
+                iconData = LineIcon.alternateWavyMoneyBill(
+                  size: 18.sp,
+                  color: AppColor.kredColor,
+                );
+              } else {
+                iconData = LineIcon.alternateWavyMoneyBill(
+                  size: 18.sp,
+                  color: AppColor.kBlueColor,
+                );
+              }
               return Dismissible(
                 background: Container(
                   color: AppColor.kredColor,
@@ -122,16 +138,12 @@ class HomePage extends ConsumerWidget {
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600),
                   ),
-                  leading: history.expenseType == "Income"
-                      ? LineIcon.wallet(
-                          color: AppColor.kGreenColor,
-                          size: 18.sp,
-                        )
-                      : LineIcon.alternateWavyMoneyBill(
-                          color: AppColor.kredColor,
-                          size: 18.sp,
-                        ),
-                  trailing: Text(history.amount,style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w600),),
+                  leading: iconData,
+                  trailing: Text(
+                    history.amount,
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                  ),
                 ),
               );
             },
