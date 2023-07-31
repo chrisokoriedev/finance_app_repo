@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import '../../utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
@@ -16,7 +16,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(itemProvider);
     return Scaffold(
         body: ValueListenableBuilder(
       valueListenable: boxUse.listenable(),
@@ -60,6 +59,23 @@ class HomePage extends ConsumerWidget {
             childCount: boxUse.length,
             (context, index) {
               var history = boxUse.values.toList()[index];
+              Icon iconData;
+              if (history.expenseType == "Income") {
+                iconData = LineIcon.wallet(
+                  size: 18.sp,
+                  color: AppColor.kGreenColor,
+                );
+              } else if (history.expenseType == "Expense") {
+                iconData = LineIcon.alternateWavyMoneyBill(
+                  size: 18.sp,
+                  color: AppColor.kredColor,
+                );
+              } else {
+                iconData = LineIcon.alternateWavyMoneyBill(
+                  size: 18.sp,
+                  color: AppColor.kBlueColor,
+                );
+              }
               return Dismissible(
                 background: Container(
                   color: AppColor.kredColor,
@@ -80,10 +96,22 @@ class HomePage extends ConsumerWidget {
                   bool confirm = await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
+                      surfaceTintColor: AppColor.kBlackColor,
                       backgroundColor: AppColor.kWhitColor,
-                      title: const Text('Confirm Delete'),
-                      content: const Text(
-                          'Are you sure you want to delete this item?'),
+                      title: Text(
+                        'Confirm Delete',
+                        style: TextStyle(
+                            color: AppColor.kBlackColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      content: Text(
+                        'Are you sure you want to delete this item?',
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
@@ -114,23 +142,31 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  subtitle: Text(
-                    history.explain,
-                    style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        history.explain,
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        timeago.format(history.dateTime),
+                        style: TextStyle(
+                            color: AppColor.kGreyColor.shade500,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
-                  leading: history.expenseType == "Income"
-                      ? LineIcon.wallet(
-                          color: AppColor.kGreenColor,
-                          size: 18.sp,
-                        )
-                      : LineIcon.alternateWavyMoneyBill(
-                          color: AppColor.kredColor,
-                          size: 18.sp,
-                        ),
-                  trailing: Text(history.amount),
+                  leading: iconData,
+                  trailing: Text(
+                    history.amount,
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                  ),
                 ),
               );
             },

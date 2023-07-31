@@ -1,3 +1,4 @@
+import 'package:expense_app/model/dashboard_header.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,15 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controller/time_controller.dart';
 
-class DashboardHeader extends StatelessWidget {
+class DashboardHeader extends ConsumerWidget {
   const DashboardHeader({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totals = ref.watch(totalNotifierProvider);
+     
     return Stack(
       children: [
         Column(
@@ -26,7 +29,7 @@ class DashboardHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColor.kBlackColor,
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(10.sp),
+                  bottom: Radius.circular(25.sp),
                 ),
               ),
               child: Stack(
@@ -96,7 +99,7 @@ class DashboardHeader extends StatelessWidget {
           right: 0,
           child: Center(
             child: Container(
-              width: Adaptive.w(85),
+              width: Adaptive.w(90),
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
               decoration: BoxDecoration(
                   color: Colors.grey.shade900,
@@ -129,7 +132,7 @@ class DashboardHeader extends StatelessWidget {
                   ),
                   Gap(0.3.h),
                   Text(
-                    '\$ 2000.00',
+                    "\$ ${totals.grandTotal}",
                     style: TextStyle(
                         color: AppColor.kWhitColor,
                         fontSize: 18.sp,
@@ -146,15 +149,7 @@ class DashboardHeader extends StatelessWidget {
                           size: 17.sp,
                           color: AppColor.kGreenColor,
                         ),
-                        amount: '1000',
-                      ),
-                      BuildExpenseDashBoardComponent(
-                        title: 'Debt',
-                        icon: LineIcon.arrowRight(
-                          size: 17.sp,
-                          color: AppColor.kBlueColor,
-                        ),
-                        amount: '200',
+                        amount: '${totals.totalIncome}',
                       ),
                       BuildExpenseDashBoardComponent(
                         title: 'Expense',
@@ -162,7 +157,15 @@ class DashboardHeader extends StatelessWidget {
                           size: 17.sp,
                           color: AppColor.kredColor,
                         ),
-                        amount: '11',
+                        amount: '${totals.totalExpense}',
+                      ),
+                      BuildExpenseDashBoardComponent(
+                        title: 'Debt',
+                        icon: LineIcon.arrowRight(
+                          size: 17.sp,
+                          color: AppColor.kBlueColor,
+                        ),
+                        amount: '${totals.totalDebt}',
                       ),
                     ],
                   )
