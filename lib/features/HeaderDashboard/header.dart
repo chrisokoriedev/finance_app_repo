@@ -1,3 +1,4 @@
+import 'package:expense_app/model/dashboard_header.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,7 @@ class DashboardHeader extends StatelessWidget {
                   ),
                   Gap(0.3.h),
                   Text(
-                    '\$ 2000.00',
+                    "\$ $total".toString(),
                     style: TextStyle(
                         color: AppColor.kWhitColor,
                         fontSize: 18.sp,

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import '../../utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
@@ -98,9 +98,20 @@ class HomePage extends ConsumerWidget {
                     builder: (context) => AlertDialog(
                       surfaceTintColor: AppColor.kBlackColor,
                       backgroundColor: AppColor.kWhitColor,
-                      title: const Text('Confirm Delete'),
-                      content: const Text(
-                          'Are you sure you want to delete this item?'),
+                      title: Text(
+                        'Confirm Delete',
+                        style: TextStyle(
+                            color: AppColor.kBlackColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      content: Text(
+                        'Are you sure you want to delete this item?',
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
@@ -131,12 +142,24 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  subtitle: Text(
-                    history.explain,
-                    style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        history.explain,
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        timeago.format(history.dateTime),
+                        style: TextStyle(
+                            color: AppColor.kGreyColor.shade500,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                   leading: iconData,
                   trailing: Text(
