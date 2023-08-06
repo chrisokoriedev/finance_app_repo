@@ -1,6 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member
-
-import 'package:expense_app/main.dart';
+import 'package:expense_app/model/dashboard_header.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,7 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalNotifierProvider.notifier).state;
+    final totals = ref.watch(totalsProvider);
 
     return Stack(
       children: [

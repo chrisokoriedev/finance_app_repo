@@ -5,6 +5,10 @@ import 'package:hive/hive.dart';
 
 final box = Hive.box<CreateExpenseModel>('data');
 
+final totalsProvider = StateNotifierProvider<TotalNotifier, Totals>(
+  (ref) => TotalNotifier(),
+);
+
 @immutable
 class Totals {
   final int totalExpense;
@@ -15,8 +19,6 @@ class Totals {
 
   int get grandTotal => totalIncome - (totalExpense + totalDebt);
 }
-
-
 
 class TotalNotifier extends StateNotifier<Totals> {
   TotalNotifier() : super(const Totals(0, 0, 0));
@@ -39,5 +41,10 @@ class TotalNotifier extends StateNotifier<Totals> {
       }
     }
     state = Totals(totalExpense, totalIncome, totalDebt);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
