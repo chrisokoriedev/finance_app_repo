@@ -9,6 +9,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controller/time_controller.dart';
 
+final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
+    (ref) => TotalNotifier()..calculateTotals());
+
 class DashboardHeader extends ConsumerWidget {
   const DashboardHeader({
     super.key,
@@ -17,7 +20,7 @@ class DashboardHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final totals = ref.watch(totalNotifierProvider);
-     
+
     return Stack(
       children: [
         Column(
