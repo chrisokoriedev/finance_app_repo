@@ -1,4 +1,6 @@
-import 'package:expense_app/model/dashboard_header.dart';
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'package:expense_app/main.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +11,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controller/time_controller.dart';
 
-final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
-    (ref) => TotalNotifier()..calculateTotals());
-
 class DashboardHeader extends ConsumerWidget {
   const DashboardHeader({
     super.key,
@@ -19,7 +18,7 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalNotifierProvider);
+    final totals = ref.watch(totalNotifierProvider.notifier).state;
 
     return Stack(
       children: [

@@ -148,12 +148,14 @@ class CreateExpenseView extends ConsumerWidget {
                     BuildDateTimeCoMponent(choosedDate: choosedDate),
                     Gap(3.h),
                     BuildCreateDataComponent(
-                        expenseTitleController: expenseTitleController,
-                        expenseDescripritionController:
-                            expenseDescripritionController,
-                        expenseAmountController: expenseAmountController,
-                        chooseExpense: chooseExpense,
-                        choosedDate: choosedDate, chooseSubExpense: chooseSubExpense,),
+                      expenseTitleController: expenseTitleController,
+                      expenseDescripritionController:
+                          expenseDescripritionController,
+                      expenseAmountController: expenseAmountController,
+                      chooseExpense: chooseExpense,
+                      choosedDate: choosedDate,
+                      chooseSubExpense: chooseSubExpense,
+                    ),
                   ],
                 ),
               ),
@@ -283,14 +285,15 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
   }
 }
 
-class BuildCreateDataComponent extends StatelessWidget {
+class BuildCreateDataComponent extends ConsumerWidget {
   const BuildCreateDataComponent({
     super.key,
     required this.expenseTitleController,
     required this.expenseDescripritionController,
     required this.expenseAmountController,
     required this.chooseExpense,
-    required this.choosedDate, required this.chooseSubExpense,
+    required this.choosedDate,
+    required this.chooseSubExpense,
   });
 
   final TextEditingController expenseTitleController;
@@ -301,7 +304,7 @@ class BuildCreateDataComponent extends StatelessWidget {
   final DateTime choosedDate;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(
@@ -315,14 +318,14 @@ class BuildCreateDataComponent extends StatelessWidget {
         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
-              
           var add = CreateExpenseModel(
               expenseTitleController.text,
               expenseAmountController.text,
               chooseExpense,
               expenseDescripritionController.text,
-              choosedDate,chooseSubExpense);
-              // CreateExpenseModel(name, amount, expenseType, explain, dateTime, expenseSubList)
+              choosedDate,
+              chooseSubExpense);
+
           boxUse.add(add);
           context.pop();
         } else {
