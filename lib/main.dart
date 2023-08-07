@@ -9,8 +9,8 @@ import 'utils/routes.dart';
 
 final nameProvider = Provider((ref) => 'Chris');
 final boxUse = Hive.box<CreateExpenseModel>('data');
-  // final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
-  //     (ref) => TotalNotifier()..calculateTotals());
+  final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
+      (ref) => TotalNotifier()..calculateTotals());
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CreateExpenseModelAdapter());
