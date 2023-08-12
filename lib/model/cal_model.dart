@@ -5,21 +5,18 @@ import 'package:hive/hive.dart';
 
 final box = Hive.box<CreateExpenseModel>('data');
 
-@immutable
-class Totals {
+class TotalsState {
   final int totalExpense;
   final int totalIncome;
   final int totalDebt;
 
-  const Totals(this.totalExpense, this.totalIncome, this.totalDebt);
-
-  int get grandTotal => totalIncome - (totalExpense + totalDebt);
+  TotalsState(this.totalExpense, this.totalIncome, this.totalDebt);
 }
 
+class Totals extends ChangeNotifier {
+  TotalsState _state = TotalsState(0, 0, 0);
 
-
-class TotalNotifier extends StateNotifier<Totals> {
-  TotalNotifier() : super(const Totals(0, 0, 0));
+  TotalsState get state => _state;
 
   void calculateTotals() {
     var historyList = box.values.toList();
@@ -38,6 +35,9 @@ class TotalNotifier extends StateNotifier<Totals> {
         totalDebt += amount;
       }
     }
-    state = Totals(totalExpense, totalIncome, totalDebt);
+    _state = TotalsState(totalExpense, totalIncome, totalDebt);
+    notifyListeners();
   }
 }
+
+final totalProvider = Provider((ref) => Totals());

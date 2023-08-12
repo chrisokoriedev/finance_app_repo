@@ -2,7 +2,6 @@ import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
-import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -286,6 +285,42 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
   }
 }
 
+class BuildDateTimeCoMponent extends ConsumerWidget {
+  const BuildDateTimeCoMponent({
+    super.key,
+    required this.choosedDate,
+  });
+
+  final DateTime choosedDate;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () async {
+        DateTime? newDate = await showDatePicker(
+            context: context,
+            initialDate: ref.read(selectedDateTimeStateProvider),
+            firstDate: DateTime(2001),
+            lastDate: DateTime(2080));
+        if (newDate != null) {
+          ref.read(selectedDateTimeStateProvider.notifier).state = newDate;
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        alignment: Alignment.center,
+        height: 5.h,
+        decoration: BoxDecoration(
+            color: AppColor.kGreyColor.withOpacity(0.3),
+            borderRadius: customBorderRadius(10)),
+        child: Text(
+          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
+          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
+  }
+}
 class BuildCreateDataComponent extends ConsumerWidget {
   const BuildCreateDataComponent({
     super.key,
@@ -328,7 +363,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
               chooseSubExpense);
 
           boxUse.add(add);
-          context.replace(AppRouter.root);
+          context.pop();
         } else {
           SnackBar snackBar = SnackBar(
             backgroundColor: AppColor.kDarkGreyColor,
@@ -347,43 +382,6 @@ class BuildCreateDataComponent extends ConsumerWidget {
             fontSize: 14.sp,
             color: AppColor.kWhitColor,
             fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class BuildDateTimeCoMponent extends ConsumerWidget {
-  const BuildDateTimeCoMponent({
-    super.key,
-    required this.choosedDate,
-  });
-
-  final DateTime choosedDate;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () async {
-        DateTime? newDate = await showDatePicker(
-            context: context,
-            initialDate: ref.read(selectedDateTimeStateProvider),
-            firstDate: DateTime(2001),
-            lastDate: DateTime(2080));
-        if (newDate != null) {
-          ref.read(selectedDateTimeStateProvider.notifier).state = newDate;
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        height: 5.h,
-        decoration: BoxDecoration(
-            color: AppColor.kGreyColor.withOpacity(0.3),
-            borderRadius: customBorderRadius(10)),
-        child: Text(
-          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-        ),
       ),
     );
   }

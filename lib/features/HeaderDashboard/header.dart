@@ -16,7 +16,7 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalNotifierProvider);
+    final totals = ref.watch(totalsProvider).state;
 
     return Stack(
       children: [
@@ -132,7 +132,7 @@ class DashboardHeader extends ConsumerWidget {
                   ),
                   Gap(0.3.h),
                   Text(
-                    "\$ ${totals.grandTotal}",
+                    "\$ ${totals.totalDebt}+${totals.totalExpense}-${totals.totalIncome}",
                     style: TextStyle(
                         color: AppColor.kWhitColor,
                         fontSize: 18.sp,
