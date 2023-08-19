@@ -14,18 +14,19 @@ final selectedDateTimeStateProvider =
 final expenseItemTypeProvider = StateProvider<String>((ref) => 'Income');
 final expenseSubItemTypeProvider =
     StateProvider<String>((ref) => 'Transportation');
+final expenseAmountController = TextEditingController();
+final expenseTitleController = TextEditingController();
+final expenseDescripritionController = TextEditingController();
 
 class CreateExpenseView extends ConsumerWidget {
   const CreateExpenseView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expenseAmountController = TextEditingController();
-    final expenseTitleController = TextEditingController();
-    final expenseDescripritionController = TextEditingController();
     List<String> expenseListType = [
       'Expense',
       'Income',
+      'Debt',
     ];
     List<String> expenseSubListType = [
       'Transportation',
@@ -144,7 +145,35 @@ class CreateExpenseView extends ConsumerWidget {
                       maxlength: 30,
                     ),
                     Gap(2.5.h),
-                    BuildDateTimeCoMponent(choosedDate: choosedDate),
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      height: 5.h,
+                      decoration: BoxDecoration(
+                          color: AppColor.kGreyColor.withOpacity(0.3),
+                          borderRadius: customBorderRadius(10)),
+                      child: GestureDetector(
+                        onTap: () async {
+                          DateTime? newDate = await showDatePicker(
+                              context: context,
+                              initialDate:
+                                  ref.read(selectedDateTimeStateProvider),
+                              firstDate: DateTime(2001),
+                              lastDate: DateTime(2080));
+
+                          if (newDate != null) {
+                            ref
+                                .read(selectedDateTimeStateProvider.notifier)
+                                .state = newDate;
+                          }
+                        },
+                        child: Text(
+                          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
                     Gap(3.h),
                     BuildCreateDataComponent(
                       expenseTitleController: expenseTitleController,
@@ -152,7 +181,7 @@ class CreateExpenseView extends ConsumerWidget {
                           expenseDescripritionController,
                       expenseAmountController: expenseAmountController,
                       chooseExpense: chooseExpense,
-                      choosedDate: choosedDate,
+                      choosedDate: DateTime.now(),
                       chooseSubExpense: chooseSubExpense,
                     ),
                   ],
@@ -284,42 +313,6 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
   }
 }
 
-class BuildDateTimeCoMponent extends ConsumerWidget {
-  const BuildDateTimeCoMponent({
-    super.key,
-    required this.choosedDate,
-  });
-
-  final DateTime choosedDate;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () async {
-        DateTime? newDate = await showDatePicker(
-            context: context,
-            initialDate: ref.read(selectedDateTimeStateProvider),
-            firstDate: DateTime(2001),
-            lastDate: DateTime(2080));
-        if (newDate != null) {
-          ref.read(selectedDateTimeStateProvider.notifier).state = newDate;
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        height: 5.h,
-        decoration: BoxDecoration(
-            color: AppColor.kGreyColor.withOpacity(0.3),
-            borderRadius: customBorderRadius(10)),
-        child: Text(
-          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
-}
 class BuildCreateDataComponent extends ConsumerWidget {
   const BuildCreateDataComponent({
     super.key,

@@ -1,3 +1,4 @@
+import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
 import 'package:expense_app/utils/colors.dart';
@@ -9,7 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 
 final selectedBottomTab = StateProvider<int>((ref) => 0);
 
@@ -28,7 +28,7 @@ class BottomComponent extends ConsumerWidget {
     final screenChangeList = [
       const HomePage(),
       const Statistics(),
-      Container(),
+      const TransactionListView(),
       Container(),
     ];
     return Scaffold(

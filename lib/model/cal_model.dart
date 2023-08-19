@@ -1,7 +1,7 @@
 import 'package:expense_app/model/create_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 final box = Hive.box<CreateExpenseModel>('data');
 
@@ -16,15 +16,12 @@ class Totals {
   int get grandTotal => totalIncome - (totalExpense + totalDebt);
 }
 
-
-
 class TotalNotifier extends StateNotifier<Totals> {
   TotalNotifier() : super(const Totals(0, 0, 0));
-
   void calculateTotals() {
     var historyList = box.values.toList();
     int totalExpense = 0;
-    int totalIncome = 0;
+    int totalIncome = 0;    
     int totalDebt = 0;
 
     for (var i = 0; i < historyList.length; i++) {

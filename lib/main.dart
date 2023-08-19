@@ -7,16 +7,18 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'utils/routes.dart';
 
-final nameProvider = Provider((ref) => 'Chris');
 final boxUse = Hive.box<CreateExpenseModel>('data');
-  final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
-      (ref) => TotalNotifier()..calculateTotals());
+final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
+    (ref) => TotalNotifier()..calculateTotals());
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CreateExpenseModelAdapter());
   await Hive.openBox<CreateExpenseModel>('data');
-  runApp(const ProviderScope(child: MyApp()));
-
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
