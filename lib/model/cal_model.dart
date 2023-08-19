@@ -1,43 +1,129 @@
 import 'package:expense_app/model/create_expense.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:hive/hive.dart';
 
 final box = Hive.box<CreateExpenseModel>('data');
 
-class TotalsState {
-  final int totalExpense;
-  final int totalIncome;
-  final int totalDebt;
+int totals = 0;
 
-  TotalsState(this.totalExpense, this.totalIncome, this.totalDebt);
+int total() {
+  var history2 = box.values.toList();
+  List a = [0, 0];
+  for (var i = 0; i < history2.length; i++) {
+    a.add(history2[i].expenseType == 'Income'
+        ? int.parse(history2[i].amount)
+        : int.parse(history2[i].amount) * -1);
+  }
+  totals = a.reduce((value, element) => value + element);
+  return totals;
 }
 
-class Totals extends ChangeNotifier {
-  TotalsState _state = TotalsState(0, 0, 0);
+int income() {
+  var history2 = box.values.toList();
+  List a = [0, 0];
+  for (var i = 0; i < history2.length; i++) {
+    a.add(history2[i].expenseType == 'Income'
+        ? int.parse(history2[i].amount)
+        : 0);
+  }
+  totals = a.reduce((value, element) => value + element);
+  return totals;
+}
 
-  TotalsState get state => _state;
+int expenses() {
+  var history2 = box.values.toList();
+  List a = [0, 0];
+  for (var i = 0; i < history2.length; i++) {
+    a.add(history2[i].expenseType == 'Income'
+        ? 0
+        : int.parse(history2[i].amount) * -1);
+  }
+  totals = a.reduce((value, element) => value + element);
+  return totals;
+}
 
-  void calculateTotals() {
-    var historyList = box.values.toList();
-    int totalExpense = 0;
-    int totalIncome = 0;
-    int totalDebt = 0;
+List<CreateExpenseModel> today() {
+  List<CreateExpenseModel> a = [];
+  var history2 = box.values.toList();
+  DateTime date = DateTime.now();
+  for (var i = 0; i < history2.length; i++) {
+    if (history2[i].dateTime.day == date.day) {
+      a.add(history2[i]);
+    }
+  }
+  return a;
+}
 
-    for (var i = 0; i < historyList.length; i++) {
-      int amount = int.parse(historyList[i].amount);
+List<CreateExpenseModel> week() {
+  List<CreateExpenseModel> a = [];
+  DateTime date = DateTime.now();
+  var history2 = box.values.toList();
+  for (var i = 0; i < history2.length; i++) {
+    if (date.day - 7 <= history2[i].dateTime.day &&
+        history2[i].dateTime.day <= date.day) {
+      a.add(history2[i]);
+    }
+  }
+  return a;
+}
 
-      if (historyList[i].expenseType == 'Income') {
-        totalIncome += amount;
-      } else if (historyList[i].expenseType == 'Expense') {
-        totalExpense += amount;
-      } else if (historyList[i].expenseType == 'Debt') {
-        totalDebt += amount;
+List<CreateExpenseModel> month() {
+  List<CreateExpenseModel> a = [];
+  var history2 = box.values.toList();
+  DateTime date = DateTime.now();
+  for (var i = 0; i < history2.length; i++) {
+    if (history2[i].dateTime.month == date.month) {
+      a.add(history2[i]);
+    }
+  }
+  return a;
+}
+
+List<CreateExpenseModel> year() {
+  List<CreateExpenseModel> a = [];
+  var history2 = box.values.toList();
+  DateTime date = DateTime.now();
+  for (var i = 0; i < history2.length; i++) {
+    if (history2[i].dateTime.year == date.year) {
+      a.add(history2[i]);
+    }
+  }
+  return a;
+}
+
+int total_chart(List<CreateExpenseModel> history2) {
+  List a = [0, 0];
+
+  for (var i = 0; i < history2.length; i++) {
+    a.add(history2[i].expenseType == 'Income'
+        ? int.parse(history2[i].amount)
+        : int.parse(history2[i].amount) * -1);
+  }
+  totals = a.reduce((value, element) => value + element);
+  return totals;
+}
+
+List time(List<CreateExpenseModel> history2, bool hour) {
+  List<CreateExpenseModel> a = [];
+  List total = [];
+  int counter = 0;
+  for (var c = 0; c < history2.length; c++) {
+    for (var i = c; i < history2.length; i++) {
+      if (hour) {
+        if (history2[i].dateTime.hour == history2[c].dateTime.hour) {
+          a.add(history2[i]);
+          counter = i;
+        }
+      } else {
+        if (history2[i].dateTime.day == history2[c].dateTime.day) {
+          a.add(history2[i]);
+          counter = i;
+        }
       }
     }
-    _state = TotalsState(totalExpense, totalIncome, totalDebt);
-    notifyListeners();
+    total.add(total_chart(a));
+    a.clear();
+    c = counter;
   }
+  return total;
 }
-
-final totalProvider = Provider((ref) => Totals());

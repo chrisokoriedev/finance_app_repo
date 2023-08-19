@@ -1,4 +1,4 @@
-import 'package:expense_app/main.dart';
+import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,6 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalsProvider).state;
-
     return Stack(
       children: [
         Column(
@@ -132,7 +130,7 @@ class DashboardHeader extends ConsumerWidget {
                   ),
                   Gap(0.3.h),
                   Text(
-                    "\$ ${totals.totalDebt}+${totals.totalExpense}-${totals.totalIncome}",
+                    "\$${total()}",
                     style: TextStyle(
                         color: AppColor.kWhitColor,
                         fontSize: 18.sp,
@@ -149,7 +147,7 @@ class DashboardHeader extends ConsumerWidget {
                           size: 17.sp,
                           color: AppColor.kGreenColor,
                         ),
-                        amount: '${totals.totalIncome}',
+                        amount: '\$ ${income()}',
                       ),
                       BuildExpenseDashBoardComponent(
                         title: 'Expense',
@@ -157,15 +155,7 @@ class DashboardHeader extends ConsumerWidget {
                           size: 17.sp,
                           color: AppColor.kredColor,
                         ),
-                        amount: '${totals.totalExpense}',
-                      ),
-                      BuildExpenseDashBoardComponent(
-                        title: 'Debt',
-                        icon: LineIcon.arrowRight(
-                          size: 17.sp,
-                          color: AppColor.kBlueColor,
-                        ),
-                        amount: '${totals.totalDebt}',
+                        amount: '\$ ${expenses()}',
                       ),
                     ],
                   )

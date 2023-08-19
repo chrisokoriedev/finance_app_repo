@@ -1,5 +1,4 @@
 import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,7 @@ import 'utils/routes.dart';
 
 final nameProvider = Provider((ref) => 'Chris');
 final boxUse = Hive.box<CreateExpenseModel>('data');
-final totalsProvider = ChangeNotifierProvider((ref) => Totals());
+
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CreateExpenseModelAdapter());

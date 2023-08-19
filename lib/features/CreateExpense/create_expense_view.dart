@@ -26,7 +26,6 @@ class CreateExpenseView extends ConsumerWidget {
     List<String> expenseListType = [
       'Expense',
       'Income',
-      'Debt',
     ];
     List<String> expenseSubListType = [
       'Transportation',
