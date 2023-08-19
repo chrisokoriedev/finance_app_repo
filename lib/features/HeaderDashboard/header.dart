@@ -2,14 +2,14 @@ import 'package:expense_app/main.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controller/time_controller.dart';
 
-class DashboardHeader extends ConsumerWidget {
+class DashboardHeader extends HookConsumerWidget {
   const DashboardHeader({
     super.key,
   });

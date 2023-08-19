@@ -18,14 +18,6 @@ class Totals {
 
 class TotalNotifier extends StateNotifier<Totals> {
   TotalNotifier() : super(const Totals(0, 0, 0));
-
-  void init() {
-    calculateTotals(); 
-    box.listenable().addListener(() {
-      calculateTotals(); 
-    });
-  }
-
   void calculateTotals() {
     var historyList = box.values.toList();
     int totalExpense = 0;
