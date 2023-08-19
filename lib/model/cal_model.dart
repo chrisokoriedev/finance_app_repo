@@ -21,7 +21,7 @@ class TotalNotifier extends StateNotifier<Totals> {
   void calculateTotals() {
     var historyList = box.values.toList();
     int totalExpense = 0;
-    int totalIncome = 0;
+    int totalIncome = 0;    
     int totalDebt = 0;
 
     for (var i = 0; i < historyList.length; i++) {
