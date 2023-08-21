@@ -4,6 +4,7 @@ import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -58,8 +59,30 @@ class HomePage extends ConsumerWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              childCount: min(boxUse.length, 5),
+              childCount: boxUse.isNotEmpty ? min(boxUse.length, 5) : 1,
               (context, index) {
+                if (boxUse.isEmpty) {
+                  return ListTile(
+                    title: Column(
+                      children: [
+                        Gap(5.h),
+                        Image.asset(
+                          'assets/gifs/coming_soon.gif',
+                          width: 70.w,
+                        ),
+                        Text(
+                          'No items to display',
+                          style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 15.sp,
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 var history = boxUse.values.toList()[index];
                 Icon iconData;
                 if (history.expenseType == "Income") {
@@ -174,8 +197,6 @@ class HomePage extends ConsumerWidget {
               },
             ),
           ),
-        
-        
         ],
       ),
     ));
