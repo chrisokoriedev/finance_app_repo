@@ -353,6 +353,9 @@ class BuildCreateDataComponent extends ConsumerWidget {
               expenseDescripritionController.text,
               choosedDate,
               chooseSubExpense);
+          expenseAmountController.clear();
+          expenseDescripritionController.clear();
+          expenseTitleController.clear();
 
           boxUse.add(add);
           context.pop();
