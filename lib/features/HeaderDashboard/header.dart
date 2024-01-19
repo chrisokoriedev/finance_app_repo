@@ -1,3 +1,4 @@
+import 'package:expense_app/main.dart';
 import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -16,160 +17,164 @@ class DashboardHeader extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
-      (ref) => TotalNotifier()..calculateTotals(),
-    );
-    final totals = ref.watch(totalNotifierProvider);
+    var totals = ref.watch(totalNotifierProvider);
 
     final greeting = ref.watch(greetingProvider);
 
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 32.h,
-              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
-              decoration: BoxDecoration(
-                color: AppColor.kBlackColor,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(25.sp),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return ref.watch(totalNotifierProvider).when(
+        data: (item) => Stack(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 32.h,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: AppColor.kBlackColor,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(25.sp),
+                        ),
+                      ),
+                      child: Stack(
                         children: [
-                          Text(
-                            _getGreetingText(greeting),
-                            style: TextStyle(
-                              color: AppColor.kWhitColor,
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Christian Okorie',
-                            style: TextStyle(
-                              color: AppColor.kWhitColor,
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _getGreetingText(greeting),
+                                    style: TextStyle(
+                                      color: AppColor.kWhitColor,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Christian Okorie',
+                                    style: TextStyle(
+                                      color: AppColor.kWhitColor,
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: Adaptive.w(10),
+                                height: 5.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.sp),
+                                  color: AppColor.kDarkGreyColor,
+                                ),
+                                child: LineIcon.bell(
+                                  color: AppColor.kWhitColor,
+                                  size: 18.sp,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      Container(
-                        width: Adaptive.w(10),
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.sp),
-                          color: AppColor.kDarkGreyColor,
-                        ),
-                        child: LineIcon.bell(
-                          color: AppColor.kWhitColor,
-                          size: 18.sp,
-                        ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: 180,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Container(
+                      width: Adaptive.w(90),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade900,
+                        borderRadius: BorderRadius.circular(15.sp),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.kBlackColor.withOpacity(0.4),
+                            offset: const Offset(0, 6),
+                            blurRadius: 12,
+                            spreadRadius: 6,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Positioned(
-          top: 180,
-          left: 0,
-          right: 0,
-          child: Center(
-            child: Container(
-              width: Adaptive.w(90),
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade900,
-                borderRadius: BorderRadius.circular(15.sp),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.kBlackColor.withOpacity(0.4),
-                    offset: const Offset(0, 6),
-                    blurRadius: 12,
-                    spreadRadius: 6,
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total Balance',
-                        style: TextStyle(
-                          color: AppColor.kWhitColor,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total Balance',
+                                style: TextStyle(
+                                  color: AppColor.kWhitColor,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              LineIcon.horizontalEllipsis(
+                                color: AppColor.kWhitColor,
+                                size: 16.sp,
+                              ),
+                            ],
+                          ),
+                          Gap(0.3.h),
+                          // Text(
+                          //   "\$ ${item. grandTotal}",
+                          //   style: TextStyle(
+                          //     color: AppColor.kWhitColor,
+                          //     fontSize: 18.sp,
+                          //     letterSpacing: 1.6,
+                          //     fontWeight: FontWeight.w500,
+                          //   ),
+                          // ),
+                          Gap(1.5.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // _buildExpenseDashBoardComponent(
+                              //   'Income',
+                              //   LineIcon.arrowUp(
+                              //     size: 17.sp,
+                              //     color: AppColor.kGreenColor,
+                              //   ),
+                              //   '${item.state.totalIncome}',
+                              // ),
+                              // _buildExpenseDashBoardComponent(
+                              //   'Expense',
+                              //   LineIcon.arrowDown(
+                              //     size: 17.sp,
+                              //     color: AppColor.kredColor,
+                              //   ),
+                              //   '${item.state.totalExpense}',
+                              // ),
+                              // _buildExpenseDashBoardComponent(
+                              //   'Debt',
+                              //   LineIcon.arrowRight(
+                              //     size: 17.sp,
+                              //     color: AppColor.kBlueColor,
+                              //   ),
+                              //   '${item.state.totalDebt}',
+                              // ),
+                            ],
+                          ),
+                        ],
                       ),
-                      LineIcon.horizontalEllipsis(
-                        color: AppColor.kWhitColor,
-                        size: 16.sp,
-                      ),
-                    ],
-                  ),
-                  Gap(0.3.h),
-                  Text(
-                    "\$ ${totals.grandTotal}",
-                    style: TextStyle(
-                      color: AppColor.kWhitColor,
-                      fontSize: 18.sp,
-                      letterSpacing: 1.6,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Gap(1.5.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildExpenseDashBoardComponent(
-                        'Income',
-                        LineIcon.arrowUp(
-                          size: 17.sp,
-                          color: AppColor.kGreenColor,
-                        ),
-                        '${totals.totalIncome}',
-                      ),
-                      _buildExpenseDashBoardComponent(
-                        'Expense',
-                        LineIcon.arrowDown(
-                          size: 17.sp,
-                          color: AppColor.kredColor,
-                        ),
-                        '${totals.totalExpense}',
-                      ),
-                      _buildExpenseDashBoardComponent(
-                        'Debt',
-                        LineIcon.arrowRight(
-                          size: 17.sp,
-                          color: AppColor.kBlueColor,
-                        ),
-                        '${totals.totalDebt}',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ),
-      ],
-    );
+        error: (error, stacktrace) => Center(child: Text(error.toString())),
+        loading: () => const Center(
+              child: Text('Loading'),
+            ));
   }
 
   String _getGreetingText(Greeting greeting) {

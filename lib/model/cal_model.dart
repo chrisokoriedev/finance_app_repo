@@ -4,6 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 
 final box = Hive.box<CreateExpenseModel>('data');
+final totalNotifierProvider = FutureProvider((ref) => TotalNotifier());
+
+final totalProvider =
+    ChangeNotifierProvider.autoDispose((ref) => TotalNotifier());
 
 @immutable
 class Totals {
@@ -16,12 +20,12 @@ class Totals {
   int get grandTotal => totalIncome - (totalExpense + totalDebt);
 }
 
-class TotalNotifier extends StateNotifier<Totals> {
-  TotalNotifier() : super(const Totals(0, 0, 0));
+class TotalNotifier extends ChangeNotifier {
+  // TotalNotifier() : super(const Totals(0, 0, 0));
   void calculateTotals() {
     var historyList = box.values.toList();
     int totalExpense = 0;
-    int totalIncome = 0;    
+    int totalIncome = 0;
     int totalDebt = 0;
 
     for (var i = 0; i < historyList.length; i++) {
@@ -35,6 +39,6 @@ class TotalNotifier extends StateNotifier<Totals> {
         totalDebt += amount;
       }
     }
-    state = Totals(totalExpense, totalIncome, totalDebt);
+    Totals(totalExpense, totalIncome, totalDebt);
   }
 }
