@@ -9,13 +9,24 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controller/time_controller.dart';
 
-class DashboardHeader extends ConsumerWidget {
-  const DashboardHeader({
-    Key? key,
-  }) : super(key: key);
+class DashboardHeader extends StatefulHookConsumerWidget {
+  const DashboardHeader({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DashboardHeaderState();
+}
+
+class _DashboardHeaderState extends ConsumerState<DashboardHeader> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(totalProvider);
+  }
+  @override
+  Widget build(BuildContext context) {
     final totals = ref.watch(totalProvider);
     final greeting = ref.watch(greetingProvider);
 
@@ -167,26 +178,26 @@ class DashboardHeader extends ConsumerWidget {
       ],
     );
   }
+}
 
-  String _getGreetingText(Greeting greeting) {
-    switch (greeting) {
-      case Greeting.morning:
-        return 'Good Morning';
-      case Greeting.afternoon:
-        return 'Good Afternoon';
-      case Greeting.evening:
-        return 'Good Evening';
-      default:
-        return '';
-    }
+String _getGreetingText(Greeting greeting) {
+  switch (greeting) {
+    case Greeting.morning:
+      return 'Good Morning';
+    case Greeting.afternoon:
+      return 'Good Afternoon';
+    case Greeting.evening:
+      return 'Good Evening';
+    default:
+      return '';
   }
+}
 
-  Widget _buildExpenseDashBoardComponent(
-      String title, Widget icon, String amount) {
-    return BuildExpenseDashBoardComponent(
-      title: title,
-      icon: icon,
-      amount: amount,
-    );
-  }
+Widget _buildExpenseDashBoardComponent(
+    String title, Widget icon, String amount) {
+  return BuildExpenseDashBoardComponent(
+    title: title,
+    icon: icon,
+    amount: amount,
+  );
 }
