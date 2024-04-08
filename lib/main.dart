@@ -1,17 +1,15 @@
 import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import 'model/cal_model.dart';
 import 'utils/routes.dart';
-import 'package:appwrite/appwrite.dart';
 
 final boxUse = Hive.box<CreateExpenseModel>('data');
-
 void main() async {
-  // For self signed certificates, only use for development
   await Hive.initFlutter();
   Hive.registerAdapter(CreateExpenseModelAdapter());
   await Hive.openBox<CreateExpenseModel>('data');
@@ -21,6 +19,8 @@ void main() async {
     ),
   );
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

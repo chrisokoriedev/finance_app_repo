@@ -18,7 +18,7 @@ class CreateExpenseModelAdapter extends TypeAdapter<CreateExpenseModel> {
     };
     return CreateExpenseModel(
       fields[0] as String,
-      fields[1] as String,
+      fields[1] as double,
       fields[2] as String,
       fields[3] as String,
       fields[4] as DateTime,
