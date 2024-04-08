@@ -150,7 +150,7 @@ class TransactionListView extends StatelessWidget {
                                   ),
                                   leading: iconData,
                                   trailing: Text(
-                                    history.amount,
+                                    history.amount.toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.w600),

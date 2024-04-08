@@ -1,40 +1,59 @@
-import 'package:expense_app/model/create_expense.dart';
-import 'package:flutter/material.dart';
+import 'package:expense_app/main.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/adapters.dart';
 
-final box = Hive.box<CreateExpenseModel>('data');
+final totalProvider = StateNotifierProvider<TotalNotifier, Totals>((ref) {
+  return TotalNotifier();
+});
 
-@immutable
 class Totals {
-  final int totalExpense;
-  final int totalIncome;
-  final int totalDebt;
+  final double totalExpense;
+  final double totalIncome;
+  final double totalDebt;
 
   const Totals(this.totalExpense, this.totalIncome, this.totalDebt);
 
-  int get grandTotal => totalIncome - (totalExpense + totalDebt);
+  double get grandTotal => totalIncome - (totalExpense + totalDebt);
 }
 
 class TotalNotifier extends StateNotifier<Totals> {
   TotalNotifier() : super(const Totals(0, 0, 0));
+
   void calculateTotals() {
-    var historyList = box.values.toList();
-    int totalExpense = 0;
-    int totalIncome = 0;    
-    int totalDebt = 0;
+    double totalExpense = 0;
+    double totalIncome = 0;
+    double totalDebt = 0;
 
-    for (var i = 0; i < historyList.length; i++) {
-      int amount = int.parse(historyList[i].amount);
+    for (var expense in boxUse.values) {
+      double amount = expense.amount;
+      debugPrint('Total Income: $totalIncome');
 
-      if (historyList[i].expenseType == 'Income') {
+      if (expense.expenseType == 'Income') {
         totalIncome += amount;
-      } else if (historyList[i].expenseType == 'Expense') {
+      } else if (expense.expenseType == 'Expense') {
         totalExpense += amount;
-      } else if (historyList[i].expenseType == 'Debt') {
+      } else if (expense.expenseType == 'Debt') {
         totalDebt += amount;
       }
     }
+    debugPrint('Total Income: $totalIncome');
     state = Totals(totalExpense, totalIncome, totalDebt);
+  }
+}
+
+final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(ref));
+
+class AddExpenseNotifer {
+  final Ref ref;
+
+  AddExpenseNotifer(this.ref);
+  void addExpense(var box) {
+    try {
+      boxUse.add(box);
+    ref.read(totalProvider.notifier).calculateTotals();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

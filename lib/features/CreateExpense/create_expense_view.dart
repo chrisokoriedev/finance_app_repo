@@ -1,4 +1,5 @@
 import 'package:expense_app/main.dart';
+import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -348,17 +349,16 @@ class BuildCreateDataComponent extends ConsumerWidget {
             expenseDescripritionController.text.isNotEmpty) {
           var add = CreateExpenseModel(
               expenseTitleController.text,
-              expenseAmountController.text,
+              double.parse(expenseAmountController.text),
               chooseExpense,
               expenseDescripritionController.text,
               choosedDate,
               chooseSubExpense);
+          ref.read(addExpenseProvider.notifier).state.addExpense(add);
+          context.pop();
           expenseAmountController.clear();
           expenseDescripritionController.clear();
           expenseTitleController.clear();
-
-          boxUse.add(add);
-          context.pop();
         } else {
           SnackBar snackBar = SnackBar(
             backgroundColor: AppColor.kDarkGreyColor,

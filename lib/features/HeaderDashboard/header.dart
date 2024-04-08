@@ -3,24 +3,20 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'controller/time_controller.dart';
 
-class DashboardHeader extends HookConsumerWidget {
+class DashboardHeader extends ConsumerWidget {
   const DashboardHeader({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totalNotifierProvider = StateNotifierProvider<TotalNotifier, Totals>(
-      (ref) => TotalNotifier()..calculateTotals(),
-    );
-    final totals = ref.watch(totalNotifierProvider);
-
+    final totals = ref.watch(totalProvider);
     final greeting = ref.watch(greetingProvider);
 
     return Stack(

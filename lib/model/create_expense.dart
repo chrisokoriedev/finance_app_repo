@@ -6,7 +6,7 @@ class CreateExpenseModel extends HiveObject {
   @HiveField(0)
   String name;
   @HiveField(1)
-  String amount;
+  double amount;
   @HiveField(2)
   String expenseType;
   @HiveField(3)
