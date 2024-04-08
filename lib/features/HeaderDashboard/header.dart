@@ -1,4 +1,3 @@
-import 'package:expense_app/main.dart';
 import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';

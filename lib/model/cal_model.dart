@@ -41,3 +41,19 @@ class TotalNotifier extends StateNotifier<Totals> {
     state = Totals(totalExpense, totalIncome, totalDebt);
   }
 }
+
+final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(ref));
+
+class AddExpenseNotifer {
+  final Ref ref;
+
+  AddExpenseNotifer(this.ref);
+  void addExpense(var box) {
+    try {
+      boxUse.add(box);
+    ref.read(totalProvider.notifier).calculateTotals();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+}

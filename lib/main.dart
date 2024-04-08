@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import 'model/cal_model.dart';
 import 'utils/routes.dart';
 
 final boxUse = Hive.box<CreateExpenseModel>('data');
