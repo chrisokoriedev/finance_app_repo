@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:expense_app/main.dart';
-import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +16,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   
     return Scaffold(
         body: ValueListenableBuilder(
       valueListenable: boxUse.listenable(),
@@ -101,98 +98,42 @@ class HomePage extends ConsumerWidget {
                     color: AppColor.kBlueColor,
                   );
                 }
-                return Dismissible(
-                  background: Container(
-                    color: AppColor.kredColor,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 16.0.sp),
-                        child: Icon(
-                          Icons.delete,
-                          size: 18.sp,
-                          color: AppColor.kWhitColor,
-                        ),
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        '${history.expenseType}\tfor\t${history.name}',
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600),
                       ),
-                    ),
+                    ],
                   ),
-                  direction: DismissDirection.endToStart,
-                  confirmDismiss: (direction) async {
-                    bool confirm = await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        surfaceTintColor: AppColor.kBlackColor,
-                        backgroundColor: AppColor.kWhitColor,
-                        title: Text(
-                          'Confirm Delete',
-                          style: TextStyle(
-                              color: AppColor.kBlackColor,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        content: Text(
-                          'Are you sure you want to delete this item?',
-                          style: TextStyle(
-                              color: AppColor.kDarkGreyColor,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Delete'),
-                          ),
-                        ],
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        history.explain,
+                        style: TextStyle(
+                            color: AppColor.kDarkGreyColor,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600),
                       ),
-                    );
-                    return confirm;
-                  },
-                  onDismissed: (direction) {
-                    history.delete();
-                    ref.refresh(totalProviderFuture);
-                  },
-                  key: ObjectKey(history),
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        Text(
-                          '${history.expenseType}\tfor\t${history.name}',
-                          style: TextStyle(
-                              color: AppColor.kDarkGreyColor,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          history.explain,
-                          style: TextStyle(
-                              color: AppColor.kDarkGreyColor,
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          timeago.format(history.dateTime),
-                          style: TextStyle(
-                              color: AppColor.kGreyColor.shade500,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    leading: iconData,
-                    trailing: Text(
-                      history.amount.toString(),
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.w600),
-                    ),
+                      Text(
+                        timeago.format(history.dateTime),
+                        style: TextStyle(
+                            color: AppColor.kGreyColor.shade500,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  leading: iconData,
+                  trailing: Text(
+                    history.amount.toString(),
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   ),
                 );
               },

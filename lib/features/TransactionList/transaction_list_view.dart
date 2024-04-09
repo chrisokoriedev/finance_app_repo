@@ -9,6 +9,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final selectedDayProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final calendarFormatProvider =
+    StateProvider<CalendarFormat>((ref) => CalendarFormat.week);
 
 class TransactionListView extends HookConsumerWidget {
   const TransactionListView({Key? key}) : super(key: key);
@@ -17,7 +19,9 @@ class TransactionListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final historyProvider = ref.watch(itemBoxProvider);
     final selectedDay = ref.watch(selectedDayProvider);
+    final calendarFormat = ref.watch(calendarFormatProvider);
     return historyProvider.when(
+      skipLoadingOnReload: true,
       data: (data) {
         List<CreateExpenseModel> expenseData = data.values
             .where((expense) =>
@@ -31,19 +35,28 @@ class TransactionListView extends HookConsumerWidget {
           child: Column(
             children: [
               TableCalendar(
-                focusedDay: DateTime.now(),
+                focusedDay: selectedDay,
                 firstDay: DateTime.utc(2001, 10, 16),
                 lastDay: DateTime.utc(2060, 3, 14),
+                currentDay: selectedDay,
+                calendarFormat: calendarFormat,
+                availableCalendarFormats: const {
+                  CalendarFormat.week: "Week",
+                  CalendarFormat.twoWeeks: "Two Weeks",
+                  CalendarFormat.month: "Month",
+                },
+                onFormatChanged: (onFormatChanged) {
+                  if (onFormatChanged != calendarFormat) {
+                    ref.read(calendarFormatProvider.notifier).state =
+                        onFormatChanged;
+                  }
+                },
                 headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
+                  formatButtonVisible: true,
                 ),
                 calendarStyle: CalendarStyle(
                   todayDecoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: const BoxDecoration(
-                    color: Colors.blue,
+                    color: AppColor.kBlackColor.withOpacity(0.8),
                     shape: BoxShape.circle,
                   ),
                   weekendTextStyle: const TextStyle(color: Colors.red),
@@ -77,7 +90,6 @@ class TransactionListView extends HookConsumerWidget {
                               color: AppColor.kBlueColor,
                             );
                           }
-                          print(history.dateTime.toString());
                           return ListTile(
                             title: Row(
                               children: [
