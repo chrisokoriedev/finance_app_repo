@@ -12,7 +12,9 @@ import '../../utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
 class HomePage extends ConsumerWidget {
-  const HomePage({super.key});
+  final VoidCallback pageSelected;
+
+  const HomePage({super.key, required this.pageSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,18 +38,21 @@ class HomePage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Transaction History',
+                          'Recent History',
                           style: TextStyle(
                               color: AppColor.kBlackColor,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500),
                         ),
-                        Text(
-                          'See all',
-                          style: TextStyle(
-                              color: AppColor.kGreyColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500),
+                        GestureDetector(
+                          onTap: pageSelected,
+                          child: Text(
+                            'See all',
+                            style: TextStyle(
+                                color: AppColor.kGreyColor,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ],
                     ),
@@ -58,6 +63,8 @@ class HomePage extends ConsumerWidget {
             delegate: SliverChildBuilderDelegate(
               childCount: boxUse.isNotEmpty ? min(boxUse.length, 5) : 1,
               (context, index) {
+                List<CreateExpenseModel> sortedData = boxUse.values.toList()
+                  ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
                 if (boxUse.isEmpty) {
                   return ListTile(
                     title: Column(
@@ -80,7 +87,7 @@ class HomePage extends ConsumerWidget {
                     ),
                   );
                 }
-                var history = boxUse.values.toList()[index];
+                var history = sortedData[index];
                 Icon iconData;
                 if (history.expenseType == "Income") {
                   iconData = LineIcon.wallet(

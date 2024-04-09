@@ -19,6 +19,8 @@ class BottomComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
+    final PageController pageController =
+        PageController(initialPage: selectedTab);
     final iconData = [
       LineIcons.home,
       LineIcons.lineChart,
@@ -26,13 +28,23 @@ class BottomComponent extends ConsumerWidget {
       LineIcons.user,
     ];
     final screenChangeList = [
-      const HomePage(),
+      HomePage(
+        pageSelected: () {
+          pageController.jumpToPage(2);
+          ref.read(selectedBottomTab.notifier).state = 2;
+        },
+      ),
       const Statistics(),
       const TransactionListView(),
       Container(),
     ];
     return Scaffold(
-      body: screenChangeList[selectedTab],
+      body: PageView(
+        onPageChanged: (index) =>
+            ref.read(selectedBottomTab.notifier).state = index,
+        controller: pageController,
+        children: screenChangeList,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.kDarkGreyColor,
@@ -50,16 +62,23 @@ class BottomComponent extends ConsumerWidget {
           children: List.generate(
             iconData.length,
             (index) => GestureDetector(
-              onTap: () => ref.read(selectedBottomTab.notifier).state = index,
-              child: LineIcon(
-                iconData[index],
-                color: selectedTab == index
-                    ? AppColor.kWhitColor
-                    : AppColor.kGreyColor,
-                size: selectedTab == index ? 25.sp : 20.sp,
+              onTap: () {
+                pageController.jumpToPage(index);
+                ref.read(selectedBottomTab.notifier).state = index;
+              },
+              child: SizedBox(
+                width: 20.w,
+                height: 30.h,
+                child: LineIcon(
+                  iconData[index],
+                  color: selectedTab == index
+                      ? AppColor.kWhitColor
+                      : AppColor.kGreyColor,
+                  size: selectedTab == index ? 20.sp : 16.sp,
+                ),
               ),
             ),
-          )..insert(2, Gap(5.w)),
+          )..insert(2, Gap(2.w)),
         ),
       ),
     );
