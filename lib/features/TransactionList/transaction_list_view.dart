@@ -1,20 +1,24 @@
 import 'package:expense_app/main.dart';
+import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class TransactionListView extends StatelessWidget {
+class TransactionListView extends HookConsumerWidget {
   const TransactionListView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totals = ref.watch(totalProviderFuture);
+
     return Container(
       padding: EdgeInsets.all(20.sp),
       child: Column(
@@ -104,8 +108,13 @@ class TransactionListView extends StatelessWidget {
                                           child: const Text('Cancel'),
                                         ),
                                         TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
+                                          onPressed: () {
+                                            ref
+                                                .read(
+                                                    addExpenseProvider.notifier)
+                                                .state
+                                                .addExpense(history, context);
+                                          },
                                           child: const Text('Delete'),
                                         ),
                                       ],
@@ -113,9 +122,7 @@ class TransactionListView extends StatelessWidget {
                                   );
                                   return confirm;
                                 },
-                                onDismissed: (direction) {
-                                  history.delete();
-                                },
+                                onDismissed: (direction) {},
                                 key: ObjectKey(history),
                                 child: ListTile(
                                   title: Row(
@@ -130,7 +137,8 @@ class TransactionListView extends StatelessWidget {
                                     ],
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         history.explain,

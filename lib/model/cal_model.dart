@@ -1,10 +1,13 @@
+// ignore_for_file: unused_result
+
 import 'package:expense_app/main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProvider = StateNotifierProvider((ref) => TotalNotifier());
-final totalProviderFuture = FutureProvider((ref) => TotalNotifier());
+// final totalProvider = StateNotifierProvider((ref) => TotalNotifier());
+final totalProviderFuture = FutureProvider((ref) {
+  return TotalNotifier();
+});
 
 class Totals {
   final double totalExpense;
@@ -47,10 +50,11 @@ class AddExpenseNotifer {
   final Ref ref;
 
   AddExpenseNotifer(this.ref);
-  void addExpense(var box) {
+  void addExpense(var box, BuildContext context) {
     try {
       boxUse.add(box);
-      ref.read(totalProviderFuture).value!.calculateTotals();
+      Navigator.pop(context);
+      ref.refresh(totalProviderFuture);
     } catch (e) {
       debugPrint(e.toString());
     }

@@ -354,8 +354,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
               expenseDescripritionController.text,
               choosedDate,
               chooseSubExpense);
-          ref.read(addExpenseProvider.notifier).state.addExpense(add);
-          context.pop();
+          ref.read(addExpenseProvider.notifier).state.addExpense(add, context);
           expenseAmountController.clear();
           expenseDescripritionController.clear();
           expenseTitleController.clear();

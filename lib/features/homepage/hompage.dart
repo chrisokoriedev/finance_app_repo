@@ -153,6 +153,7 @@ class HomePage extends ConsumerWidget {
                   },
                   onDismissed: (direction) {
                     history.delete();
+                    ref.refresh(totalProviderFuture);
                   },
                   key: ObjectKey(history),
                   child: ListTile(
