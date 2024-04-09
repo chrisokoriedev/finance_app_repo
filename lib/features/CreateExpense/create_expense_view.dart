@@ -1,4 +1,3 @@
-import 'package:expense_app/main.dart';
 import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
@@ -11,10 +10,11 @@ import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 final selectedDateTimeStateProvider =
-    StateProvider<DateTime>((ref) => DateTime.now());
-final expenseItemTypeProvider = StateProvider<String>((ref) => 'Income');
+    StateProvider.autoDispose<DateTime>((ref) => DateTime.now());
+final expenseItemTypeProvider =
+    StateProvider.autoDispose<String>((ref) => 'Income');
 final expenseSubItemTypeProvider =
-    StateProvider<String>((ref) => 'Transportation');
+    StateProvider.autoDispose<String>((ref) => 'Transportation');
 final expenseAmountController = TextEditingController();
 final expenseTitleController = TextEditingController();
 final expenseDescripritionController = TextEditingController();
@@ -182,7 +182,7 @@ class CreateExpenseView extends ConsumerWidget {
                           expenseDescripritionController,
                       expenseAmountController: expenseAmountController,
                       chooseExpense: chooseExpense,
-                      choosedDate: DateTime.now(),
+                      choosedDate: choosedDate,
                       chooseSubExpense: chooseSubExpense,
                     ),
                   ],

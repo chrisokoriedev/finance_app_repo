@@ -56,7 +56,7 @@ class BottomComponent extends ConsumerWidget {
                 color: selectedTab == index
                     ? AppColor.kWhitColor
                     : AppColor.kGreyColor,
-                size: selectedTab == index ? 19.sp : 18.sp,
+                size: selectedTab == index ? 25.sp : 20.sp,
               ),
             ),
           )..insert(2, Gap(5.w)),

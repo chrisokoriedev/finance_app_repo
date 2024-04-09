@@ -29,8 +29,6 @@ class TotalNotifier extends StateNotifier<Totals> {
 
     for (var expense in boxUse.values) {
       double amount = expense.amount;
-      debugPrint('Total Income: $totalIncome');
-
       if (expense.expenseType == 'Income') {
         totalIncome += amount;
       } else if (expense.expenseType == 'Expense') {
@@ -39,7 +37,6 @@ class TotalNotifier extends StateNotifier<Totals> {
         totalDebt += amount;
       }
     }
-    debugPrint('Total Income: $totalIncome');
     state = Totals(totalExpense, totalIncome, totalDebt);
   }
 }
