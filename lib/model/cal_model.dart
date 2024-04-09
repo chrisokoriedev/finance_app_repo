@@ -3,9 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProvider = StateNotifierProvider<TotalNotifier, Totals>((ref) {
-  return TotalNotifier();
-});
+final totalProvider = StateNotifierProvider((ref) => TotalNotifier());
+final totalProviderFuture = FutureProvider((ref) => TotalNotifier());
 
 class Totals {
   final double totalExpense;
@@ -51,7 +50,7 @@ class AddExpenseNotifer {
   void addExpense(var box) {
     try {
       boxUse.add(box);
-    ref.read(totalProvider.notifier).calculateTotals();
+      ref.read(totalProviderFuture).value!.calculateTotals();
     } catch (e) {
       debugPrint(e.toString());
     }

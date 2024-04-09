@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:expense_app/main.dart';
+import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,13 +13,12 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
-final itemProvider = StateProvider((ref) => boxUse.values.toList());
-
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+   
     return Scaffold(
         body: ValueListenableBuilder(
       valueListenable: boxUse.listenable(),
