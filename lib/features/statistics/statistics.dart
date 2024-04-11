@@ -101,23 +101,21 @@ class Statistics extends ConsumerWidget {
                             hint: Text(
                               'Type',
                               style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: AppColor.kBlackColor),
+                                  fontSize: 14.sp, color: AppColor.kBlackColor),
                             ),
-                            selectedItemBuilder: (context) =>
-                                expenseListType
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(
-                                          e,
-                                          style: TextStyle(
-                                              fontSize: 13.9.sp,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
+                            selectedItemBuilder: (context) => expenseListType
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(
+                                      e,
+                                      style: TextStyle(
+                                          fontSize: 13.9.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                             items: expenseListType
                                 .map(
                                   (e) => DropdownMenuItem(
@@ -132,9 +130,8 @@ class Statistics extends ConsumerWidget {
                                 )
                                 .toList(),
                             onChanged: (value) {
-                              ref
-                                  .read(expenseItemTypeProvider.notifier)
-                                  .state = value!;
+                              ref.read(expenseItemTypeProvider.notifier).state =
+                                  value!;
                             },
                           ),
                         ),
@@ -151,7 +148,7 @@ class Statistics extends ConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          'Top Spending',
+                          'Top $expenseType',
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColor.kBlackColor,
@@ -160,7 +157,13 @@ class Statistics extends ConsumerWidget {
                         ),
                         Gap(1.w),
                         LineIcon.wallet(
-                          size: 16.sp,
+                          size: 18.sp,
+                          color: switch (expenseType) {
+                            'Income' => AppColor.kGreenColor,
+                            'Expense' => AppColor.kredColor,
+                            'Debt' => AppColor.kBlueColor,
+                            _ => AppColor.kGreyColor,
+                          },
                         )
                       ],
                     ),
@@ -217,8 +220,7 @@ class Statistics extends ConsumerWidget {
                             trailing: Text(
                               history.amount.toString(),
                               style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 18.sp, fontWeight: FontWeight.w600),
                             ),
                           );
                         })

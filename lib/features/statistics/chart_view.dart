@@ -16,13 +16,18 @@ class ChartComponent extends HookConsumerWidget {
     final selectDatetime = ref.watch(selectedTabProvider);
     return itemProvider.when(
         data: (data) {
-          List<CreateExpenseModel> incomeData =
-              data.where((expense) => expense.expenseType == "Income").toList();
+          List<CreateExpenseModel> incomeData = data
+              .where((expense) => expense.expenseType == "Income")
+              .toList()
+            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
           List<CreateExpenseModel> expenseData = data
               .where((expense) => expense.expenseType == "Expense")
-              .toList();
-          List<CreateExpenseModel> debtData =
-              data.where((expense) => expense.expenseType == "Debt").toList();
+              .toList()
+            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+          List<CreateExpenseModel> debtData = data
+              .where((expense) => expense.expenseType == "Debt")
+              .toList()
+            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
           return SizedBox(
             width: double.infinity,
             height: 35.h,
@@ -52,7 +57,7 @@ class ChartComponent extends HookConsumerWidget {
                   width: 1.w,
                   dataSource: expenseData,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                 xValueMapper: (CreateExpenseModel expense, _) =>
+                  xValueMapper: (CreateExpenseModel expense, _) =>
                       switch (selectDatetime) {
                     0 => expense.dateTime.day.toString(),
                     1 => expense.dateTime.weekday.toString(),
@@ -68,7 +73,7 @@ class ChartComponent extends HookConsumerWidget {
                   width: 1.w,
                   dataSource: debtData,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                xValueMapper: (CreateExpenseModel expense, _) =>
+                  xValueMapper: (CreateExpenseModel expense, _) =>
                       switch (selectDatetime) {
                     0 => expense.dateTime.day.toString(),
                     1 => expense.dateTime.weekday.toString(),
