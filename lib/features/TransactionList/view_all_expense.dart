@@ -41,7 +41,8 @@ class ViewAllExpense extends HookConsumerWidget {
             itemCount: groupedExpenses.length,
             itemBuilder: (context, index) {
               var date = groupedExpenses.keys.elementAt(index);
-              var expenses = groupedExpenses[date] ?? [];
+              var expenses = groupedExpenses[date] ?? []
+                ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
