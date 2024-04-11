@@ -1,123 +1,141 @@
-import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class TransactionListView extends StatelessWidget {
-  const TransactionListView({
-    super.key,
-  });
+final selectedDayProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final calendarFormatProvider =
+    StateProvider<CalendarFormat>((ref) => CalendarFormat.week);
+
+class TransactionListView extends HookConsumerWidget {
+  const TransactionListView({Key? key}) : super(key: key);
+  Color getBorderColor(
+      DateTime day, Set<DateTime> datesWithExpenses, Color defaultColor) {
+    return datesWithExpenses.contains(day) ? AppColor.kBlueColor : defaultColor;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20.sp),
-      child: Column(
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2001, 10, 16),
-            lastDay: DateTime.utc(2060, 3, 14),
-            focusedDay: DateTime.now(),
-            onDaySelected: (selectedDay, focusedDay) {
-              List<CreateExpenseModel> expensesForSelectedDate = boxUse.values
-                  .toList()
-                  .where((expense) =>
-                      expense.dateTime.year == selectedDay.year &&
-                      expense.dateTime.month == selectedDay.month &&
-                      expense.dateTime.day == selectedDay.day)
-                  .toList();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final historyProvider = ref.watch(itemBoxProvider);
+    final selectedDay = ref.watch(selectedDayProvider);
+    final calendarFormat = ref.watch(calendarFormatProvider);
+    return historyProvider.when(
+      skipLoadingOnReload: true,
+      data: (data) {
+        List<CreateExpenseModel> expenseData = data.values
+            .where((expense) =>
+                expense.dateTime.year == selectedDay.year &&
+                expense.dateTime.month == selectedDay.month &&
+                expense.dateTime.day == selectedDay.day)
+            .toList();
 
-              Expanded(
-                child: ValueListenableBuilder(
-                  valueListenable: boxUse.listenable(),
-                  builder: (BuildContext context, Box<CreateExpenseModel> box,
-                      Widget? child) {
-                    return CustomScrollView(
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            childCount: expensesForSelectedDate.length,
-                            (context, index) {
-                              var history = expensesForSelectedDate[index];
-                              Icon iconData;
-                              if (history.expenseType == "Income") {
-                                iconData = LineIcon.wallet(
-                                  size: 18.sp,
-                                  color: AppColor.kGreenColor,
-                                );
-                              } else if (history.expenseType == "Expense") {
-                                iconData = LineIcon.alternateWavyMoneyBill(
-                                  size: 18.sp,
-                                  color: AppColor.kredColor,
-                                );
-                              } else {
-                                iconData = LineIcon.alternateWavyMoneyBill(
-                                  size: 18.sp,
-                                  color: AppColor.kBlueColor,
-                                );
-                              }
-                              return Dismissible(
-                                background: Container(
-                                  color: AppColor.kredColor,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 16.0.sp),
-                                      child: Icon(
-                                        Icons.delete,
-                                        size: 18.sp,
-                                        color: AppColor.kWhitColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                direction: DismissDirection.endToStart,
-                                confirmDismiss: (direction) async {
-                                  bool confirm = await showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      surfaceTintColor: AppColor.kBlackColor,
-                                      backgroundColor: AppColor.kWhitColor,
-                                      title: Text(
-                                        'Confirm Delete',
-                                        style: TextStyle(
-                                            color: AppColor.kBlackColor,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      content: Text(
-                                        'Are you sure you want to delete this item?',
-                                        style: TextStyle(
-                                            color: AppColor.kDarkGreyColor,
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, false),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
-                                          child: const Text('Delete'),
-                                        ),
-                                      ],
-                                    ),
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 20.sp),
+          child: Column(
+            children: [
+              TableCalendar(
+                focusedDay: selectedDay,
+                firstDay: DateTime.utc(2001, 10, 16),
+                lastDay: DateTime.utc(2060, 3, 14),
+                currentDay: selectedDay,
+                calendarFormat: calendarFormat,
+                availableCalendarFormats: const {
+                  CalendarFormat.week: "Week",
+                  CalendarFormat.twoWeeks: "Two Weeks",
+                  CalendarFormat.month: "Month",
+                },
+                // eventLoader: (day) {
+                //   List<DateTime> datesWithEvents = expenseData
+                //       .where((expense) =>
+                //           expense.dateTime.year == day.year &&
+                //           expense.dateTime.month == day.month &&
+                //           expense.dateTime.day == day.day)
+                //       .map((expense) => DateTime(
+                //             expense.dateTime.year,
+                //             expense.dateTime.month,
+                //             expense.dateTime.day,
+                //           ))
+                //       .toList();
+                //   return datesWithEvents;
+                // },
+
+                // eventLoader: (day) {
+                //   // if (expenseData.isNotEmpty) {
+                //   //   return expenseData.map((e) => e.dateTime).toList();
+                //   // } else {
+                //   //   return expenseData.map((e) => e.dateTime).toList();
+                //   // }
+                //   bool hasEvents = expenseData.any((expense) =>
+                //       expense.dateTime.year == day.year &&
+                //       expense.dateTime.month == day.month &&
+                //       expense.dateTime.day == day.day);
+                //   return hasEvents ? [day] : [];
+                // },
+                onFormatChanged: (onFormatChanged) {
+                  if (onFormatChanged != calendarFormat) {
+                    ref.read(calendarFormatProvider.notifier).state =
+                        onFormatChanged;
+                  }
+                },
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: true,
+                ),
+                calendarStyle: CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: AppColor.kBlackColor.withOpacity(0.8),
+                    shape: BoxShape.circle,
+                  ),
+                  weekendTextStyle: const TextStyle(color: Colors.red),
+                ),
+                onDaySelected: (selectedDay, focusedDay) {
+                  ref.read(selectedDayProvider.notifier).state = selectedDay;
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                      onTap: () => context.push(AppRouter.viewAllExpenses),
+                      child: const Text('View All')),
+                ],
+              ),
+              expenseData.isEmpty
+                  ? const Expanded(
+                      child: Center(
+                          child: Text('You vent saved  any expense today yet')))
+                  : Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              childCount: expenseData.length,
+                              (context, index) {
+                                var history = expenseData[index];
+                                Icon iconData;
+                                if (history.expenseType == "Income") {
+                                  iconData = LineIcon.wallet(
+                                    size: 18.sp,
+                                    color: AppColor.kGreenColor,
                                   );
-                                  return confirm;
-                                },
-                                onDismissed: (direction) {
-                                  history.delete();
-                                },
-                                key: ObjectKey(history),
-                                child: ListTile(
+                                } else if (history.expenseType == "Expense") {
+                                  iconData = LineIcon.alternateWavyMoneyBill(
+                                    size: 18.sp,
+                                    color: AppColor.kredColor,
+                                  );
+                                } else {
+                                  iconData = LineIcon.alternateWavyMoneyBill(
+                                    size: 18.sp,
+                                    color: AppColor.kBlueColor,
+                                  );
+                                }
+                                return ListTile(
                                   title: Row(
                                     children: [
                                       Text(
@@ -130,7 +148,8 @@ class TransactionListView extends StatelessWidget {
                                     ],
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         history.explain,
@@ -155,20 +174,19 @@ class TransactionListView extends StatelessWidget {
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              );
-            },
-          )
-        ],
-      ),
+                        ],
+                      ),
+                    )
+            ],
+          ),
+        );
+      },
+      error: (_, __) => const Text('Something went wrong'),
+      loading: () => const CircularProgressIndicator(color: Colors.red),
     );
   }
 }

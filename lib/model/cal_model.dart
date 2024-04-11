@@ -1,9 +1,11 @@
+// ignore_for_file: unused_result
+
 import 'package:expense_app/main.dart';
-import 'package:flutter/foundation.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProvider = StateNotifierProvider<TotalNotifier, Totals>((ref) {
+final totalProviderFuture = FutureProvider((ref) {
   return TotalNotifier();
 });
 
@@ -27,8 +29,6 @@ class TotalNotifier extends StateNotifier<Totals> {
 
     for (var expense in boxUse.values) {
       double amount = expense.amount;
-      debugPrint('Total Income: $totalIncome');
-
       if (expense.expenseType == 'Income') {
         totalIncome += amount;
       } else if (expense.expenseType == 'Expense') {
@@ -37,7 +37,6 @@ class TotalNotifier extends StateNotifier<Totals> {
         totalDebt += amount;
       }
     }
-    debugPrint('Total Income: $totalIncome');
     state = Totals(totalExpense, totalIncome, totalDebt);
   }
 }
@@ -46,12 +45,13 @@ final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(ref));
 
 class AddExpenseNotifer {
   final Ref ref;
-
   AddExpenseNotifer(this.ref);
-  void addExpense(var box) {
+  void addExpense(var box, BuildContext context) {
     try {
       boxUse.add(box);
-    ref.read(totalProvider.notifier).calculateTotals();
+      Navigator.pop(context);
+      ref.refresh(totalProviderFuture);
+      ref.refresh(itemBoxProvider);
     } catch (e) {
       debugPrint(e.toString());
     }
