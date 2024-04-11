@@ -1,6 +1,7 @@
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
+import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class BottomComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
+    final totals = ref.watch(totalProviderFuture);
+
     final PageController pageController =
         PageController(initialPage: selectedTab);
     final iconData = [
