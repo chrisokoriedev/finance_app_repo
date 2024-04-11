@@ -37,109 +37,115 @@ class Statistics extends ConsumerWidget {
             .where((expense) => expense.expenseType == expenseType)
             .toList()
           ..sort((a, b) => b.amount.compareTo(a.amount));
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gap(5.h),
-                    Center(
-                      child: Text(
-                        'Statistics',
-                        style: TextStyle(
-                          fontSize: 17.sp,
-                          color: AppColor.kBlackColor,
-                          fontWeight: FontWeight.w700,
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IntrinsicWidth(
+                stepWidth: double.infinity,
+                stepHeight: 2.h,
+                child: Column(children: [
+                  Gap(5.h),
+                  Center(
+                    child: Text(
+                      'Statistics',
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: AppColor.kBlackColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Gap(2.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(
+                      4,
+                      (index) => GestureDetector(
+                        onTap: () => ref
+                            .read(selectedTabProvider.notifier)
+                            .state = index,
+                        child: Chip(
+                          elevation: 0.0,
+                          backgroundColor: selectedTab == index
+                              ? AppColor.kBlackColor
+                              : AppColor.kWhitColor,
+                          label: Text(
+                            dayType[index],
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              letterSpacing: 1.7,
+                              fontWeight: FontWeight.w500,
+                              color: selectedTab == index
+                                  ? AppColor.kWhitColor
+                                  : AppColor.kBlackColor,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                    Gap(2.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                        4,
-                        (index) => GestureDetector(
-                          onTap: () => ref
-                              .read(selectedTabProvider.notifier)
-                              .state = index,
-                          child: Chip(
-                            elevation: 0.0,
-                            backgroundColor: selectedTab == index
-                                ? AppColor.kBlackColor
-                                : AppColor.kWhitColor,
-                            label: Text(
-                              dayType[index],
+                  ),
+                  Gap(1.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Chip(
+                        label: SizedBox(
+                          width: 20.w,
+                          height: 2.h,
+                          child: DropdownButton<String>(
+                            value: expenseType,
+                            underline: Container(),
+                            isExpanded: true,
+                            hint: Text(
+                              'Type',
                               style: TextStyle(
-                                fontSize: 13.sp,
-                                letterSpacing: 1.7,
-                                fontWeight: FontWeight.w500,
-                                color: selectedTab == index
-                                    ? AppColor.kWhitColor
-                                    : AppColor.kBlackColor,
-                              ),
+                                  fontSize: 14.sp,
+                                  color: AppColor.kBlackColor),
                             ),
+                            selectedItemBuilder: (context) =>
+                                expenseListType
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e,
+                                          style: TextStyle(
+                                              fontSize: 13.9.sp,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                            items: expenseListType
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(
+                                      e,
+                                      style: TextStyle(
+                                          fontSize: 13.9.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              ref
+                                  .read(expenseItemTypeProvider.notifier)
+                                  .state = value!;
+                            },
                           ),
                         ),
                       ),
-                    ),
-                    Gap(1.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Chip(
-                          label: SizedBox(
-                            width: 20.w,
-                            height: 2.h,
-                            child: DropdownButton<String>(
-                              value: expenseType,
-                              underline: Container(),
-                              isExpanded: true,
-                              hint: Text(
-                                'Type',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColor.kBlackColor),
-                              ),
-                              selectedItemBuilder: (context) => expenseListType
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(
-                                            fontSize: 13.9.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              items: expenseListType
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(
-                                            fontSize: 13.9.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                ref
-                                    .read(expenseItemTypeProvider.notifier)
-                                    .state = value!;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Gap(2.5.h),
+                    ],
+                  ),
+                ]),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(children: [
                     const ChartComponent(),
                     Gap(2.5.h),
                     Row(
@@ -159,7 +165,7 @@ class Statistics extends ConsumerWidget {
                       ],
                     ),
                     ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: expenseData.isNotEmpty
                             ? min(expenseData.length, 5)
                             : 1,
@@ -211,15 +217,16 @@ class Statistics extends ConsumerWidget {
                             trailing: Text(
                               history.amount.toString(),
                               style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600),
                             ),
                           );
                         })
-                  ],
+                  ]),
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         );
       },
     );
