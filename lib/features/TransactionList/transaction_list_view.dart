@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
@@ -18,6 +16,10 @@ final calendarFormatProvider =
 
 class TransactionListView extends HookConsumerWidget {
   const TransactionListView({Key? key}) : super(key: key);
+  Color getBorderColor(
+      DateTime day, Set<DateTime> datesWithExpenses, Color defaultColor) {
+    return datesWithExpenses.contains(day) ? AppColor.kBlueColor : defaultColor;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,6 +51,33 @@ class TransactionListView extends HookConsumerWidget {
                   CalendarFormat.twoWeeks: "Two Weeks",
                   CalendarFormat.month: "Month",
                 },
+                // eventLoader: (day) {
+                //   List<DateTime> datesWithEvents = expenseData
+                //       .where((expense) =>
+                //           expense.dateTime.year == day.year &&
+                //           expense.dateTime.month == day.month &&
+                //           expense.dateTime.day == day.day)
+                //       .map((expense) => DateTime(
+                //             expense.dateTime.year,
+                //             expense.dateTime.month,
+                //             expense.dateTime.day,
+                //           ))
+                //       .toList();
+                //   return datesWithEvents;
+                // },
+
+                // eventLoader: (day) {
+                //   // if (expenseData.isNotEmpty) {
+                //   //   return expenseData.map((e) => e.dateTime).toList();
+                //   // } else {
+                //   //   return expenseData.map((e) => e.dateTime).toList();
+                //   // }
+                //   bool hasEvents = expenseData.any((expense) =>
+                //       expense.dateTime.year == day.year &&
+                //       expense.dateTime.month == day.month &&
+                //       expense.dateTime.day == day.day);
+                //   return hasEvents ? [day] : [];
+                // },
                 onFormatChanged: (onFormatChanged) {
                   if (onFormatChanged != calendarFormat) {
                     ref.read(calendarFormatProvider.notifier).state =
@@ -63,24 +92,18 @@ class TransactionListView extends HookConsumerWidget {
                     color: AppColor.kBlackColor.withOpacity(0.8),
                     shape: BoxShape.circle,
                   ),
-                  defaultDecoration: BoxDecoration(
-                      border: Border.all(
-                          color: expenseData.isNotEmpty
-                              ? AppColor.kBlueColor
-                              : Colors.transparent),
-                      shape: BoxShape.circle),
                   weekendTextStyle: const TextStyle(color: Colors.red),
                 ),
                 onDaySelected: (selectedDay, focusedDay) {
                   ref.read(selectedDayProvider.notifier).state = selectedDay;
                 },
               ),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: ()=>context.push(AppRouter.viewAllExpenses),
-                    child: const Text('View All')),
+                      onTap: () => context.push(AppRouter.viewAllExpenses),
+                      child: const Text('View All')),
                 ],
               ),
               expenseData.isEmpty

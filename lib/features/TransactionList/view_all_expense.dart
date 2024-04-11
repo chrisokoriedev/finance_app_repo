@@ -19,7 +19,9 @@ class ViewAllExpense extends HookConsumerWidget {
       error: (_, __) => const Text('Something went wrong'),
       loading: () => const CircularProgressIndicator(color: Colors.red),
       data: (data) {
-        List<CreateExpenseModel> expenseData = data.values.toList();
+        List<CreateExpenseModel> expenseData = data.values.toList()
+          ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
         Map<DateTime, List<CreateExpenseModel>> groupedExpenses = {};
 
         for (var expense in expenseData) {
@@ -41,8 +43,7 @@ class ViewAllExpense extends HookConsumerWidget {
             itemCount: groupedExpenses.length,
             itemBuilder: (context, index) {
               var date = groupedExpenses.keys.elementAt(index);
-              var expenses = groupedExpenses[date] ?? []
-                ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+              var expenses = groupedExpenses[date] ?? [];
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
