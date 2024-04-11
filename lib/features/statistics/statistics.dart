@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
@@ -31,7 +33,7 @@ class Statistics extends ConsumerWidget {
       error: (_, __) => Text('Error $__'),
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (data) {
-        List<CreateExpenseModel> incomeData = data
+        List<CreateExpenseModel> expenseData = data
             .where((expense) => expense.expenseType == expenseType)
             .toList()
           ..sort((a, b) => b.amount.compareTo(a.amount));
@@ -157,10 +159,13 @@ class Statistics extends ConsumerWidget {
                       ],
                     ),
                     ListView.builder(
-                        itemCount: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                        itemCount: expenseData.isNotEmpty
+                            ? min(expenseData.length, 5)
+                            : 1,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          final history = incomeData[index];
+                          final history = expenseData[index];
                           Icon iconData;
                           if (history.expenseType == "Income") {
                             iconData = LineIcon.wallet(
