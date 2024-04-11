@@ -20,7 +20,6 @@ class BottomComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
-    final totals = ref.watch(totalProviderFuture);
 
     final PageController pageController =
         PageController(initialPage: selectedTab);
