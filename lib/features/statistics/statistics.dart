@@ -1,3 +1,4 @@
+import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,13 @@ import 'chart_view.dart';
 import 'model/day_model.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
+final expenseItemTypeProvider =
+    StateProvider.autoDispose<String>((ref) => 'Income');
+List<String> expenseListType = [
+  'Expense',
+  'Income',
+  'Debt',
+];
 
 class Statistics extends ConsumerWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -18,101 +26,197 @@ class Statistics extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedTabProvider);
     final itemProvider = ref.watch(itemsProvider);
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gap(5.h),
-                Center(
-                  child: Text(
-                    'Statistics',
-                    style: TextStyle(
-                      fontSize: 17.sp,
-                      color: AppColor.kBlackColor,
-                      fontWeight: FontWeight.w700,
+    final expenseType = ref.watch(expenseItemTypeProvider);
+    return itemProvider.when(
+      error: (_, __) => Text('Error $__'),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      data: (data) {
+        List<CreateExpenseModel> incomeData = data
+            .where((expense) => expense.expenseType == expenseType)
+            .toList()
+          ..sort((a, b) => b.amount.compareTo(a.amount));
+        return CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gap(5.h),
+                    Center(
+                      child: Text(
+                        'Statistics',
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          color: AppColor.kBlackColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Gap(2.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    4,
-                    (index) => GestureDetector(
-                      onTap: () => ref
-                          .read(selectedTabProvider.notifier)
-                          .state = index,
-                      child: Chip(
-                        elevation: 0.0,
-                        backgroundColor: selectedTab == index
-                            ? AppColor.kBlackColor
-                            : AppColor.kWhitColor,
-                        label: Text(
-                          dayType[index],
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            letterSpacing: 1.7,
-                            fontWeight: FontWeight.w500,
-                            color: selectedTab == index
-                                ? AppColor.kWhitColor
-                                : AppColor.kBlackColor,
+                    Gap(2.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        4,
+                        (index) => GestureDetector(
+                          onTap: () => ref
+                              .read(selectedTabProvider.notifier)
+                              .state = index,
+                          child: Chip(
+                            elevation: 0.0,
+                            backgroundColor: selectedTab == index
+                                ? AppColor.kBlackColor
+                                : AppColor.kWhitColor,
+                            label: Text(
+                              dayType[index],
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                letterSpacing: 1.7,
+                                fontWeight: FontWeight.w500,
+                                color: selectedTab == index
+                                    ? AppColor.kWhitColor
+                                    : AppColor.kBlackColor,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Gap(1.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Chip(
-                      label: Row(
-                        children: [
-                          Text(
-                            'Expense',
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
+                    Gap(1.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Chip(
+                          label: SizedBox(
+                            width: 20.w,
+                            height: 2.h,
+                            child: DropdownButton<String>(
+                              value: expenseType,
+                              underline: Container(),
+                              isExpanded: true,
+                              hint: Text(
+                                'Type',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColor.kBlackColor),
+                              ),
+                              selectedItemBuilder: (context) => expenseListType
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(
+                                        e,
+                                        style: TextStyle(
+                                            fontSize: 13.9.sp,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              items: expenseListType
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(
+                                        e,
+                                        style: TextStyle(
+                                            fontSize: 13.9.sp,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                ref
+                                    .read(expenseItemTypeProvider.notifier)
+                                    .state = value!;
+                              },
                             ),
                           ),
-                          Gap(2.w),
-                          LineIcon.arrowDown(
-                            size: 15.px,
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    Gap(2.5.h),
+                    const ChartComponent(),
+                    Gap(2.5.h),
+                    Row(
+                      children: [
+                        Text(
+                          'Top Spending',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColor.kBlackColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Gap(1.w),
+                        LineIcon.wallet(
+                          size: 16.sp,
+                        )
+                      ],
+                    ),
+                    ListView.builder(
+                        itemCount: 2,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final history = incomeData[index];
+                          Icon iconData;
+                          if (history.expenseType == "Income") {
+                            iconData = LineIcon.wallet(
+                              size: 18.sp,
+                              color: AppColor.kGreenColor,
+                            );
+                          } else if (history.expenseType == "Expense") {
+                            iconData = LineIcon.alternateWavyMoneyBill(
+                              size: 18.sp,
+                              color: AppColor.kredColor,
+                            );
+                          } else {
+                            iconData = LineIcon.alternateWavyMoneyBill(
+                              size: 18.sp,
+                              color: AppColor.kBlueColor,
+                            );
+                          }
+                          return ListTile(
+                            title: Row(
+                              children: [
+                                Text(
+                                  '${history.expenseType}\tfor\t${history.name}',
+                                  style: TextStyle(
+                                      color: AppColor.kDarkGreyColor,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  history.explain,
+                                  style: TextStyle(
+                                      color: AppColor.kDarkGreyColor,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            leading: iconData,
+                            trailing: Text(
+                              history.amount.toString(),
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.w600),
+                            ),
+                          );
+                        })
                   ],
                 ),
-                Gap(2.5.h),
-                const ChartComponent(),
-                Gap(2.5.h),
-                Row(
-                  children: [
-                    Text(
-                      'Top Spending',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppColor.kBlackColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Gap(1.w),
-                    LineIcon.wallet(
-                      size: 16.sp,
-                    )
-                  ],
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
