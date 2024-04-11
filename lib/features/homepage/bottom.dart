@@ -68,15 +68,20 @@ class BottomComponent extends ConsumerWidget {
                 pageController.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },
-              child: SizedBox(
+              child: Container(
                 width: 20.w,
-                height: 30.h,
+                height: 25.h,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selectedTab == index
+                        ? AppColor.kGreyColor.withOpacity(0.3)
+                        : Colors.transparent),
                 child: LineIcon(
                   iconData[index],
                   color: selectedTab == index
                       ? AppColor.kWhitColor
                       : AppColor.kGreyColor,
-                  size: selectedTab == index ? 20.sp : 16.sp,
+                  size: selectedTab == index ? 20.sp : 18.sp,
                 ),
               ),
             ),
