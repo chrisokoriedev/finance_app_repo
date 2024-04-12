@@ -124,7 +124,10 @@ class HomePage extends ConsumerWidget {
                 ),
               ],
             ),
-        error: (_, __) => Text('Error $__'),
+        error: (_, __) {
+          print('Eror $__');
+          return Text('Error $__');
+        },
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ));
