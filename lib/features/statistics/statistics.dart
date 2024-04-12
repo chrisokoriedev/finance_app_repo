@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -174,6 +175,10 @@ class Statistics extends ConsumerWidget {
                             : 1,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          if (expenseData.isEmpty) {
+                            return const NoDataView();
+                          }
+                          
                           final history = expenseData[index];
                           Icon iconData;
                           if (history.expenseType == "Income") {
@@ -234,3 +239,5 @@ class Statistics extends ConsumerWidget {
     );
   }
 }
+
+
