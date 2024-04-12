@@ -1,6 +1,7 @@
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -19,8 +20,6 @@ void main() async {
   );
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -32,6 +31,7 @@ class MyApp extends StatelessWidget {
           routerConfig: AppRouter.router,
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
+          builder: EasyLoading.init(),
           theme: ThemeData(
             scaffoldBackgroundColor: AppColor.kWhitColor,
             canvasColor: AppColor.kWhitColor,
