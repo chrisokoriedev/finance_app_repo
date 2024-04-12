@@ -35,8 +35,8 @@ class BottomComponent extends ConsumerWidget {
           ref.read(selectedBottomTab.notifier).state = 2;
         },
       ),
-      const Statistics(),
-      const TransactionListView(),
+      Statistics(pageController),
+      TransactionListView(pageController),
       Container(),
     ];
     return Scaffold(

@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "64.0.0"
+  _flutterfire_internals:
+    dependency: transitive
+    description:
+      name: _flutterfire_internals
+      sha256: "4eec93681221723a686ad580c2e7d960e1017cf1a4e0a263c2573c2c6b0bf5cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.25"
   analyzer:
     dependency: transitive
     description:
@@ -257,6 +265,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  firebase_auth:
+    dependency: "direct main"
+    description:
+      name: firebase_auth
+      sha256: "17b841e1b000c3441b8ffceca88f468e078d0443db9643e77541bdfb7a3fd16b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.17.8"
+  firebase_auth_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_auth_platform_interface
+      sha256: f294ceef40409a36c819a14280ca864fe487b44033e5276443377c66cb448310
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.1.8"
+  firebase_auth_web:
+    dependency: transitive
+    description:
+      name: firebase_auth_web
+      sha256: "1f231da900fe7ff9f2974f8adcbdb3363c410c24725978afa5dc33e1e7e62e06"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.8"
   firebase_core:
     dependency: "direct main"
     description:
@@ -310,6 +342,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: "592dc01a18961a51c24ae5d963b724b2b7fa4a95c100fe8eb6ca8a5a4732cadf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.18"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -536,6 +576,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  local_auth:
+    dependency: "direct main"
+    description:
+      name: local_auth
+      sha256: "27679ed8e0d7daab2357db6bb7076359e083a56b295c0c59723845301da6aed9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
+  local_auth_android:
+    dependency: transitive
+    description:
+      name: local_auth_android
+      sha256: "3bcd732dda7c75fcb7ddaef12e131230f53dcc8c00790d0d6efb3aa0fbbeda57"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.37"
+  local_auth_ios:
+    dependency: transitive
+    description:
+      name: local_auth_ios
+      sha256: eb283b530029b334698918f1e282d4483737cbca972ff21b9193be3d6de8e2b8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.6"
+  local_auth_platform_interface:
+    dependency: transitive
+    description:
+      name: local_auth_platform_interface
+      sha256: "3215f9a97aa532aca91ea7591e9ee6a553bdc66ff9b11f19d14b6dffc4fdf45b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
+  local_auth_windows:
+    dependency: transitive
+    description:
+      name: local_auth_windows
+      sha256: "505ba3367ca781efb1c50d3132e44a2446bccc4163427bc203b9b4d8994d97ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.10"
   logging:
     dependency: transitive
     description:
