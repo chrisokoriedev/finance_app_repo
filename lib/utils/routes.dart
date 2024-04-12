@@ -18,7 +18,7 @@ class AppRouter {
         name: 'splash',
         builder: (context, state) {
           final auth = FirebaseAuth.instance;
-          return auth.currentUser != null
+          return auth.currentUser == null
               ? const AuthScreen()
               : const MainControlComponent();
         },
