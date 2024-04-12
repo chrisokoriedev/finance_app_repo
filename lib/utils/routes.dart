@@ -1,7 +1,8 @@
 import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
 import 'package:expense_app/features/TransactionList/view_all_expense.dart';
 import 'package:expense_app/features/auth/auth.dart';
-import 'package:expense_app/features/homepage/bottom.dart';
+import 'package:expense_app/features/homepage/main_control.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -15,7 +16,12 @@ class AppRouter {
       GoRoute(
         path: root,
         name: 'splash',
-        builder: (context, state) => const AuthScreen(),
+        builder: (context, state) {
+          final auth = FirebaseAuth.instance;
+          return auth.currentUser != null
+              ? const AuthScreen()
+              : const MainControlComponent();
+        },
       ),
       GoRoute(
         name: '/authScreen',
@@ -25,7 +31,7 @@ class AppRouter {
       GoRoute(
         name: '/mainControl',
         path: mainControl,
-        builder: (context, state) => const BottomComponent(),
+        builder: (context, state) => const MainControlComponent(),
       ),
       GoRoute(
         name: '/createExpenseView',

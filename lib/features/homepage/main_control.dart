@@ -13,8 +13,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 final selectedBottomTab = StateProvider<int>((ref) => 0);
 
-class BottomComponent extends ConsumerWidget {
-  const BottomComponent({super.key});
+class MainControlComponent extends ConsumerWidget {
+  const MainControlComponent({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

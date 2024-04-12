@@ -20,7 +20,7 @@ class AuthScreen extends HookConsumerWidget {
         orElse: () => null,
         authenticated: (user) async {
           EasyLoading.showError('Am in');
-          context.push(AppRouter.authScreen);
+          context.push(AppRouter.mainControl);
         },
         unauthenticated: (message) {
           EasyLoading.showError(message!);
