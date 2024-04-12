@@ -1,7 +1,11 @@
-// ignore_for_file: unused_result
+// ignore_for_file: unused_result, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_app/main.dart';
+import 'package:expense_app/model/create_expense.dart';
+import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,14 +45,34 @@ class TotalNotifier extends StateNotifier<Totals> {
   }
 }
 
-final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(ref));
+final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(
+    ref, ref.read(firebaseAuthProvider), ref.read(fireStoreProvider)));
 
 class AddExpenseNotifer {
+  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
   final Ref ref;
-  AddExpenseNotifer(this.ref);
-  void addExpense(var box, BuildContext context) {
+  AddExpenseNotifer(this.ref, this._firebaseAuth, this._firebaseFirestore);
+  Future<void> addExpense(
+      CreateExpenseModel expense, BuildContext context) async {
     try {
-      boxUse.add(box);
+      final box = await ref.watch(itemBoxProvider.future);
+      await box.add(expense);
+      final firestoreInstance = _firebaseFirestore;
+      final userId = _firebaseAuth.currentUser!.uid;
+      if (userId.isNotEmpty) {
+        await firestoreInstance
+            .collection('expenses')
+            .doc(userId)
+            .collection('user_expenses')
+            .add({
+          'name': expense.name,
+          'amount': expense.amount,
+          'expenseType': expense.expenseType,
+          'explain': expense.explain,
+          'dateTime': expense.dateTime.toIso8601String(),
+        });
+      }
       Navigator.pop(context);
       ref.refresh(totalProviderFuture);
       ref.refresh(itemBoxProvider);
