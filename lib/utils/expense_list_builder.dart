@@ -10,17 +10,25 @@ import 'package:timeago/timeago.dart' as timeago;
 class ExpenseListBuilder extends StatelessWidget {
   final List data;
   final bool showDateTIme;
+  final bool newCountChild;
+  final int? childCount;
   const ExpenseListBuilder({
     super.key,
     required this.data,
     this.showDateTIme = true,
+    this.childCount,
+    this.newCountChild = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: data.isNotEmpty ? min(data.length, 5) : 1,
+        childCount: newCountChild
+            ? childCount
+            : data.isNotEmpty
+                ? min(data.length, 5)
+                : 1,
         (context, index) {
           if (data.isEmpty) {
             return const NoDataView();

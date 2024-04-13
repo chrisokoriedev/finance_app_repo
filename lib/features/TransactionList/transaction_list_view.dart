@@ -87,7 +87,7 @@ class TransactionListView extends HookConsumerWidget {
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w600)))
                         : CustomScrollView(
-                            slivers: [ExpenseListBuilder(data: expenseData)]))
+                            slivers: [ExpenseListBuilder(data: expenseData,childCount:  expenseData.length,)]))
               ],
             ),
           );

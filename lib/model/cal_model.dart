@@ -5,7 +5,6 @@ import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
