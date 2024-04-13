@@ -81,4 +81,30 @@ class AddExpenseNotifer {
       debugPrint(e.toString());
     }
   }
+
+  Future<void> editExpense(
+      CreateExpenseModel expense, BuildContext context) async {
+    try {
+      final box = await ref.watch(itemBoxProvider.future);
+      await box.add(expense);
+      Navigator.pop(context);
+      ref.refresh(totalProviderFuture);
+      ref.refresh(itemBoxProvider);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> deleteExpense(
+      CreateExpenseModel expense, BuildContext context) async {
+    try {
+      final box = await ref.watch(itemBoxProvider.future);
+      await box.deleteAt(0);
+      Navigator.pop(context);
+      ref.refresh(totalProviderFuture);
+      ref.refresh(itemBoxProvider);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

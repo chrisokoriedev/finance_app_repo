@@ -1,65 +1,90 @@
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/expense_list_builder.dart';
+import 'dart:math';
+
+import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../utils/colors.dart';
-import '../HeaderDashboard/header.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class HomePage extends ConsumerWidget {
-  final VoidCallback pageSelected;
-
-  const HomePage({super.key, required this.pageSelected});
+class ExpenseListBuilder extends StatelessWidget {
+  final List data;
+  final bool showDateTIme;
+  const ExpenseListBuilder({
+    super.key,
+    required this.data,
+    this.showDateTIme = true,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final itemProvider = ref.watch(itemsProvider);
-
-    return itemProvider.when(
-        data: (data) => CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: SizedBox(height: 45.h, child: const DashboardHeader()),
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        childCount: data.isNotEmpty ? min(data.length, 5) : 1,
+        (context, index) {
+          if (data.isEmpty) {
+            return const NoDataView();
+          }
+          var history = data[index];
+          Icon iconData;
+          if (history.expenseType == "Income") {
+            iconData = LineIcon.wallet(
+              size: 18.sp,
+              color: AppColor.kGreenColor,
+            );
+          } else if (history.expenseType == "Expense") {
+            iconData = LineIcon.alternateWavyMoneyBill(
+              size: 18.sp,
+              color: AppColor.kredColor,
+            );
+          } else {
+            iconData = LineIcon.alternateWavyMoneyBill(
+              size: 18.sp,
+              color: AppColor.kBlueColor,
+            );
+          }
+          return ListTile(
+            title: Row(
+              children: [
+                Text(
+                  '${history.expenseType}\tfor\t${history.name}',
+                  style: TextStyle(
+                      color: AppColor.kDarkGreyColor,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600),
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Recent History',
-                                style: TextStyle(
-                                    color: AppColor.kBlackColor,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              GestureDetector(
-                                onTap: pageSelected,
-                                child: Text(
-                                  'See all',
-                                  style: TextStyle(
-                                      color: AppColor.kGreyColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]),
-                  ),
-                ),
-                ExpenseListBuilder(data: data),
               ],
             ),
-        error: (_, __) {
-          debugPrint('Eror $__');
-          return Text('Error $__');
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  history.explain,
+                  style: TextStyle(
+                      color: AppColor.kDarkGreyColor,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w600),
+                ),
+                showDateTIme
+                    ? Text(
+                        timeago.format(history.dateTime),
+                        style: TextStyle(
+                            color: AppColor.kGreyColor.shade500,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            ),
+            leading: iconData,
+            trailing: Text(
+              history.amount.toString(),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+            ),
+          );
         },
-        loading: () => const Center(child: CircularProgressIndicator()));
+      ),
+    );
   }
 }
 
