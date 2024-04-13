@@ -116,8 +116,8 @@ class NoDataView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Gap(5.h),
           Image.asset(
             'assets/gifs/coming_soon.gif',
             width: 70.w,

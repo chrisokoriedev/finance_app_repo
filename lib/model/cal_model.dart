@@ -93,13 +93,19 @@ class AddExpenseNotifer {
       debugPrint(e.toString());
     }
   }
+}
 
-  Future<void> deleteExpense(
-      CreateExpenseModel expense, BuildContext context) async {
+final deleteExpenseProvider = StateProvider((ref) => DeleteExpense(ref));
+
+class DeleteExpense {
+  final Ref ref;
+
+  DeleteExpense(this.ref);
+
+  Future<void> deleteExpense(int expenseIndex) async {
     try {
       final box = await ref.watch(itemBoxProvider.future);
-      await box.deleteAt(0);
-      Navigator.pop(context);
+      await box.deleteAt(expenseIndex);
       ref.refresh(totalProviderFuture);
       ref.refresh(itemBoxProvider);
     } catch (e) {

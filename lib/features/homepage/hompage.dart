@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/expense_list_builder.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,9 @@ class HomePage extends ConsumerWidget {
                         ]),
                   ),
                 ),
-                ExpenseListBuilder(data: data),
+                ExpenseListBuilder(
+                    data: data,
+                    childCount: data.isNotEmpty ? min(data.length, 6) : 1),
               ],
             ),
         error: (_, __) {
