@@ -342,7 +342,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
           backgroundColor:
-              MaterialStateColor.resolveWith((states) => AppColor.kBlackColor)),
+              MaterialStateColor.resolveWith((states) => const Color.fromARGB(255, 221, 111, 111))),
       onPressed: () {
         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
