@@ -79,22 +79,23 @@ class ProfileScreen extends HookConsumerWidget {
                 loading: () => const Center(child: CircularProgressIndicator()),
               ),
               const CustomButton(
-                title: 'View Income',
+                title: 'View all income data',
               ),
               const CustomButton(
-                title: 'View Expense',
+                title: 'View all expense data',
               ),
               const CustomButton(
-                title: 'View Debt',
+                title: 'View all debt data',
               ),
               const CustomButton(
-                title: 'Biometrice',
+                title: 'Biometrie',
               ),
               const CustomButton(
                 title: 'Delete all data',
               ),
               const CustomButton(
                 title: 'Logout',
+                color: AppColor.kredColor,
               ),
             ],
           ),
@@ -104,9 +105,11 @@ class ProfileScreen extends HookConsumerWidget {
 
 class CustomButton extends StatelessWidget {
   final String? title;
+  final Color? color;
   const CustomButton({
     super.key,
     this.title,
+    this.color = AppColor.kDarkGreyColor,
   });
 
   @override
@@ -119,7 +122,7 @@ class CustomButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.sp),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.sp),
-          color: AppColor.kDarkGreyColor.withOpacity(1.sp)),
+          color: color!.withOpacity(1.4.sp)),
       child: Text(title!),
     );
   }
