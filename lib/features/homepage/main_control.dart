@@ -11,6 +11,8 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../Porfile/profile.dart';
+
 final selectedBottomTab = StateProvider<int>((ref) => 0);
 
 class MainControlComponent extends ConsumerWidget {
@@ -37,7 +39,7 @@ class MainControlComponent extends ConsumerWidget {
       ),
       Statistics(pageController),
       TransactionListView(pageController),
-      Container(),
+      ProfileScreen(pageController),
     ];
     return Scaffold(
       body: PageView(

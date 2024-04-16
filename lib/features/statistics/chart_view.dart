@@ -82,6 +82,7 @@ class ChartComponent extends HookConsumerWidget {
                     _ => expense.dateTime.year.toString()
                   },
                   yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
+                  
                 ),
               ],
               annotations: const [],
