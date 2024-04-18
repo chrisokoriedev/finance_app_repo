@@ -13,7 +13,6 @@ final cloudItemsProvider = FutureProvider((ref) async {
       .doc(fireAuth)
       .collection(AppString.userExpense)
       .get();
-
   List<CreateExpenseModel> expenseList = [];
   for (var doc in querySnapshot.docs) {
     final data = doc.data() as Map<String, dynamic>;
