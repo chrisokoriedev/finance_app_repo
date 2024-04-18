@@ -11,17 +11,21 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-final selectedBottomTab = StateProvider<int>((ref) => 0);
+import '../Porfile/profile.dart';
 
-class BottomComponent extends ConsumerWidget {
-  const BottomComponent({super.key});
+final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
+
+class MainControlComponent extends ConsumerWidget {
+  const MainControlComponent({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
 
-    final PageController pageController =
-        PageController(initialPage: selectedTab);
+    final PageController pageCntrl = PageController(initialPage: selectedTab);
+    pageCntrl.addListener(() {
+      ref.read(selectedBottomTab.notifier).state = pageCntrl.page!.round();
+    });
     final iconData = [
       LineIcons.home,
       LineIcons.lineChart,
@@ -30,20 +34,21 @@ class BottomComponent extends ConsumerWidget {
     ];
     final screenChangeList = [
       HomePage(
+        pageCntrl,
         pageSelected: () {
-          pageController.jumpToPage(2);
+          pageCntrl.jumpToPage(2);
           ref.read(selectedBottomTab.notifier).state = 2;
         },
       ),
-      const Statistics(),
-      const TransactionListView(),
-      Container(),
+      Statistics(pageCntrl),
+      TransactionListView(pageCntrl),
+      ProfileScreen(pageCntrl),
     ];
     return Scaffold(
       body: PageView(
         onPageChanged: (index) =>
             ref.read(selectedBottomTab.notifier).state = index,
-        controller: pageController,
+        controller: pageCntrl,
         children: screenChangeList,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -64,7 +69,7 @@ class BottomComponent extends ConsumerWidget {
             iconData.length,
             (index) => GestureDetector(
               onTap: () {
-                pageController.jumpToPage(index);
+                pageCntrl.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },
               child: Container(

@@ -1,4 +1,4 @@
-import 'package:expense_app/model/cal_model.dart';
+import 'package:expense_app/domain/cal.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -341,19 +341,19 @@ class BuildCreateDataComponent extends ConsumerWidget {
           ),
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
-          backgroundColor:
-              MaterialStateColor.resolveWith((states) => AppColor.kBlackColor)),
+          backgroundColor: MaterialStateColor.resolveWith(
+              (states) => const Color.fromARGB(255, 221, 111, 111))),
       onPressed: () {
         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
           var add = CreateExpenseModel(
-              expenseTitleController.text,
-              double.parse(expenseAmountController.text),
-              chooseExpense,
-              expenseDescripritionController.text,
-              choosedDate,
-              chooseSubExpense);
+              name: expenseAmountController.text,
+              amount: double.parse(expenseAmountController.text),
+              expenseType: chooseExpense,
+              explain: expenseDescripritionController.text,
+              dateTime: choosedDate,
+              expenseSubList: chooseSubExpense);
           ref.read(addExpenseProvider.notifier).state.addExpense(add, context);
           expenseAmountController.clear();
           expenseDescripritionController.clear();

@@ -1,8 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
 
-import 'package:expense_app/model/cal_model.dart';
+import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/provider/firebase.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,18 +15,19 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'controller/time_controller.dart';
 
 class DashboardHeader extends ConsumerWidget {
-  const DashboardHeader({
-    Key? key,
-  }) : super(key: key);
+  final PageController pageCntrl;
+  const DashboardHeader(this.pageCntrl, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalProviderFuture);
+    final totals = ref.watch(totalStateProvider);
+    final cloud = ref.watch(cloudItemsProvider);
     final greeting = ref.watch(greetingProvider);
+    final firebaseAuth = ref.watch(firebaseAuthProvider);
 
-    return totals.when(
+    return cloud.when(
         data: (data) {
-          data.calculateTotals();
+        ref.read(totalStateProvider.notifier).state.calculateTotals(data);
           return Stack(
             children: [
               Column(
@@ -66,17 +70,16 @@ class DashboardHeader extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            Container(
-                              width: Adaptive.w(10),
-                              height: 5.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.sp),
-                                color: AppColor.kDarkGreyColor,
-                              ),
-                              child: LineIcon.bell(
-                                color: AppColor.kWhitColor,
-                                size: 18.sp,
-                              ),
+                            GestureDetector(
+                              onTap: () => pageCntrl.jumpToPage(3),
+                              child: SizedBox(
+                                  width: Adaptive.w(10),
+                                  height: 5.h,
+                                  child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(30.sp),
+                                      child: UserAvatar(
+                                          firebaseAuth: firebaseAuth))),
                             ),
                           ],
                         ),
@@ -128,7 +131,7 @@ class DashboardHeader extends ConsumerWidget {
                         ),
                         Gap(0.3.h),
                         Text(
-                          "\$ ${data.state.grandTotal}",
+                          "\$ ${totals.state.grandTotal}",
                           style: TextStyle(
                             color: AppColor.kWhitColor,
                             fontSize: 18.sp,
@@ -146,7 +149,7 @@ class DashboardHeader extends ConsumerWidget {
                                 size: 17.sp,
                                 color: AppColor.kGreenColor,
                               ),
-                              '${data.state.totalIncome}',
+                              '${totals.state.totalIncome}',
                             ),
                             _buildExpenseDashBoardComponent(
                               'Expense',
@@ -154,7 +157,7 @@ class DashboardHeader extends ConsumerWidget {
                                 size: 17.sp,
                                 color: AppColor.kredColor,
                               ),
-                              '${data.state.totalExpense}',
+                              '${totals.state.totalExpense}',
                             ),
                             _buildExpenseDashBoardComponent(
                               'Debt',
@@ -162,7 +165,7 @@ class DashboardHeader extends ConsumerWidget {
                                 size: 17.sp,
                                 color: AppColor.kBlueColor,
                               ),
-                              '${data.state.totalDebt}',
+                              '${totals.state.totalDebt}',
                             ),
                           ],
                         ),

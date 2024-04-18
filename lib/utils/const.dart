@@ -106,3 +106,33 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
+
+class NoDataView extends StatelessWidget {
+  const NoDataView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/gifs/coming_soon.gif',
+            width: 70.w,
+          ),
+          Text(
+            'No items to display',
+            style: TextStyle(
+              color: AppColor.kDarkGreyColor,
+              fontSize: 15.sp,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
