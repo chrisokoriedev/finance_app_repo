@@ -24,4 +24,9 @@
                   //       expense.dateTime.month == day.month &&
                   //       expense.dateTime.day == day.day);
                   //   return hasEvents ? [day] : [];
-                  // },
+                  // },// final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
+//   final box = await ref.watch(itemBoxProvider.future);
+//   return box.values.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+// });
+// final itemBoxProvider =
+//     FutureProvider((ref) => Hive.openBox<CreateExpenseModel>(AppString.hiveDb));

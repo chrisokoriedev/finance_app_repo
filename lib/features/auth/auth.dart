@@ -20,8 +20,8 @@ class AuthScreen extends HookConsumerWidget {
       next.maybeWhen(
         orElse: () => null,
         authenticated: (user) async {
-          EasyLoading.showError('Am in');
-          context.push(AppRouter.mainControl);
+          EasyLoading.showSuccess('Am in');
+          context.pushReplacement(AppRouter.mainControl);
         },
         unauthenticated: (message) {
           EasyLoading.showError(message!);

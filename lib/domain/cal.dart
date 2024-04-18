@@ -10,9 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProviderFuture = FutureProvider((ref) {
-  return TotalNotifier();
-});
+final totalProviderFuture = FutureProvider((ref) => TotalNotifier());
 
 class Totals {
   final double totalExpense;
@@ -57,8 +55,6 @@ class AddExpenseNotifer {
   Future<void> addExpense(
       CreateExpenseModel expense, BuildContext context) async {
     try {
-      final box = await ref.watch(itemBoxProvider.future);
-      await box.add(expense);
       final firestoreInstance = _firebaseFirestore;
       final userId = _firebaseAuth.currentUser!.uid;
       if (userId.isNotEmpty) {
@@ -77,40 +73,49 @@ class AddExpenseNotifer {
       }
       Navigator.pop(context);
       ref.refresh(totalProviderFuture);
-      ref.refresh(itemBoxProvider);
       ref.refresh(cloudItemsProvider);
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  Future<void> editExpense(
-      CreateExpenseModel expense, BuildContext context) async {
-    try {
-      final box = await ref.watch(itemBoxProvider.future);
-      await box.add(expense);
-      Navigator.pop(context);
-      ref.refresh(totalProviderFuture);
-      ref.refresh(itemBoxProvider);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  // Future<void> editExpense(
+  //     CreateExpenseModel expense, BuildContext context) async {
+  //   try {
+  //     final box = await ref.watch(itemBoxProvider.future);
+  //     await box.add(expense);
+  //     Navigator.pop(context);
+  //     ref.refresh(totalProviderFuture);
+  //     ref.refresh(itemBoxProvider);
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 }
 
-final deleteExpenseProvider = StateProvider((ref) => DeleteExpense(ref));
+final deleteExpenseProvider = StateProvider((ref) => DeleteExpense(
+    ref, ref.read(firebaseAuthProvider), ref.read(fireStoreProvider)));
 
 class DeleteExpense {
+  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
   final Ref ref;
 
-  DeleteExpense(this.ref);
+  DeleteExpense(this.ref, this._firebaseAuth, this._firebaseFirestore);
 
-  Future<void> deleteExpense(int expenseIndex) async {
+  Future<void> deleteExpense(var expenseIndex) async {
+    final firestoreInstance = _firebaseFirestore;
+    final userId = _firebaseAuth.currentUser!.uid;
+    var data = firestoreInstance
+        .collection(AppString.expense)
+        .doc(userId)
+        .collection(AppString.userExpense)
+        .doc(expenseIndex);
     try {
-      final box = await ref.watch(itemBoxProvider.future);
-      await box.deleteAt(expenseIndex);
+      await data.delete();
+      debugPrint('Document deleted successfully!');
+      ref.refresh(cloudItemsProvider.future);
       ref.refresh(totalProviderFuture);
-      ref.refresh(itemBoxProvider);
     } catch (e) {
       debugPrint(e.toString());
     }

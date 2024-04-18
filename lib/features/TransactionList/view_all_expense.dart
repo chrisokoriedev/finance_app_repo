@@ -1,4 +1,4 @@
-import 'package:expense_app/model/cal_model.dart';
+import 'package:expense_app/domain/cal.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';

@@ -1,4 +1,3 @@
-import 'package:expense_app/model/cal_model.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -98,11 +97,11 @@ class ExpenseListBuilder extends HookConsumerWidget {
               return confirm;
             },
             onDismissed: (direction) {
-              int expense = data.indexOf(history);
-              ref
-                  .read(deleteExpenseProvider.notifier)
-                  .state
-                  .deleteExpense(expense);
+              // int expense = data.indexOf(DocumentReference);
+              // ref
+              //     .read(deleteExpenseProvider.notifier)
+              //     .state
+              //     .deleteExpense(expense);
             },
             child: ListTile(
               title: Row(

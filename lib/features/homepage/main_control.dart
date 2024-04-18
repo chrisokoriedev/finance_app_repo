@@ -13,7 +13,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../Porfile/profile.dart';
 
-final selectedBottomTab = StateProvider<int>((ref) => 0);
+final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
 
 class MainControlComponent extends ConsumerWidget {
   const MainControlComponent({super.key});
