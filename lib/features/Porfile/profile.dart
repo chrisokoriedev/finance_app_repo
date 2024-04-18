@@ -14,7 +14,7 @@ class ProfileScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseAuth = ref.watch(firebaseAuthProvider);
-    final itemProvider = ref.watch(itemsProvider);
+    final itemProvider = ref.watch(cloudItemsProvider);
     Map<String, int> calculateLengths(List<CreateExpenseModel> data) {
       int incomeLength =
           data.where((expense) => expense.expenseType == "Income").length;

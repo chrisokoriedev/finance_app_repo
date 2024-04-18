@@ -14,15 +14,14 @@ class ViewAllExpense extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyProvider = ref.watch(itemBoxProvider);
+    final historyProvider = ref.watch(cloudItemsProvider);
 
     return historyProvider.when(
       skipLoadingOnReload: true,
       error: (_, __) => const Text('Something went wrong'),
       loading: () => const CircularProgressIndicator(color: Colors.red),
       data: (data) {
-        List<CreateExpenseModel> expenseData = data.values.toList()
-          ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+        List<CreateExpenseModel> expenseData = data.toList();
 
         Map<DateTime, List<CreateExpenseModel>> groupedExpenses = {};
 

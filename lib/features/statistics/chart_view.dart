@@ -12,7 +12,7 @@ class ChartComponent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final itemProvider = ref.watch(itemsProvider);
+    final itemProvider = ref.watch(cloudItemsProvider);
     final selectDatetime = ref.watch(selectedTabProvider);
     return itemProvider.when(
         data: (data) {

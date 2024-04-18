@@ -29,7 +29,7 @@ class Statistics extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedTabProvider);
-    final itemProvider = ref.watch(itemsProvider);
+    final itemProvider = ref.watch(cloudItemsProvider);
     final expenseType = ref.watch(expenseItemTypeProvider);
     return PopScope(
       canPop: false,

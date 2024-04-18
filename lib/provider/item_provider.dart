@@ -25,10 +25,10 @@ final cloudItemsProvider = FutureProvider((ref) async {
       expenseList.add(CreateExpenseModel.fromJson(data));
     }
   }
-  return expenseList;
+  return expenseList.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 });
 
-final itemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
-  final box = await ref.watch(itemBoxProvider.future);
-  return box.values.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-});
+// final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
+//   final box = await ref.watch(itemBoxProvider.future);
+//   return box.values.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+// });

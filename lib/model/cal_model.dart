@@ -1,7 +1,5 @@
 // ignore_for_file: unused_result, use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';

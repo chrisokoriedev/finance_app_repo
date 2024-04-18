@@ -20,7 +20,7 @@ class TransactionListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyProvider = ref.watch(itemBoxProvider);
+    final historyProvider = ref.watch(cloudItemsProvider);
     final selectedDay = ref.watch(selectedDayProvider);
     final calendarFormat = ref.watch(calendarFormatProvider);
     return PopScope(
@@ -29,7 +29,7 @@ class TransactionListView extends HookConsumerWidget {
       child: historyProvider.when(
         skipLoadingOnReload: true,
         data: (data) {
-          List<CreateExpenseModel> expenseData = data.values
+          List<CreateExpenseModel> expenseData = data
               .where((expense) =>
                   expense.dateTime.year == selectedDay.year &&
                   expense.dateTime.month == selectedDay.month &&
