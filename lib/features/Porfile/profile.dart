@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expense_app/features/auth/notifer/auth_notifer.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
@@ -6,6 +7,7 @@ import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
@@ -47,21 +49,22 @@ class ProfileScreen extends HookConsumerWidget {
             canPop: false,
             onPopInvoked: (value) => pageController.jumpToPage(0),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 15.sp),
+              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 5.sp).copyWith(top: 30.sp),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 15.w,
-                    height: 15.h,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage(firebaseAuth
-                                    .currentUser?.photoURL ??
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWwb7VqZWWn6W92xv34aLhCXSrVGeArGHPhSKh4PysLQ&s'),
-                            fit: BoxFit.contain)),
+                  SizedBox(
+                    width: 20.w,
+                    child: CachedNetworkImage(
+                      imageUrl: firebaseAuth.currentUser?.photoURL ??
+                          AppString.appUserIcon,
+                      placeholder: (BuildContext context, String url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget:
+                          (BuildContext context, String url, dynamic error) =>
+                              const Icon(Icons.error),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
