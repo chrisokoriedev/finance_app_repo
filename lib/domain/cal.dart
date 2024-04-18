@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProviderFuture = StateProvider((ref) => TotalNotifier());
+final totalStateProvider = StateProvider((ref) => TotalNotifier());
 final totalProvider = StateProvider<Totals>((ref) => const Totals(0, 0, 0));
 class Totals {
   final double totalExpense;
@@ -71,7 +71,7 @@ class AddExpenseNotifer {
         });
       }
       Navigator.pop(context);
-      ref.refresh(totalProviderFuture);
+      ref.refresh(totalStateProvider);
       ref.refresh(cloudItemsProvider);
     } catch (e) {
       debugPrint(e.toString());
@@ -114,7 +114,7 @@ class DeleteExpense {
       await data.delete();
       debugPrint('Document deleted successfully!');
       ref.refresh(cloudItemsProvider.future);
-      ref.refresh(totalProviderFuture);
+      ref.refresh(totalStateProvider);
     } catch (e) {
       debugPrint(e.toString());
     }

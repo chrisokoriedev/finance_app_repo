@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, screenType) {
         return MaterialApp.router(
           routerConfig: AppRouter.router,
-          title: 'Flutter Demo',
+          title: AppString.appName,
           debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
           theme: ThemeData(

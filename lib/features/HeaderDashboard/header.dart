@@ -20,14 +20,14 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalProviderFuture);
+    final totals = ref.watch(totalStateProvider);
     final cloud = ref.watch(cloudItemsProvider);
     final greeting = ref.watch(greetingProvider);
     final firebaseAuth = ref.watch(firebaseAuthProvider);
 
     return cloud.when(
         data: (data) {
-        ref.read(totalProviderFuture.notifier).state.calculateTotals(data);
+        ref.read(totalStateProvider.notifier).state.calculateTotals(data);
           return Stack(
             children: [
               Column(

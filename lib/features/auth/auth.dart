@@ -3,6 +3,7 @@ import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
@@ -59,7 +60,7 @@ class AuthScreen extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Expense Tracker',
+                        AppString.appName,
                         style: TextStyle(
                             color: AppColor.kWhitColor, fontSize: 18.sp),
                       ),
