@@ -1,5 +1,5 @@
 import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
-import 'package:expense_app/features/TransactionList/view_all_expense.dart';
+import 'package:expense_app/features/TransactionList/view_expense_timeline.dart';
 import 'package:expense_app/features/auth/auth.dart';
 import 'package:expense_app/features/homepage/main_control.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +41,7 @@ class AppRouter {
       GoRoute(
         name: '/viewAllExpenses',
         path: viewAllExpenses,
-        builder: (context, state) => const ViewAllExpense(),
+        builder: (context, state) => const ViewExpensesTimeline(),
       ),
     ],
   );

@@ -3,6 +3,7 @@ import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/expense_list_builder.dart';
 import 'package:expense_app/utils/routes.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -76,7 +77,10 @@ class TransactionListView extends HookConsumerWidget {
                   children: [
                     GestureDetector(
                         onTap: () => context.push(AppRouter.viewAllExpenses),
-                        child: const Text('View All')),
+                        child: Text(
+                          AppString.viewTimeline,
+                          style: TextStyle(fontSize: 14.sp, letterSpacing: 1.4),
+                        )),
                   ],
                 ),
                 Expanded(

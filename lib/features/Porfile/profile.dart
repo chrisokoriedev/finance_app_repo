@@ -8,6 +8,7 @@ import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -42,7 +43,7 @@ class ProfileScreen extends HookConsumerWidget {
             canPop: false,
             onPopInvoked: (value) => pageController.jumpToPage(0),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 20.sp),
+              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 15.sp),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,17 +59,24 @@ class ProfileScreen extends HookConsumerWidget {
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWwb7VqZWWn6W92xv34aLhCXSrVGeArGHPhSKh4PysLQ&s'),
                             fit: BoxFit.contain)),
                   ),
-                  Text(firebaseAuth.currentUser?.displayName ?? ""),
-                  Text(firebaseAuth.currentUser?.email ?? ""),
-                  Text(firebaseAuth.currentUser?.phoneNumber ?? ""),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(firebaseAuth.currentUser?.displayName ?? ""),
+                      Gap(5.w),
+                      Text(firebaseAuth.currentUser?.email ?? ""),
+                    ],
+                  ),
+                  Gap(2.h),
                   itemProvider.when(
                     data: (data) {
                       Map<String, int> lengths = calculateLengths(data);
 
                       return SizedBox(
                         width: double.infinity,
-                        height: 30.h,
+                        height: 25.h,
                         child: SfCircularChart(
+                          margin: EdgeInsets.zero,
                           series: <CircularSeries>[
                             DoughnutSeries<MapEntry<String, int>, String>(
                               dataSource: lengths.entries.toList(),
@@ -84,19 +92,21 @@ class ProfileScreen extends HookConsumerWidget {
                         ),
                       );
                     },
-                    error: (_, __) => const Text('error '),
+                    error: (_, __) => Text('error$__'),
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
                   ),
+                  Gap(1.h),
                   Expanded(
                     child: ListView(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       children: [
                         const CustomButton(
-                          title: 'View all income data',
+                          title: 'View Saved Data',
                         ),
                         const CustomButton(
-                          title: 'View all expense data',
+                          title: 'Setting & Support',
                         ),
                         const CustomButton(
                           title: 'View all debt data',
@@ -111,15 +121,11 @@ class ProfileScreen extends HookConsumerWidget {
                           },
                         ),
                         CustomButton(
-                          title: 'Logout',
-                          color: AppColor.kredColor,
-                          press: () {
-                            debugPrint('log out');
-                            ref
+                            title: 'Logout',
+                            color: AppColor.kredColor,
+                            press: () => ref
                                 .read(authNotifierProvider.notifier)
-                                .signOutGoogle();
-                          },
-                        ),
+                                .signOutGoogle()),
                       ],
                     ),
                   )
@@ -152,11 +158,11 @@ class CustomButton extends StatelessWidget {
         width: double.infinity,
         alignment: Alignment.centerLeft,
         height: 5.h,
-        margin: EdgeInsets.symmetric(vertical: 10.sp),
+        margin: EdgeInsets.only(bottom: 15.sp),
         padding: EdgeInsets.symmetric(horizontal: 15.sp),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.sp),
-            color: color!.withOpacity(1.2.sp)),
+            color: color!.withOpacity(1.0.sp)),
         child: Text(title!),
       ),
     );

@@ -4,13 +4,14 @@ import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/format_date.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class ViewAllExpense extends HookConsumerWidget {
-  const ViewAllExpense({Key? key}) : super(key: key);
+class ViewExpensesTimeline extends HookConsumerWidget {
+  const ViewExpensesTimeline({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +38,7 @@ class ViewAllExpense extends HookConsumerWidget {
         return Scaffold(
           appBar: AppBar(
               title: Text(
-            'View All Expenses',
+            AppString.viewTimeline,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           )),
           body: expenseData.isEmpty
