@@ -11,8 +11,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'bottomsheet/setting_and_support.dart';
 
 class ProfileScreen extends HookConsumerWidget {
   final PageController pageController;
@@ -102,25 +106,45 @@ class ProfileScreen extends HookConsumerWidget {
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       children: [
-                        const CustomButton(
+                        CustomButton(
+                          icons: LineIcons.barChart,
                           title: 'View Saved Data',
+                          press: () => showModalBottomSheet(
+                              context: context, builder: (_) => Container()),
                         ),
-                        const CustomButton(
+                        CustomButton(
+                          icons: LineIcons.medicalClinic,
                           title: 'Setting & Support',
-                        ),
-                        const CustomButton(
-                          title: 'View all debt data',
-                        ),
-                        const CustomButton(
-                          title: 'Biometrie',
+                          press: () => showModalBottomSheet(
+                              context: context,
+                              builder: (_) => const SettingAndSupport()),
                         ),
                         CustomButton(
-                          title: 'Delete all data',
-                          press: () {
-                            debugPrint('log out');
-                          },
+                          icons: LineIcons.userCircle,
+                          title: 'About us',
+                          press: () => showModalBottomSheet(
+                              context: context, builder: (_) => Container()),
                         ),
                         CustomButton(
+                          icons: LineIcons.bookReader,
+                          title: 'Terms & Condition',
+                          press: () => showModalBottomSheet(
+                              context: context, builder: (_) => Container()),
+                        ),
+                        // const CustomButton(
+                        //   title: 'View all debt data',
+                        // ),
+                        // const CustomButton(
+                        //   title: 'Biometrie',
+                        // ),
+                        // CustomButton(
+                        //   title: 'Delete all data',
+                        //   press: () {
+                        //     debugPrint('log out');
+                        //   },
+                        // ),
+                        CustomButton(
+                            icons: LineIcons.doorClosed,
                             title: 'Logout',
                             color: AppColor.kredColor,
                             press: () => ref
@@ -140,6 +164,7 @@ class ProfileScreen extends HookConsumerWidget {
 }
 
 class CustomButton extends StatelessWidget {
+  final IconData icons;
   final String? title;
   final Color? color;
   final VoidCallback? press;
@@ -148,6 +173,7 @@ class CustomButton extends StatelessWidget {
     this.title,
     this.color = AppColor.kDarkGreyColor,
     this.press,
+    required this.icons,
   });
 
   @override
@@ -158,12 +184,21 @@ class CustomButton extends StatelessWidget {
         width: double.infinity,
         alignment: Alignment.centerLeft,
         height: 5.h,
-        margin: EdgeInsets.only(bottom: 15.sp),
+        margin: EdgeInsets.only(bottom: 20.sp),
         padding: EdgeInsets.symmetric(horizontal: 15.sp),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.sp),
             color: color!.withOpacity(1.0.sp)),
-        child: Text(title!),
+        child: Row(
+          children: [
+            LineIcon(icons),
+            Gap(2.w),
+            Text(
+              title!,
+              style: TextStyle(fontSize: 15.sp, letterSpacing: 1.5),
+            ),
+          ],
+        ),
       ),
     );
   }
