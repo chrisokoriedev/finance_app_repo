@@ -9,9 +9,10 @@ import '../../utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
 class HomePage extends ConsumerWidget {
+  final PageController pageCntrl;
   final VoidCallback pageSelected;
 
-  const HomePage({super.key, required this.pageSelected});
+  const HomePage(this.pageCntrl, {super.key, required this.pageSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +22,8 @@ class HomePage extends ConsumerWidget {
         data: (data) => CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: SizedBox(height: 45.h, child: const DashboardHeader()),
+                  child:
+                      SizedBox(height: 45.h, child: DashboardHeader(pageCntrl)),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
@@ -66,57 +68,3 @@ class HomePage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()));
   }
 }
-
-//  background: Container(
-//                     color: AppColor.kredColor,
-//                     child: Align(
-//                       alignment: Alignment.centerRight,
-//                       child: Padding(
-//                         padding: EdgeInsets.only(right: 16.0.sp),
-//                         child: Icon(
-//                           Icons.delete,
-//                           size: 18.sp,
-//                           color: AppColor.kWhitColor,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   direction: DismissDirection.endToStart,
-//                   confirmDismiss: (direction) async {
-//                     bool confirm = await showDialog(
-//                       context: context,
-//                       builder: (context) => AlertDialog(
-//                         surfaceTintColor: AppColor.kBlackColor,
-//                         backgroundColor: AppColor.kWhitColor,
-//                         title: Text(
-//                           'Confirm Delete',
-//                           style: TextStyle(
-//                               color: AppColor.kBlackColor,
-//                               fontSize: 16.sp,
-//                               fontWeight: FontWeight.w600),
-//                         ),
-//                         content: Text(
-//                           'Are you sure you want to delete this item?',
-//                           style: TextStyle(
-//                               color: AppColor.kDarkGreyColor,
-//                               fontSize: 15.sp,
-//                               fontWeight: FontWeight.w500),
-//                         ),
-//                         actions: [
-//                           TextButton(
-//                             onPressed: () => Navigator.pop(context, false),
-//                             child: const Text('Cancel'),
-//                           ),
-//                           TextButton(
-//                             onPressed: () => Navigator.pop(context, true),
-//                             child: const Text('Delete'),
-//                           ),
-//                         ],
-//                       ),
-//                     );
-//                     return confirm;
-//                   },
-//                   onDismissed: (direction) {
-//                     history.delete();
-//                   },
-//                   key: ObjectKey(history),

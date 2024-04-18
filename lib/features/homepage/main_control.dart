@@ -22,8 +22,10 @@ class MainControlComponent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
 
-    final PageController pageController =
-        PageController(initialPage: selectedTab);
+    final PageController pageCntrl = PageController(initialPage: selectedTab);
+    pageCntrl.addListener(() {
+      ref.read(selectedBottomTab.notifier).state = pageCntrl.page!.round();
+    });
     final iconData = [
       LineIcons.home,
       LineIcons.lineChart,
@@ -32,20 +34,21 @@ class MainControlComponent extends ConsumerWidget {
     ];
     final screenChangeList = [
       HomePage(
+        pageCntrl,
         pageSelected: () {
-          pageController.jumpToPage(2);
+          pageCntrl.jumpToPage(2);
           ref.read(selectedBottomTab.notifier).state = 2;
         },
       ),
-      Statistics(pageController),
-      TransactionListView(pageController),
-      ProfileScreen(pageController),
+      Statistics(pageCntrl),
+      TransactionListView(pageCntrl),
+      ProfileScreen(pageCntrl),
     ];
     return Scaffold(
       body: PageView(
         onPageChanged: (index) =>
             ref.read(selectedBottomTab.notifier).state = index,
-        controller: pageController,
+        controller: pageCntrl,
         children: screenChangeList,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -66,7 +69,7 @@ class MainControlComponent extends ConsumerWidget {
             iconData.length,
             (index) => GestureDetector(
               onTap: () {
-                pageController.jumpToPage(index);
+                pageCntrl.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },
               child: Container(

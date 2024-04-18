@@ -8,6 +8,8 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/utils/user_avatar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
@@ -49,22 +51,15 @@ class ProfileScreen extends HookConsumerWidget {
             canPop: false,
             onPopInvoked: (value) => pageController.jumpToPage(0),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 5.sp).copyWith(top: 30.sp),
+              padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 5.sp)
+                  .copyWith(top: 30.sp),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 20.w,
-                    child: CachedNetworkImage(
-                      imageUrl: firebaseAuth.currentUser?.photoURL ??
-                          AppString.appUserIcon,
-                      placeholder: (BuildContext context, String url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget:
-                          (BuildContext context, String url, dynamic error) =>
-                              const Icon(Icons.error),
-                    ),
+                    child: UserAvatar(firebaseAuth: firebaseAuth),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +123,7 @@ class ProfileScreen extends HookConsumerWidget {
                               context: context, builder: (_) => Container()),
                         ),
                         CustomButton(
-                          icons: LineIcons.medicalClinic,
+                          icons: LineIcons.phoenixFramework,
                           title: 'Setting & Support',
                           press: () => showModalBottomSheet(
                               context: context,
