@@ -20,8 +20,12 @@ class SettingAndSupport extends StatelessWidget {
             icons: LineIcons.fingerprint,
           ),
           CustomButton(
-            title: 'Feedback',
-            icons: LineIcons.wonSign,
+            title: 'Email us',
+            icons: LineIcons.facebookMessenger,
+          ),
+          CustomButton(
+            title: 'Donate to us',
+            icons: LineIcons.gift,
           ),
           CustomButton(
             title: 'Clear all data',
