@@ -30,6 +30,7 @@ class SettingAndSupport extends StatelessWidget {
           CustomButton(
             title: 'Delete Account',
             icons: LineIcons.userInjured,
+            margin: 0,
           ),
         ],
       ),

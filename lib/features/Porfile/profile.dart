@@ -66,9 +66,21 @@ class ProfileScreen extends HookConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(firebaseAuth.currentUser?.displayName ?? ""),
+                      Text(
+                        firebaseAuth.currentUser?.displayName ?? "",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w600),
+                      ),
                       Gap(5.w),
-                      Text(firebaseAuth.currentUser?.email ?? ""),
+                      Text(
+                        firebaseAuth.currentUser?.email ?? "",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                   Gap(2.h),
@@ -131,18 +143,6 @@ class ProfileScreen extends HookConsumerWidget {
                           press: () => showModalBottomSheet(
                               context: context, builder: (_) => Container()),
                         ),
-                        // const CustomButton(
-                        //   title: 'View all debt data',
-                        // ),
-                        // const CustomButton(
-                        //   title: 'Biometrie',
-                        // ),
-                        // CustomButton(
-                        //   title: 'Delete all data',
-                        //   press: () {
-                        //     debugPrint('log out');
-                        //   },
-                        // ),
                         CustomButton(
                             icons: LineIcons.doorClosed,
                             title: 'Logout',
@@ -167,6 +167,7 @@ class CustomButton extends StatelessWidget {
   final IconData icons;
   final String? title;
   final Color? color;
+  final double? margin;
   final VoidCallback? press;
   const CustomButton({
     super.key,
@@ -174,6 +175,7 @@ class CustomButton extends StatelessWidget {
     this.color = AppColor.kDarkGreyColor,
     this.press,
     required this.icons,
+    this.margin = 20,
   });
 
   @override
@@ -184,7 +186,7 @@ class CustomButton extends StatelessWidget {
         width: double.infinity,
         alignment: Alignment.centerLeft,
         height: 5.h,
-        margin: EdgeInsets.only(bottom: 20.sp),
+        margin: EdgeInsets.only(bottom: margin!.sp),
         padding: EdgeInsets.symmetric(horizontal: 15.sp),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.sp),
