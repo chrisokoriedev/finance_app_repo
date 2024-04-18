@@ -1,7 +1,6 @@
 // ignore_for_file: unused_result, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expense_app/main.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
@@ -10,8 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalProviderFuture = FutureProvider((ref) => TotalNotifier());
-
+final totalProviderFuture = StateProvider((ref) => TotalNotifier());
+final totalProvider = StateProvider<Totals>((ref) => const Totals(0, 0, 0));
 class Totals {
   final double totalExpense;
   final double totalIncome;
@@ -25,12 +24,12 @@ class Totals {
 class TotalNotifier extends StateNotifier<Totals> {
   TotalNotifier() : super(const Totals(0, 0, 0));
 
-  void calculateTotals() {
+  void calculateTotals(List<CreateExpenseModel> expenses) {
     double totalExpense = 0;
     double totalIncome = 0;
     double totalDebt = 0;
 
-    for (var expense in boxUse.values) {
+    for (var expense in expenses) {
       double amount = expense.amount;
       if (expense.expenseType == 'Income') {
         totalIncome += amount;

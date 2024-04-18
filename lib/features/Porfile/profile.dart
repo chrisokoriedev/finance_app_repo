@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expense_app/features/auth/notifer/auth_notifer.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
@@ -7,9 +6,7 @@ import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
-import 'package:expense_app/utils/string_app.dart';
 import 'package:expense_app/utils/user_avatar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
