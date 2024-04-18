@@ -347,13 +347,6 @@ class BuildCreateDataComponent extends ConsumerWidget {
         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
-          // var add = CreateExpenseModel(
-          //     expenseTitleController.text,
-          //     double.parse(expenseAmountController.text),
-          //     chooseExpense,
-          //     expenseDescripritionController.text,
-          //     choosedDate,
-          //     chooseSubExpense, name: '');
           var add = CreateExpenseModel(
               name: expenseAmountController.text,
               amount: double.parse(expenseAmountController.text),

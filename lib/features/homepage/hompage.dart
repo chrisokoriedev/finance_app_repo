@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final itemProvider = ref.watch(itemsProvider);
+    final itemProvider = ref.watch(cloudItemsProvider);
 
     return itemProvider.when(
         data: (data) => CustomScrollView(
