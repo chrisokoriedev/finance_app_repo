@@ -11,7 +11,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'utils/routes.dart';
 
-final boxUse = Hive.box<CreateExpenseModel>(AppString.hiveDb);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
