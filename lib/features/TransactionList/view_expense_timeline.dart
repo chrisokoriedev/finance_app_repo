@@ -27,8 +27,8 @@ class ViewExpensesTimeline extends HookConsumerWidget {
         Map<DateTime, List<CreateExpenseModel>> groupedExpenses = {};
 
         for (var expense in expenseData) {
-          var exp = DateTime.parse(expense.dateTime);
-          DateTime date = DateTime(exp.year, exp.month, exp.day);
+          DateTime date = DateTime(expense.dateTime.year,
+              expense.dateTime.month, expense.dateTime.day);
           if (!groupedExpenses.containsKey(date)) {
             groupedExpenses[date] = [];
           }

@@ -21,51 +21,48 @@ class HomePage extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () => ref.refresh(cloudItemsProvider.future),
       child: itemProvider.when(
-          data: (data) {
-            ref.refresh(cloudItemsProvider.future);
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child:
-                      SizedBox(height: 45.h, child: DashboardHeader(pageCntrl)),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Recent History',
-                                style: TextStyle(
-                                    color: AppColor.kBlackColor,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              GestureDetector(
-                                onTap: pageSelected,
-                                child: Text(
-                                  'See all',
+          data: (data) => CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                        height: 45.h, child: DashboardHeader(pageCntrl)),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Recent History',
                                   style: TextStyle(
-                                      color: AppColor.kGreyColor,
+                                      color: AppColor.kBlackColor,
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w500),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ]),
+                                GestureDetector(
+                                  onTap: pageSelected,
+                                  child: Text(
+                                    'See all',
+                                    style: TextStyle(
+                                        color: AppColor.kGreyColor,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-                ExpenseListBuilder(
-                    data: data,
-                    childCount: data.isNotEmpty ? min(data.length, 6) : 1),
-              ],
-            );
-          },
+                  ExpenseListBuilder(
+                      data: data,
+                      childCount: data.isNotEmpty ? min(data.length, 6) : 1),
+                ],
+              ),
           error: (_, __) {
             debugPrint('Eror $__');
             return Text('Error $__');

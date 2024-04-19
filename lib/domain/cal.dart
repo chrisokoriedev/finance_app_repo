@@ -67,7 +67,7 @@ class AddExpenseNotifer {
           'amount': expense.amount,
           'expenseType': expense.expenseType,
           'explain': expense.explain,
-          'dateTime': expense.dateTime,
+          'dateTime': expense.dateTime.toIso8601String(),
           'expenseSubList': expense.expenseSubList,
         });
       }
