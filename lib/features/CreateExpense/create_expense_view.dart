@@ -39,6 +39,7 @@ class CreateExpenseView extends ConsumerWidget {
         orElse: () => null,
         success: (message) async {
           EasyLoading.showSuccess(message!);
+          context.pop();
         },
         failed: (message) {
           EasyLoading.showError(message!);

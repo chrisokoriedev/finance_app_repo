@@ -4,7 +4,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final cloudItemsProvider = FutureProvider((ref) async {
+final cloudItemsProvider = FutureProvider.autoDispose((ref) async {
   final fireAuth =
       ref.watch(firebaseAuthProvider.select((value) => value.currentUser!.uid));
   final fireStore = ref.watch(fireStoreProvider);
