@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -25,7 +26,6 @@ class CreateExpenseView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-  
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
@@ -123,7 +123,23 @@ class CreateExpenseView extends ConsumerWidget {
                       hintText: 'Amount',
                       textInputType: TextInputType.number,
                       maxLine: 1,
-                      maxlength: 5,
+                      maxlength: 10,
+                      onChanged: (value) {
+                        final numericValue =
+                            int.tryParse(value.replaceAll(',', ''));
+                        if (numericValue != null) {
+                          final formattedValue = NumberFormat.decimalPattern()
+                              .format(numericValue);
+                          if (value != formattedValue) {
+                            expenseAmountController.value =
+                                expenseAmountController.value.copyWith(
+                              text: formattedValue,
+                              selection: TextSelection.collapsed(
+                                  offset: formattedValue.length),
+                            );
+                          }
+                        }
+                      },
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(

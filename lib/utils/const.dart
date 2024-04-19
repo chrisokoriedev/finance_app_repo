@@ -78,6 +78,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType textInputType;
   final int maxLine;
   final int maxlength;
+  final Function(String)? onChanged;
   const CustomTextFormField({
     super.key,
     required this.textEditingController,
@@ -85,6 +86,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.textInputType,
     required this.maxLine,
     required this.maxlength,
+    this.onChanged,
   });
 
   @override
@@ -94,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: textEditingController,
       maxLines: maxLine,
       maxLength: maxlength,
+      onChanged: onChanged,
       style: TextStyle(
           fontSize: 14.sp,
           color: AppColor.kDarkGreyColor,
