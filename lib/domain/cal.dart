@@ -122,13 +122,9 @@ class DeleteExpense {
             .collection(AppString.userExpense)
             .doc(documentId)
             .delete();
-        ref.refresh(totalStateProvider);
-        ref.refresh(cloudItemsProvider);
+        ref.refresh(totalStateProvider.notifier).state;
+        ref.refresh(cloudItemsProvider.future);
       } else {}
-      // await data.delete();
-      // debugPrint('Document deleted successfully!');
-      ref.refresh(cloudItemsProvider.future);
-      ref.refresh(totalStateProvider);
     } catch (e) {
       debugPrint(e.toString());
     }

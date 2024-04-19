@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dartz/dartz.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthDataSource {
   final FirebaseAuth _firebaseAuth;
+  final Ref ref;
 
-  AuthDataSource(this._firebaseAuth);
+  AuthDataSource(this._firebaseAuth, this.ref);
 
   Future<Either<String, User>> continueWithGoogle() async {
     try {
@@ -24,6 +26,7 @@ class AuthDataSource {
           idToken: googleAuth.idToken,
         );
         final response = await _firebaseAuth.signInWithCredential(credential);
+
         return right(response.user!);
       } else {
         return left('Unknown Error');
@@ -41,10 +44,8 @@ class AuthDataSource {
   Future<Either<String, dynamic>> signOutGoogle() async {
     try {
       final googleSignIn = GoogleSignIn();
-      final cacheManager = DefaultCacheManager();
       if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.signOut();
-        await cacheManager.emptyCache();
         await googleSignIn.signOut();
         return right('Sign-out successful');
       } else {

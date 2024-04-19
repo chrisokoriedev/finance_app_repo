@@ -3,4 +3,4 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'firebase.dart';
 
 final authDataSourceProvider = StateProvider<AuthDataSource>(
-    (ref) => AuthDataSource(ref.read(firebaseAuthProvider)));
+    (ref) => AuthDataSource(ref.read(firebaseAuthProvider), ref));
