@@ -16,6 +16,7 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:expense_app/utils/string_app.dart';
 
 import 'bottomsheet/setting_and_support.dart';
 
@@ -115,9 +116,8 @@ class ProfileScreen extends HookConsumerWidget {
                       children: [
                         CustomButton(
                           icons: LineIcons.barChart,
-                          title: 'View Saved Data',
-                          press: () => showModalBottomSheet(
-                              context: context, builder: (_) => Container()),
+                          title: AppString.viewTimeline,
+                          press: () => context.push(AppRouter.viewAllExpenses),
                         ),
                         CustomButton(
                           icons: LineIcons.phoenixFramework,

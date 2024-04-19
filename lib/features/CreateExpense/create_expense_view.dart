@@ -123,23 +123,7 @@ class CreateExpenseView extends ConsumerWidget {
                       hintText: 'Amount',
                       textInputType: TextInputType.number,
                       maxLine: 1,
-                      maxlength: 10,
-                      onChanged: (value) {
-                        final numericValue =
-                            int.tryParse(value.replaceAll(',', ''));
-                        if (numericValue != null) {
-                          final formattedValue = NumberFormat.decimalPattern()
-                              .format(numericValue);
-                          if (value != formattedValue) {
-                            expenseAmountController.value =
-                                expenseAmountController.value.copyWith(
-                              text: formattedValue,
-                              selection: TextSelection.collapsed(
-                                  offset: formattedValue.length),
-                            );
-                          }
-                        }
-                      },
+                      maxlength: 10
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
