@@ -18,6 +18,7 @@ dependencies:
   responsive_sizer: ^3.2.0
   gap:
   hive:
+  flutter_cache_manager: ^3.3.1
   hive_flutter:
   line_icons: ^2.0.3
   flutter_riverpod: ^2.3.6
