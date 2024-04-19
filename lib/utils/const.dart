@@ -4,6 +4,18 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'colors.dart';
 
+List<String> expenseListType = ['Expense', 'Income', 'Debt'];
+List<String> expenseSubListType = [
+  '..',
+  'Transportation',
+  'Housing',
+  'Food',
+  'Health Care',
+  'Education',
+  'Debt Payments',
+  'Clothing'
+];
+
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 
@@ -66,6 +78,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType textInputType;
   final int maxLine;
   final int maxlength;
+  final Function(String)? onChanged;
   const CustomTextFormField({
     super.key,
     required this.textEditingController,
@@ -73,6 +86,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.textInputType,
     required this.maxLine,
     required this.maxlength,
+    this.onChanged,
   });
 
   @override
@@ -82,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: textEditingController,
       maxLines: maxLine,
       maxLength: maxlength,
+      onChanged: onChanged,
       style: TextStyle(
           fontSize: 14.sp,
           color: AppColor.kDarkGreyColor,

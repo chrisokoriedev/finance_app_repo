@@ -45,6 +45,7 @@ class MainControlComponent extends ConsumerWidget {
       ProfileScreen(pageCntrl),
     ];
     return Scaffold(
+      
       body: PageView(
         onPageChanged: (index) =>
             ref.read(selectedBottomTab.notifier).state = index,

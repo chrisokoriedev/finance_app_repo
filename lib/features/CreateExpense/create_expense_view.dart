@@ -1,20 +1,22 @@
-import 'package:expense_app/domain/cal.dart';
-import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import 'widget/expense_type_sub_dropdown.dart';
+import 'widget/submt_button.dart';
 
 final selectedDateTimeStateProvider =
     StateProvider.autoDispose<DateTime>((ref) => DateTime.now());
 final expenseItemTypeProvider =
     StateProvider.autoDispose<String>((ref) => 'Income');
 final expenseSubItemTypeProvider =
-    StateProvider.autoDispose<String>((ref) => 'Transportation');
+    StateProvider.autoDispose<String>((ref) => '..');
 final expenseAmountController = TextEditingController();
 final expenseTitleController = TextEditingController();
 final expenseDescripritionController = TextEditingController();
@@ -24,20 +26,6 @@ class CreateExpenseView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> expenseListType = [
-      'Expense',
-      'Income',
-      'Debt',
-    ];
-    List<String> expenseSubListType = [
-      'Transportation',
-      'Housing',
-      'Food',
-      'Health Care',
-      'Education',
-      'Debt Payments',
-      'Clothing'
-    ];
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
@@ -135,7 +123,23 @@ class CreateExpenseView extends ConsumerWidget {
                       hintText: 'Amount',
                       textInputType: TextInputType.number,
                       maxLine: 1,
-                      maxlength: 5,
+                      maxlength: 10,
+                      onChanged: (value) {
+                        final numericValue =
+                            int.tryParse(value.replaceAll(',', ''));
+                        if (numericValue != null) {
+                          final formattedValue = NumberFormat.decimalPattern()
+                              .format(numericValue);
+                          if (value != formattedValue) {
+                            expenseAmountController.value =
+                                expenseAmountController.value.copyWith(
+                              text: formattedValue,
+                              selection: TextSelection.collapsed(
+                                  offset: formattedValue.length),
+                            );
+                          }
+                        }
+                      },
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
@@ -191,191 +195,6 @@ class CreateExpenseView extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ExpenseTypeComponent extends ConsumerWidget {
-  const ExpenseTypeComponent({
-    super.key,
-    required this.chooseExpense,
-    required this.expenseListType,
-  });
-
-  final String chooseExpense;
-  final List<String> expenseListType;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      height: 5.h,
-      decoration: BoxDecoration(
-          color: AppColor.kGreyColor.withOpacity(0.3),
-          borderRadius: customBorderRadius(10)),
-      child: DropdownButton<String>(
-        value: chooseExpense,
-        underline: Container(),
-        isExpanded: true,
-        hint: Text(
-          'Type',
-          style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
-        ),
-        selectedItemBuilder: (context) => expenseListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: Text(
-                  e,
-                  style:
-                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-            )
-            .toList(),
-        items: expenseListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: Text(
-                  e,
-                  style:
-                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (value) {
-          ref.read(expenseItemTypeProvider.notifier).state = value!;
-        },
-      ),
-    );
-  }
-}
-
-class ExpenseSubTypeComponent extends ConsumerWidget {
-  const ExpenseSubTypeComponent({
-    super.key,
-    required this.chooseSubExpense,
-    required this.expenseSubListType,
-  });
-
-  final String chooseSubExpense;
-  final List<String> expenseSubListType;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      height: 5.h,
-      decoration: BoxDecoration(
-          color: AppColor.kGreyColor.withOpacity(0.3),
-          borderRadius: customBorderRadius(10)),
-      child: DropdownButton<String>(
-        value: chooseSubExpense,
-        underline: Container(),
-        isExpanded: true,
-        hint: Text(
-          'Type',
-          style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
-        ),
-        selectedItemBuilder: (context) => expenseSubListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: Text(
-                  e,
-                  style:
-                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-            )
-            .toList(),
-        items: expenseSubListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: Text(
-                  e,
-                  style:
-                      TextStyle(fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (value) {
-          ref.read(expenseSubItemTypeProvider.notifier).state = value!;
-        },
-      ),
-    );
-  }
-}
-
-class BuildCreateDataComponent extends ConsumerWidget {
-  const BuildCreateDataComponent({
-    super.key,
-    required this.expenseTitleController,
-    required this.expenseDescripritionController,
-    required this.expenseAmountController,
-    required this.chooseExpense,
-    required this.choosedDate,
-    required this.chooseSubExpense,
-  });
-
-  final TextEditingController expenseTitleController;
-  final TextEditingController expenseDescripritionController;
-  final TextEditingController expenseAmountController;
-  final String chooseExpense;
-  final String chooseSubExpense;
-  final DateTime choosedDate;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      style: ButtonStyle(
-          fixedSize: MaterialStateProperty.all(
-            Size(double.maxFinite, 2.h),
-          ),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
-          backgroundColor: MaterialStateColor.resolveWith(
-              (states) => const Color.fromARGB(255, 221, 111, 111))),
-      onPressed: () {
-        if (expenseTitleController.text.isNotEmpty &&
-            expenseDescripritionController.text.isNotEmpty &&
-            expenseDescripritionController.text.isNotEmpty) {
-          var add = CreateExpenseModel(
-              name: expenseAmountController.text,
-              amount: double.parse(expenseAmountController.text),
-              expenseType: chooseExpense,
-              explain: expenseDescripritionController.text,
-              dateTime: choosedDate,
-              expenseSubList: chooseSubExpense);
-          ref.read(addExpenseProvider.notifier).state.addExpense(add, context);
-          expenseAmountController.clear();
-          expenseDescripritionController.clear();
-          expenseTitleController.clear();
-        } else {
-          SnackBar snackBar = SnackBar(
-            backgroundColor: AppColor.kDarkGreyColor,
-            content: Text(
-              'Enter All Field',
-              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
-            ),
-            showCloseIcon: true,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      },
-      child: Text(
-        'Create',
-        style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColor.kWhitColor,
-            fontWeight: FontWeight.bold),
       ),
     );
   }
