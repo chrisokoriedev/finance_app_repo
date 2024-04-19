@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final totalStateProvider = StateProvider((ref) => TotalNotifier());
 final totalProvider = StateProvider<Totals>((ref) => const Totals(0, 0, 0));
+
 class Totals {
   final double totalExpense;
   final double totalIncome;
@@ -102,17 +103,30 @@ class DeleteExpense {
 
   DeleteExpense(this.ref, this._firebaseAuth, this._firebaseFirestore);
 
-  Future<void> deleteExpense(var expenseIndex) async {
+  Future<void> deleteExpense(var expenseName) async {
     final firestoreInstance = _firebaseFirestore;
     final userId = _firebaseAuth.currentUser!.uid;
-    var data = firestoreInstance
-        .collection(AppString.expense)
-        .doc(userId)
-        .collection(AppString.userExpense)
-        .doc(expenseIndex);
+
     try {
-      await data.delete();
-      debugPrint('Document deleted successfully!');
+      QuerySnapshot querySnapshot = await firestoreInstance
+          .collection(AppString.expense)
+          .doc(userId)
+          .collection(AppString.userExpense)
+          .where('name', isEqualTo: expenseName)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        String documentId = querySnapshot.docs.first.id;
+        await firestoreInstance
+            .collection(AppString.expense)
+            .doc(userId)
+            .collection(AppString.userExpense)
+            .doc(documentId)
+            .delete();
+        ref.refresh(totalStateProvider);
+        ref.refresh(cloudItemsProvider);
+      } else {}
+      // await data.delete();
+      // debugPrint('Document deleted successfully!');
       ref.refresh(cloudItemsProvider.future);
       ref.refresh(totalStateProvider);
     } catch (e) {
