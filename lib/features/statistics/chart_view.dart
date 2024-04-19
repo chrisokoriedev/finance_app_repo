@@ -16,18 +16,13 @@ class ChartComponent extends HookConsumerWidget {
     final selectDatetime = ref.watch(selectedTabProvider);
     return itemProvider.when(
         data: (data) {
-          List<CreateExpenseModel> incomeData = data
-              .where((expense) => expense.expenseType == "Income")
-              .toList()
-            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+          List<CreateExpenseModel> incomeData =
+              data.where((expense) => expense.expenseType == "Income").toList();
           List<CreateExpenseModel> expenseData = data
               .where((expense) => expense.expenseType == "Expense")
-              .toList()
-            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-          List<CreateExpenseModel> debtData = data
-              .where((expense) => expense.expenseType == "Debt")
-              .toList()
-            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+              .toList();
+          List<CreateExpenseModel> debtData =
+              data.where((expense) => expense.expenseType == "Debt").toList();
           return SizedBox(
             width: double.infinity,
             height: 35.h,
@@ -82,7 +77,6 @@ class ChartComponent extends HookConsumerWidget {
                     _ => expense.dateTime.year.toString()
                   },
                   yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
-                  
                 ),
               ],
               annotations: const [],

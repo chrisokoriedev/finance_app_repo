@@ -4,6 +4,18 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'colors.dart';
 
+List<String> expenseListType = ['Expense', 'Income', 'Debt'];
+List<String> expenseSubListType = [
+  '..',
+  'Transportation',
+  'Housing',
+  'Food',
+  'Health Care',
+  'Education',
+  'Debt Payments',
+  'Clothing'
+];
+
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 
