@@ -25,62 +25,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //   return expenseList.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 // });
 
-// final cloudItemsProvider =
-//     FutureProvider<List<CreateExpenseModel>>((ref) async {
-//   final fireAuth =
-//       ref.watch(firebaseAuthProvider.select((value) => value.currentUser!.uid));
-//   final fireStore = ref.watch(fireStoreProvider);
-
-//   final cacheManager = DefaultCacheManager();
-
-//   FileInfo? fileInfo;
-//   try {
-//     fileInfo = await cacheManager.getFileFromCache(AppString.userExpense);
-//   } catch (e) {
-//     debugPrint('Error checking cache: $e');
-//   }
-
-//   if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
-//     try {
-//       final cachedData =
-//           await cacheManager.getFileFromCache(AppString.userExpense);
-//       final expenseList = List<CreateExpenseModel>.from(
-//           jsonDecode(cachedData as String)
-//               .map((x) => CreateExpenseModel.fromJson(x)));
-//       return expenseList.toList()
-//         ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-//     } catch (e) {
-//       debugPrint('Error reading cached data: $e');
-//     }
-//   }
-
-//   try {
-//     final querySnapshot = await fireStore
-//         .collection(AppString.expense)
-//         .doc(fireAuth)
-//         .collection(AppString.userExpense)
-//         .get();
-//     List<CreateExpenseModel> expenseList = [];
-//     for (var doc in querySnapshot.docs) {
-//       final data = doc.data();
-//       if (data.containsKey('expenseType')) {
-//         expenseList.add(CreateExpenseModel.fromJson(data));
-//       }
-//     }
-
-//     await cacheManager.putFile(
-//         AppString.userExpense, utf8.encode(jsonEncode(expenseList)));
-
-//     return expenseList.toList()
-//       ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-//   } catch (e) {
-//     debugPrint('Error fetching data from Firestore: $e');
-//     return [];
-//   }
-// });
-
-final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
-  final fireAuth = ref.watch(firebaseAuthProvider.select((value) => value.currentUser!.uid));
+final cloudItemsProvider =
+    FutureProvider<List<CreateExpenseModel>>((ref) async {
+  final fireAuth =
+      ref.watch(firebaseAuthProvider.select((value) => value.currentUser!.uid));
   final fireStore = ref.watch(fireStoreProvider);
   final cacheManager = DefaultCacheManager();
 
@@ -93,7 +41,8 @@ final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async 
 
   if (fileInfo != null) {
     try {
-      final cachedData = await cacheManager.getFileFromCache(AppString.userExpense);
+      final cachedData =
+          await cacheManager.getFileFromCache(AppString.userExpense);
       if (cachedData != null) {
         final List<dynamic> decodedData = jsonDecode(cachedData as String);
         final expenseList = decodedData.map((json) {
@@ -102,7 +51,8 @@ final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async 
           } else {
             throw const FormatException('Invalid JSON format');
           }
-        }).toList();
+        }).toList()
+          ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
         return expenseList;
       } else {
         throw const FormatException('Cached data is null');
@@ -127,13 +77,15 @@ final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async 
     }
 
     // Convert expenseList to List<Map<String, dynamic>> before caching
-    final encodedExpenseList = expenseList.map((model) => model.toJson()).toList();
-    await cacheManager.putFile(AppString.userExpense, utf8.encode(jsonEncode(encodedExpenseList)));
+    final encodedExpenseList =
+        expenseList.map((model) => model.toJson()).toList();
+    await cacheManager.putFile(
+        AppString.userExpense, utf8.encode(jsonEncode(encodedExpenseList)));
 
-    return expenseList.toList();
+    return expenseList.toList()
+      ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
   } catch (e) {
     debugPrint('Error fetching data from Firestore: $e');
-    return []; 
+    return [];
   }
 });
-

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dartz/dartz.dart';
 
@@ -39,8 +40,12 @@ class AuthDataSource {
 
   Future<Either<String, dynamic>> signOutGoogle() async {
     try {
+      final googleSignIn = GoogleSignIn();
+      final cacheManager = DefaultCacheManager();
       if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.signOut();
+        await cacheManager.emptyCache();
+        await googleSignIn.signOut();
         return right('Sign-out successful');
       } else {
         return left('Logout operation already performed');
