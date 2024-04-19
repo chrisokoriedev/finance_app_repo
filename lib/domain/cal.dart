@@ -1,6 +1,7 @@
 // ignore_for_file: unused_result, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
@@ -52,8 +53,7 @@ class AddExpenseNotifer {
   final FirebaseFirestore _firebaseFirestore;
   final Ref ref;
   AddExpenseNotifer(this.ref, this._firebaseAuth, this._firebaseFirestore);
-  Future<void> addExpense(
-      CreateExpenseModel expense, BuildContext context) async {
+  Future<Either<String, dynamic>> addExpense(CreateExpenseModel expense) async {
     try {
       final firestoreInstance = _firebaseFirestore;
       final userId = _firebaseAuth.currentUser!.uid;
@@ -71,11 +71,12 @@ class AddExpenseNotifer {
           'expenseSubList': expense.expenseSubList,
         });
       }
-      Navigator.pop(context);
       ref.refresh(totalStateProvider);
       ref.refresh(cloudItemsProvider);
+      return left('Expense Added');
     } catch (e) {
       debugPrint(e.toString());
+      return right(e);
     }
   }
 

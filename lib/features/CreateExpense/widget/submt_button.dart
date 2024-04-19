@@ -1,4 +1,4 @@
-import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/features/CreateExpense/notifer.dart/create_expense_notifer.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -46,7 +46,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
               explain: expenseDescripritionController.text,
               dateTime: choosedDate,
               expenseSubList: chooseSubExpense);
-          ref.read(addExpenseProvider.notifier).state.addExpense(add, context);
+          ref.read(createExpenseNotifierProvider.notifier).addExpense(add);
           expenseAmountController.clear();
           expenseDescripritionController.clear();
           expenseTitleController.clear();
