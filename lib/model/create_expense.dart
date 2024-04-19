@@ -1,5 +1,4 @@
 
-// @HiveType(typeId: 1)
 class CreateExpenseModel  {
   String name;
   double amount;

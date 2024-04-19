@@ -1,6 +1,7 @@
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ class MainControlComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedBottomTab);
+    ref.listen(cloudItemsProvider, (previous, next) { 
+      next.maybeWhen(
+        orElse: () => null,
+       
+      );
+    });
 
     final PageController pageCntrl = PageController(initialPage: selectedTab);
     pageCntrl.addListener(() {
