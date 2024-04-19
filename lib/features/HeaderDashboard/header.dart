@@ -27,7 +27,7 @@ class DashboardHeader extends ConsumerWidget {
 
     return cloud.when(
         data: (data) {
-        ref.read(totalStateProvider.notifier).state.calculateTotals(data);
+          ref.read(totalStateProvider.notifier).state.calculateTotals(data);
           return Stack(
             children: [
               Column(
@@ -120,6 +120,7 @@ class DashboardHeader extends ConsumerWidget {
                               style: TextStyle(
                                 color: AppColor.kWhitColor,
                                 fontSize: 15.sp,
+                                letterSpacing: 1.5,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -135,7 +136,7 @@ class DashboardHeader extends ConsumerWidget {
                           style: TextStyle(
                             color: AppColor.kWhitColor,
                             fontSize: 18.sp,
-                            letterSpacing: 1.6,
+                            letterSpacing: 1.7,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -144,29 +145,29 @@ class DashboardHeader extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _buildExpenseDashBoardComponent(
-                              'Income',
-                              LineIcon.arrowUp(
-                                size: 17.sp,
-                                color: AppColor.kGreenColor,
-                              ),
-                              '${totals.state.totalIncome}',
-                            ),
+                                'Income',
+                                LineIcon.arrowUp(
+                                  size: 17.sp,
+                                  color: AppColor.kWhitColor,
+                                ),
+                                '${totals.state.totalIncome}',
+                                AppColor.kGreenColor),
                             _buildExpenseDashBoardComponent(
-                              'Expense',
-                              LineIcon.arrowDown(
-                                size: 17.sp,
-                                color: AppColor.kredColor,
-                              ),
-                              '${totals.state.totalExpense}',
-                            ),
+                                'Expense',
+                                LineIcon.arrowDown(
+                                  size: 17.sp,
+                                  color: AppColor.kWhitColor,
+                                ),
+                                '${totals.state.totalExpense}',
+                                AppColor.kredColor),
                             _buildExpenseDashBoardComponent(
-                              'Debt',
-                              LineIcon.arrowRight(
-                                size: 17.sp,
-                                color: AppColor.kBlueColor,
-                              ),
-                              '${totals.state.totalDebt}',
-                            ),
+                                'Debt',
+                                LineIcon.arrowRight(
+                                  size: 17.sp,
+                                  color: AppColor.kWhitColor,
+                                ),
+                                '${totals.state.totalDebt}',
+                                AppColor.kBlueColor),
                           ],
                         ),
                       ],
@@ -195,11 +196,12 @@ class DashboardHeader extends ConsumerWidget {
   }
 
   Widget _buildExpenseDashBoardComponent(
-      String title, Widget icon, String amount) {
+      String title, Widget icon, String amount, Color dataColor) {
     return BuildExpenseDashBoardComponent(
       title: title,
       icon: icon,
       amount: amount,
+      dataColor: dataColor,
     );
   }
 }

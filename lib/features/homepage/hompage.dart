@@ -25,7 +25,7 @@ class HomePage extends ConsumerWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                        height: 45.h, child: DashboardHeader(pageCntrl)),
+                        height: 52.h, child: DashboardHeader(pageCntrl)),
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
