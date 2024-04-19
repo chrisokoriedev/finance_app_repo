@@ -36,13 +36,15 @@ class ChartComponent extends HookConsumerWidget {
                   width: 1.w,
                   dataSource: incomeData,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                  xValueMapper: (CreateExpenseModel expense, _) =>
-                      switch (selectDatetime) {
-                    0 => expense.dateTime.day.toString(),
-                    1 => expense.dateTime.weekday.toString(),
-                    2 => expense.dateTime.month.toString(),
-                    3 => expense.dateTime.year.toString(),
-                    _ => expense.dateTime.year.toString()
+                  xValueMapper: (CreateExpenseModel expense, _) {
+                    var exp=DateTime.parse(expense.dateTime);
+                    return switch (selectDatetime) {
+                    0 => exp.day.toString(),
+                    1 => exp.weekday.toString(),
+                    2 => exp.month.toString(),
+                    3 => exp.year.toString(),
+                    _ => exp.year.toString()
+                  };
                   },
                   yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
                 ),
@@ -51,14 +53,15 @@ class ChartComponent extends HookConsumerWidget {
                   color: AppColor.kredColor,
                   width: 1.w,
                   dataSource: expenseData,
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                  xValueMapper: (CreateExpenseModel expense, _) =>
-                      switch (selectDatetime) {
-                    0 => expense.dateTime.day.toString(),
-                    1 => expense.dateTime.weekday.toString(),
-                    2 => expense.dateTime.month.toString(),
-                    3 => expense.dateTime.year.toString(),
-                    _ => expense.dateTime.year.toString()
+                  xValueMapper: (CreateExpenseModel expense, _) {
+                    var exp=DateTime.parse(expense.dateTime);
+                    return switch (selectDatetime) {
+                    0 => exp.day.toString(),
+                    1 => exp.weekday.toString(),
+                    2 => exp.month.toString(),
+                    3 => exp.year.toString(),
+                    _ => exp.year.toString()
+                  };
                   },
                   yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
                 ),
@@ -68,13 +71,15 @@ class ChartComponent extends HookConsumerWidget {
                   width: 1.w,
                   dataSource: debtData,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                  xValueMapper: (CreateExpenseModel expense, _) =>
-                      switch (selectDatetime) {
-                    0 => expense.dateTime.day.toString(),
-                    1 => expense.dateTime.weekday.toString(),
-                    2 => expense.dateTime.month.toString(),
-                    3 => expense.dateTime.year.toString(),
-                    _ => expense.dateTime.year.toString()
+                  xValueMapper: (CreateExpenseModel expense, _) {
+                    var exp=DateTime.parse(expense.dateTime);
+                    return switch (selectDatetime) {
+                    0 => exp.day.toString(),
+                    1 => exp.weekday.toString(),
+                    2 => exp.month.toString(),
+                    3 => exp.year.toString(),
+                    _ => exp.year.toString()
+                  };
                   },
                   yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
                 ),

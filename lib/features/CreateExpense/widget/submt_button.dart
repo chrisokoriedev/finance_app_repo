@@ -44,7 +44,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
               amount: double.parse(expenseAmountController.text),
               expenseType: chooseExpense,
               explain: expenseDescripritionController.text,
-              dateTime: choosedDate,
+              dateTime: choosedDate.toString(),
               expenseSubList: chooseSubExpense);
           ref.read(addExpenseProvider.notifier).state.addExpense(add, context);
           expenseAmountController.clear();

@@ -14,9 +14,9 @@ import 'utils/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Hive.initFlutter();
-  Hive.registerAdapter(CreateExpenseModelAdapter());
-  await Hive.openBox<CreateExpenseModel>(AppString.hiveDb);
+  // await Hive.initFlutter();
+  // Hive.registerAdapter(CreateExpenseModelAdapter());
+  // await Hive.openBox<CreateExpenseModel>(AppString.hiveDb);
   runApp(
     const ProviderScope(
       child: MyApp(),

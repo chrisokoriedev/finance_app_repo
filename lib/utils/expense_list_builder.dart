@@ -128,7 +128,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
                   ),
                   showDateTIme
                       ? Text(
-                          timeago.format(history.dateTime),
+                          timeago.format(DateTime.parse(history.dateTime)),
                           style: TextStyle(
                               color: AppColor.kGreyColor.shade500,
                               fontSize: 12.sp,
