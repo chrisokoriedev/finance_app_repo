@@ -132,7 +132,7 @@ class DashboardHeader extends ConsumerWidget {
                         ),
                         Gap(0.3.h),
                         Text(
-                          "\$ ${totals.state.grandTotal}",
+                          "₦${totals.state.grandTotal}",
                           style: TextStyle(
                             color: AppColor.kWhitColor,
                             fontSize: 18.sp,
@@ -146,7 +146,7 @@ class DashboardHeader extends ConsumerWidget {
                           children: [
                             _buildExpenseDashBoardComponent(
                                 'Income',
-                                LineIcon.arrowUp(
+                                LineIcon.lineChart(
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),
@@ -154,7 +154,7 @@ class DashboardHeader extends ConsumerWidget {
                                 AppColor.kGreenColor),
                             _buildExpenseDashBoardComponent(
                                 'Expense',
-                                LineIcon.arrowDown(
+                                LineIcon.barChartAlt(
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),
@@ -162,7 +162,7 @@ class DashboardHeader extends ConsumerWidget {
                                 AppColor.kredColor),
                             _buildExpenseDashBoardComponent(
                                 'Debt',
-                                LineIcon.arrowRight(
+                                LineIcon.areaChart(
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),

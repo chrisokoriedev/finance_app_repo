@@ -62,15 +62,7 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.sp), color: dataColor),
               child: icon),
-          Gap(2.w),
-          Text(
-            title,
-            style: TextStyle(
-                color: AppColor.kWhitColor,
-                fontSize: 13.sp,
-                letterSpacing: 1.6,
-                fontWeight: FontWeight.w300),
-          ),
+          Gap(2.h),
           Text(
             '₦$amount',
             style: TextStyle(
@@ -78,7 +70,16 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
                 fontSize: 15.sp,
                 letterSpacing: 1.6,
                 fontWeight: FontWeight.w600),
-          )
+          ),
+          Gap(9.sp),
+          Text(
+            title,
+            style: TextStyle(
+                color: dataColor.withOpacity(0.6),
+                fontSize: 13.sp,
+                letterSpacing: 1.6,
+                fontWeight: FontWeight.w300),
+          ),
         ],
       ),
     );
