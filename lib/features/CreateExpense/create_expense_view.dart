@@ -1,10 +1,14 @@
+import 'package:expense_app/features/CreateExpense/notifer.dart/create_expense_notifer.dart';
+import 'package:expense_app/state/local.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -29,6 +33,19 @@ class CreateExpenseView extends ConsumerWidget {
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
+    final authState = ref.watch(createExpenseNotifierProvider);
+    ref.listen(createExpenseNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        success: (message) async {
+          EasyLoading.showSuccess(message!);
+          context.pop();
+        },
+        failed: (message) {
+          EasyLoading.showError(message!);
+        },
+      );
+    });
     return Scaffold(
       body: Stack(
         children: [
@@ -119,28 +136,11 @@ class CreateExpenseView extends ConsumerWidget {
                     ),
                     Gap(2.5.h),
                     CustomTextFormField(
-                      textEditingController: expenseAmountController,
-                      hintText: 'Amount',
-                      textInputType: TextInputType.number,
-                      maxLine: 1,
-                      maxlength: 10,
-                      onChanged: (value) {
-                        final numericValue =
-                            int.tryParse(value.replaceAll(',', ''));
-                        if (numericValue != null) {
-                          final formattedValue = NumberFormat.decimalPattern()
-                              .format(numericValue);
-                          if (value != formattedValue) {
-                            expenseAmountController.value =
-                                expenseAmountController.value.copyWith(
-                              text: formattedValue,
-                              selection: TextSelection.collapsed(
-                                  offset: formattedValue.length),
-                            );
-                          }
-                        }
-                      },
-                    ),
+                        textEditingController: expenseAmountController,
+                        hintText: 'Amount',
+                        textInputType: TextInputType.number,
+                        maxLine: 1,
+                        maxlength: 10),
                     Gap(2.5.h),
                     CustomTextFormField(
                       textEditingController: expenseDescripritionController,
@@ -194,6 +194,8 @@ class CreateExpenseView extends ConsumerWidget {
               ),
             ),
           ),
+          if (authState == const AppStateManager.loading())
+            const LoadingWidget(),
         ],
       ),
     );

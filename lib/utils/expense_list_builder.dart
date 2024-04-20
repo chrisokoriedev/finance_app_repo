@@ -1,4 +1,5 @@
 import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';
@@ -74,23 +75,35 @@ class ExpenseListBuilder extends HookConsumerWidget {
                     style: TextStyle(
                         color: AppColor.kBlackColor,
                         fontSize: 16.sp,
+                        letterSpacing: 1.3,
                         fontWeight: FontWeight.w600),
                   ),
                   content: Text(
                     'Are you sure you want to delete this item?',
                     style: TextStyle(
                         color: AppColor.kDarkGreyColor,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500),
+                        fontSize: 16.sp,
+                        letterSpacing: 1.3,
+                        fontWeight: FontWeight.w600),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel'),
+                      child: Text('Cancel',
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600)),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Delete'),
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),
@@ -98,7 +111,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
               return confirm;
             },
             onDismissed: (direction) {
-              String expenseName = data[index].name;
+              String expenseName = history.name;
               ref
                   .read(deleteExpenseProvider.notifier)
                   .state

@@ -15,9 +15,14 @@ class SettingAndSupport extends StatelessWidget {
       child: const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text("Under Development this is a demo"),
           CustomButton(
             title: 'Biometrie',
             icons: LineIcons.fingerprint,
+          ),
+          CustomButton(
+            title: 'Light Mode',
+            icons: LineIcons.lightbulb,
           ),
           CustomButton(
             title: 'Email us',

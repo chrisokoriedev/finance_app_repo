@@ -1,19 +1,10 @@
-import 'package:hive/hive.dart';
-part 'create_expense.g.dart';
 
-@HiveType(typeId: 1)
-class CreateExpenseModel extends HiveObject {
-  @HiveField(0)
+class CreateExpenseModel  {
   String name;
-  @HiveField(1)
   double amount;
-  @HiveField(2)
   String expenseType;
-  @HiveField(3)
   String explain;
-  @HiveField(4)
   DateTime dateTime;
-  @HiveField(5)
   String expenseSubList;
   CreateExpenseModel(
       {required this.name,

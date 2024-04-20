@@ -16,6 +16,7 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:expense_app/utils/string_app.dart';
 
 import 'bottomsheet/setting_and_support.dart';
 
@@ -115,9 +116,8 @@ class ProfileScreen extends HookConsumerWidget {
                       children: [
                         CustomButton(
                           icons: LineIcons.barChart,
-                          title: 'View Saved Data',
-                          press: () => showModalBottomSheet(
-                              context: context, builder: (_) => Container()),
+                          title: AppString.viewTimeline,
+                          press: () => context.push(AppRouter.viewAllExpenses),
                         ),
                         CustomButton(
                           icons: LineIcons.phoenixFramework,
@@ -130,13 +130,15 @@ class ProfileScreen extends HookConsumerWidget {
                           icons: LineIcons.userCircle,
                           title: 'About us',
                           press: () => showModalBottomSheet(
-                              context: context, builder: (_) => Container()),
+                              context: context,
+                              builder: (_) => const CommingSoon()),
                         ),
                         CustomButton(
                           icons: LineIcons.bookReader,
                           title: 'Terms & Condition',
                           press: () => showModalBottomSheet(
-                              context: context, builder: (_) => Container()),
+                              context: context,
+                              builder: (_) => const CommingSoon()),
                         ),
                         CustomButton(
                             icons: LineIcons.doorClosed,
@@ -154,6 +156,26 @@ class ProfileScreen extends HookConsumerWidget {
         if (authState == const AuthenticationState.loading())
           const LoadingWidget(),
       ],
+    );
+  }
+}
+
+class CommingSoon extends StatelessWidget {
+  const CommingSoon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 20.h,
+      child: Center(
+          child: Text(
+        'Comming soon',
+        style: TextStyle(
+            fontSize: 20.sp, fontWeight: FontWeight.w600, letterSpacing: 1.4),
+      )),
     );
   }
 }

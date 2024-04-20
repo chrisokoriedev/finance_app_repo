@@ -31,10 +31,11 @@ class TransactionListView extends HookConsumerWidget {
         skipLoadingOnReload: true,
         data: (data) {
           List<CreateExpenseModel> expenseData = data
-              .where((expense) =>
-                  expense.dateTime.year == selectedDay.year &&
+              .where((expense) {
+                return expense.dateTime.year == selectedDay.year &&
                   expense.dateTime.month == selectedDay.month &&
-                  expense.dateTime.day == selectedDay.day)
+                  expense.dateTime.day == selectedDay.day;
+              })
               .toList();
 
           return Container(

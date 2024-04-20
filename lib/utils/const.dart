@@ -23,49 +23,63 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
   final String title;
   final Widget icon;
   final String amount;
+  final Color dataColor;
 
   const BuildExpenseDashBoardComponent({
     super.key,
     required this.title,
     required this.icon,
     required this.amount,
+    required this.dataColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 22.w,
+    return Container(
+      width: 25.w,
+      height: 15.h,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(
+        horizontal: 15.sp,
+      ),
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 48, 47, 47).withOpacity(0.8),
+          borderRadius: BorderRadius.circular(10.sp),
+          boxShadow: [
+            BoxShadow(
+                color: AppColor.kBlackColor.withOpacity(0.3),
+                blurRadius: 12.sp,
+                spreadRadius: 4.sp,
+                offset: const Offset(0, 6))
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                  radius: 13.sp,
-                  backgroundColor: AppColor.kWhitColor,
-                  child: icon),
-              Gap(2.w),
-              Text(
-                title,
-                style: TextStyle(
-                    color: AppColor.kWhitColor,
-                    fontSize: 13.sp,
-                    letterSpacing: 1.6,
-                    fontWeight: FontWeight.w300),
-              )
-            ],
+          Container(
+              width: 10.w,
+              height: 5.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.sp), color: dataColor),
+              child: icon),
+          Gap(2.h),
+          Text(
+            '₦$amount',
+            style: TextStyle(
+                color: AppColor.kWhitColor,
+                fontSize: 15.sp,
+                letterSpacing: 1.6,
+                fontWeight: FontWeight.w600),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 21.sp),
-            child: Text(
-              '\$ $amount',
-              style: TextStyle(
-                  color: AppColor.kWhitColor,
-                  fontSize: 15.sp,
-                  letterSpacing: 1.6,
-                  fontWeight: FontWeight.w600),
-            ),
-          )
+          Gap(9.sp),
+          Text(
+            title,
+            style: TextStyle(
+                color: dataColor.withOpacity(0.6),
+                fontSize: 13.sp,
+                letterSpacing: 1.6,
+                fontWeight: FontWeight.w300),
+          ),
         ],
       ),
     );
