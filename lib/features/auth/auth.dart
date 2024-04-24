@@ -1,4 +1,4 @@
-import 'package:expense_app/features/auth/notifer/auth_notifer.dart';
+import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';

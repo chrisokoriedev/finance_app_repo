@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/provider/item_provider.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +13,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthDataSource {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
+
   final Ref ref;
 
-  AuthDataSource(this._firebaseAuth, this.ref);
+  AuthDataSource(this._firebaseAuth, this.ref, this._firebaseFirestore);
 
   Future<Either<String, User>> continueWithGoogle() async {
     try {
@@ -58,4 +64,25 @@ class AuthDataSource {
       return left(e.message);
     }
   }
+
+  Future<Either<String, dynamic>> deleteUserAccount() async {
+    try {
+      final googleSignIn = GoogleSignIn();
+      if (_firebaseAuth.currentUser != null) {
+        await _firebaseAuth.currentUser!.delete();
+        await googleSignIn.disconnect();
+        return right('User account deleted');
+      } else {
+        return left('Something went wrong');
+      }
+    } on FirebaseAuthException catch (e) {
+      return left(e.message ?? 'Unknow Error');
+    } on PlatformException catch (e) {
+      return left(e.message ?? 'sign_out_failed');
+    } on SocketException catch (e) {
+      return left(e.message);
+    }
+  }
+
+ 
 }

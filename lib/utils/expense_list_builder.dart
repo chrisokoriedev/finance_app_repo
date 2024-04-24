@@ -1,5 +1,4 @@
 import 'package:expense_app/domain/cal.dart';
-import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:flutter/material.dart';

@@ -27,6 +27,18 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
       (response) => AuthenticationState.success(success: response),
     );
   }
+
+  ///method to delete user account on google firebase
+  Future<void> deleteUserAccount() async {
+    state = const AuthenticationState.loading();
+    final response = await _dataSource.deleteUserAccount();
+    state = response.fold(
+      (error) => AuthenticationState.failed(failed: error),
+      (response) => AuthenticationState.success(success: response),
+    );
+  }
+
+ 
 }
 
 final authNotifierProvider =
