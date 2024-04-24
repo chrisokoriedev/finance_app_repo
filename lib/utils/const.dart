@@ -65,7 +65,10 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
           Gap(2.h),
           Text(
             '₦$amount',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
+
                 color: AppColor.kWhitColor,
                 fontSize: 15.sp,
                 letterSpacing: 1.6,

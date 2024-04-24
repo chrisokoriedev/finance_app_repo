@@ -3,6 +3,7 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -11,10 +12,10 @@ import 'utils/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // await Hive.initFlutter();
-  // Hive.registerAdapter(CreateExpenseModelAdapter());
-  // await Hive.openBox<CreateExpenseModel>(AppString.hiveDb);
   runApp(
     const ProviderScope(
       child: MyApp(),
