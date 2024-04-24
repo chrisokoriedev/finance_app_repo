@@ -2,6 +2,7 @@ import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingAndSupport extends StatelessWidget {
   const SettingAndSupport({
@@ -27,10 +28,12 @@ class SettingAndSupport extends StatelessWidget {
           CustomButton(
             title: 'Email us',
             icons: LineIcons.facebookMessenger,
+            press: launchEmail,
           ),
           CustomButton(
             title: 'Donate to us',
             icons: LineIcons.gift,
+            press: launchDonation,
           ),
           CustomButton(
             title: 'Clear all data',
@@ -46,3 +49,22 @@ class SettingAndSupport extends StatelessWidget {
     );
   }
 }
+
+launchEmail() async {
+  const email = 'okoriec01@gmail.com';
+  const subject = 'App Feedback';
+  const body = 'Type here...';
+
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: email,
+    queryParameters: {
+      'subject': subject,
+      'body': body,
+    },
+  );
+  await launchUrl(emailLaunchUri);
+}
+
+launchDonation() async =>
+    await launchUrl(Uri.parse('https://justpaga.me/ChrisIuil'));
