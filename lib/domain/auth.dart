@@ -58,4 +58,23 @@ class AuthDataSource {
       return left(e.message);
     }
   }
+
+  Future<Either<String, dynamic>> deleteUserAccount() async {
+    try {
+      final googleSignIn = GoogleSignIn();
+      if (_firebaseAuth.currentUser != null) {
+        await _firebaseAuth.currentUser!.delete();
+        await googleSignIn.disconnect();
+        return right('Sign-out successful');
+      } else {
+        return left('Logout operation already performed');
+      }
+    } on FirebaseAuthException catch (e) {
+      return left(e.message ?? 'Unknow Error');
+    } on PlatformException catch (e) {
+      return left(e.message ?? 'sign_out_failed');
+    } on SocketException catch (e) {
+      return left(e.message);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import 'package:expense_app/features/auth/notifer/auth_notifer.dart';
+import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';

@@ -1,45 +1,66 @@
 import 'package:expense_app/features/Porfile/profile.dart';
+import 'package:expense_app/notifer/auth_notifer.dart';
+import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingAndSupport extends StatelessWidget {
+class SettingAndSupport extends HookConsumerWidget {
   const SettingAndSupport({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
+    ref.listen(authNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        authenticated: (user) async {
+          EasyLoading.showSuccess('User Account Deleted');
+          context.pushReplacement(AppRouter.authScreen);
+        },
+        unauthenticated: (message) {
+          EasyLoading.showError(message!);
+        },
+      );
+    });
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 20.sp),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Under Development this is a demo"),
           CustomButton(
             title: 'Biometrie',
             icons: LineIcons.fingerprint,
+            press: () => showModalBottomSheet(
+                context: context, builder: (_) => const CommingSoon()),
           ),
           CustomButton(
             title: 'Light Mode',
             icons: LineIcons.lightbulb,
+            press: () => showModalBottomSheet(
+                context: context, builder: (_) => const CommingSoon()),
           ),
-          CustomButton(
+          const CustomButton(
             title: 'Email us',
             icons: LineIcons.facebookMessenger,
             press: launchEmail,
           ),
-          CustomButton(
+          const CustomButton(
             title: 'Donate to us',
             icons: LineIcons.gift,
             press: launchDonation,
           ),
-          CustomButton(
+          const CustomButton(
             title: 'Clear all data',
             icons: LineIcons.userInjured,
           ),
-          CustomButton(
+          const CustomButton(
             title: 'Delete Account',
             icons: LineIcons.userInjured,
             margin: 0,
