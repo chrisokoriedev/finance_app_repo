@@ -79,19 +79,29 @@ class AddExpenseNotifer {
       return right(e);
     }
   }
-
-  // Future<void> editExpense(
-  //     CreateExpenseModel expense, BuildContext context) async {
-  //   try {
-  //     final box = await ref.watch(itemBoxProvider.future);
-  //     await box.add(expense);
-  //     Navigator.pop(context);
-  //     ref.refresh(totalProviderFuture);
-  //     ref.refresh(itemBoxProvider);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
+  Future<Either<String, dynamic>> deleteDataStore() async {
+    final firestoreInstance = _firebaseFirestore;
+    try {
+      if (_firebaseAuth.currentUser != null) {
+        await firestoreInstance
+            .collection(AppString.expense)
+            .doc(_firebaseAuth.currentUser!.uid)
+            .collection(AppString.userExpense)
+            .get()
+            .then((snapshot) {
+          for (DocumentSnapshot doc in snapshot.docs) {
+            doc.reference.delete();
+          }
+        });
+      }
+      ref.refresh(cloudItemsProvider.future);
+      ref.refresh(totalStateProvider.notifier).state;
+      return right('Data store deleted successfully');
+    } catch (e) {
+      debugPrint(e.toString());
+      return left(e.toString());
+    }
+  }
 }
 
 final deleteExpenseProvider = StateProvider((ref) => DeleteExpense(
@@ -130,4 +140,6 @@ class DeleteExpense {
       debugPrint(e.toString());
     }
   }
+
+
 }

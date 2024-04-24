@@ -17,6 +17,16 @@ class CreateExpenseNotifier extends StateNotifier<AppStateManager> {
       (error) => AppStateManager.failed(failed: error),
     );
   }
+
+  ///method to delete user record on google firestore
+  Future<void> deleteUserRecord() async {
+    state = const AppStateManager.loading();
+    final response = await _dataSource.deleteDataStore();
+    state = response.fold(
+      (error) => AppStateManager.failed(failed: error),
+      (response) => AppStateManager.success(success: response),
+    );
+  }
 }
 
 final createExpenseNotifierProvider =

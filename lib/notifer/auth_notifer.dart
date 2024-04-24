@@ -37,6 +37,8 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
       (response) => AuthenticationState.success(success: response),
     );
   }
+
+ 
 }
 
 final authNotifierProvider =

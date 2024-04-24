@@ -1,5 +1,6 @@
 import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:expense_app/notifer/auth_notifer.dart';
+import 'package:expense_app/notifer/create_expense_notifer.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -34,6 +35,18 @@ class SettingAndSupport extends HookConsumerWidget {
         },
       );
     });
+    ref.listen(createExpenseNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        success: (message) async {
+          EasyLoading.showSuccess(message!);
+          context.pop();
+        },
+        failed: (message) {
+          EasyLoading.showError(message!);
+        },
+      );
+    });
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 20.sp),
       child: Column(
@@ -61,9 +74,14 @@ class SettingAndSupport extends HookConsumerWidget {
             icons: LineIcons.gift,
             press: launchDonation,
           ),
-          const CustomButton(
+          CustomButton(
             title: 'Clear all data',
             icons: LineIcons.userInjured,
+            press: () {
+              ref
+                  .read(createExpenseNotifierProvider.notifier)
+                  .deleteUserRecord();
+            },
           ),
           CustomButton(
             title: 'Delete Account',
@@ -121,12 +139,12 @@ class DeleteUserAccount extends HookConsumerWidget {
                           : AppColor.kredColor.shade300)),
               onPressed: emailValidation
                   ? () {
-                    context.pop();
-                    context.pop();
-                    ref
-                      .read(authNotifierProvider.notifier)
-                      .deleteUserAccount();
-                  }
+                      context.pop();
+                      context.pop();
+                      ref
+                          .read(authNotifierProvider.notifier)
+                          .deleteUserAccount();
+                    }
                   : null,
               child: Text('Delete Account',
                   style:

@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/provider/item_provider.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +13,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthDataSource {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
+
   final Ref ref;
 
-  AuthDataSource(this._firebaseAuth, this.ref);
+  AuthDataSource(this._firebaseAuth, this.ref, this._firebaseFirestore);
 
   Future<Either<String, User>> continueWithGoogle() async {
     try {
@@ -77,4 +83,6 @@ class AuthDataSource {
       return left(e.message);
     }
   }
+
+ 
 }
