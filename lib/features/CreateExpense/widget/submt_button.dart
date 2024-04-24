@@ -34,9 +34,21 @@ class BuildCreateDataComponent extends ConsumerWidget {
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
           backgroundColor: MaterialStateColor.resolveWith(
-              (states) => const Color.fromARGB(255, 221, 111, 111))),
+              (states) => const Color.fromARGB(255, 36, 35, 35))),
       onPressed: () {
-        if (expenseTitleController.text.isNotEmpty &&
+        if (chooseExpense == 'Expense' && chooseSubExpense == '..') {
+          SnackBar snackBar = SnackBar(
+            backgroundColor: AppColor.kDarkGreyColor,
+            content: Text(
+              'Choose expense type',
+              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
+            ),
+            showCloseIcon: true,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+       else{
+         if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
           var add = CreateExpenseModel(
@@ -50,17 +62,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
           expenseAmountController.clear();
           expenseDescripritionController.clear();
           expenseTitleController.clear();
-        } else if (chooseExpense == 'Expense' && chooseSubExpense == '..') {
-          SnackBar snackBar = SnackBar(
-            backgroundColor: AppColor.kDarkGreyColor,
-            content: Text(
-              'Choose expense type',
-              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
-            ),
-            showCloseIcon: true,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        } else {
+        }  else {
           SnackBar snackBar = SnackBar(
             backgroundColor: AppColor.kDarkGreyColor,
             content: Text(
@@ -71,6 +73,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
+       }
       },
       child: Text(
         'Create',

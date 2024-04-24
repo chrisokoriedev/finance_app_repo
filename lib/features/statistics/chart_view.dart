@@ -14,15 +14,18 @@ class ChartComponent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final itemProvider = ref.watch(cloudItemsProvider);
     final selectDatetime = ref.watch(selectedTabProvider);
+    final expenseType = ref.watch(expenseItemTypeProvider);
+
     return itemProvider.when(
       data: (dataExpense) {
-       
+        List<CreateExpenseModel> data = dataExpense
+          ..sort((a, b) => a.dateTime.compareTo(b.dateTime));
         List<CreateExpenseModel> incomeData =
-            dataExpense.where((expense) => expense.expenseType == "Income").toList();
+            data.where((expense) => expense.expenseType == "Income").toList();
         List<CreateExpenseModel> expenseData =
-            dataExpense.where((expense) => expense.expenseType == "Expense").toList();
+            data.where((expense) => expense.expenseType == "Expense").toList();
         List<CreateExpenseModel> debtData =
-            dataExpense.where((expense) => expense.expenseType == "Debt").toList();
+            data.where((expense) => expense.expenseType == "Debt").toList();
         return SizedBox(
           width: double.infinity,
           height: 35.h,
@@ -30,9 +33,19 @@ class ChartComponent extends HookConsumerWidget {
             primaryXAxis: CategoryAxis(),
             series: <SplineSeries<CreateExpenseModel, String>>[
               SplineSeries(
-                color: AppColor.kGreenColor,
+                color: switch (expenseType) {
+                  'Income' => AppColor.kGreenColor,
+                  'Expense' => AppColor.kredColor,
+                  'Debt' => AppColor.kBlueColor,
+                  _ => AppColor.kBlackColor,
+                },
                 width: 1.w,
-                dataSource: incomeData,
+                dataSource: switch (expenseType) {
+                  'Income' => incomeData,
+                  'Expense' => expenseData,
+                  'Debt' => debtData,
+                  _ => data,
+                },
                 dataLabelSettings: const DataLabelSettings(isVisible: true),
                 xValueMapper: (CreateExpenseModel expense, _) =>
                     switch (selectDatetime) {
@@ -43,28 +56,6 @@ class ChartComponent extends HookConsumerWidget {
                   _ => expense.dateTime.year.toString()
                 },
                 yValueMapper: (CreateExpenseModel sales, _) => sales.amount,
-              ),
-              SplineSeries(
-                color: AppColor.kredColor,
-                width: 1.w,
-                dataSource: [...expenseData, ...debtData],
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-                xValueMapper: (CreateExpenseModel expense, _) =>
-                    switch (selectDatetime) {
-                  0 => expense.dateTime.day.toString(),
-                  1 => expense.dateTime.weekday.toString(),
-                  2 => expense.dateTime.month.toString(),
-                  3 => expense.dateTime.year.toString(),
-                  _ => expense.dateTime.year.toString()
-                },
-                yValueMapper: (CreateExpenseModel sales, _) {
-                  if (sales.expenseType == 'Expense') {
-                    return sales.amount;
-                  } else if (sales.expenseType == 'Debt') {
-                    return sales.amount;
-                  }
-                  return sales.amount;
-                },
               ),
             ],
           ),
