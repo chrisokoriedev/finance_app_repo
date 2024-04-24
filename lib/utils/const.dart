@@ -90,19 +90,19 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController textEditingController;
+  final TextEditingController? textEditingController;
   final String hintText;
   final TextInputType textInputType;
   final int maxLine;
-  final int maxlength;
+  final int? maxlength;
   final Function(String)? onChanged;
   const CustomTextFormField({
     super.key,
-    required this.textEditingController,
+     this.textEditingController,
     required this.hintText,
     required this.textInputType,
     required this.maxLine,
-    required this.maxlength,
+     this.maxlength,
     this.onChanged,
   });
 

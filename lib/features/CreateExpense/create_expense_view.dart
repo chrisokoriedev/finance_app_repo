@@ -51,7 +51,7 @@ class CreateExpenseView extends ConsumerWidget {
           'Create data',
           style: TextStyle(
             fontSize: 17.sp,
-            color: AppColor.kWhitColor,
+            color: AppColor.kBlackColor,
             fontWeight: FontWeight.w700,
           ),
         ),

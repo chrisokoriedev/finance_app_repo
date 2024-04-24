@@ -65,9 +65,9 @@ class AuthDataSource {
       if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.currentUser!.delete();
         await googleSignIn.disconnect();
-        return right('Sign-out successful');
+        return right('User account deleted');
       } else {
-        return left('Logout operation already performed');
+        return left('Something went wrong');
       }
     } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Unknow Error');
