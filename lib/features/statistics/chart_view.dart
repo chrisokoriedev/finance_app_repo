@@ -16,14 +16,13 @@ class ChartComponent extends HookConsumerWidget {
     final selectDatetime = ref.watch(selectedTabProvider);
     return itemProvider.when(
       data: (dataExpense) {
-        List<CreateExpenseModel> data = dataExpense
-          ..sort(a,b)..remove(true);
+       
         List<CreateExpenseModel> incomeData =
-            data.where((expense) => expense.expenseType == "Income").toList();
+            dataExpense.where((expense) => expense.expenseType == "Income").toList();
         List<CreateExpenseModel> expenseData =
-            data.where((expense) => expense.expenseType == "Expense").toList();
+            dataExpense.where((expense) => expense.expenseType == "Expense").toList();
         List<CreateExpenseModel> debtData =
-            data.where((expense) => expense.expenseType == "Debt").toList();
+            dataExpense.where((expense) => expense.expenseType == "Debt").toList();
         return SizedBox(
           width: double.infinity,
           height: 35.h,
