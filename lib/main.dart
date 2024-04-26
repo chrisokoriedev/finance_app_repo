@@ -1,4 +1,3 @@
-import 'package:expense_app/domain/theme.dart';
 import 'package:expense_app/firebase_options.dart';
 import 'package:expense_app/provider/theme.dart';
 import 'package:expense_app/utils/string_app.dart';
@@ -17,7 +16,6 @@ import 'utils/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

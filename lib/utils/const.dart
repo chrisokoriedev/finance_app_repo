@@ -35,6 +35,8 @@ launchEmail() async {
 
 launchDonation() async =>
     await launchUrl(Uri.parse('https://justpaga.me/ChrisIuil'));
+launchPortFolio() async =>
+    await launchUrl(Uri.parse('http://chrisdevokorie.unaux.com/'));
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 

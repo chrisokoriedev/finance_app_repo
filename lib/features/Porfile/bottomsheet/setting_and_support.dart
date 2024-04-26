@@ -90,7 +90,7 @@ class SettingAndSupport extends HookConsumerWidget {
                       }
                     })),
             CustomButton(
-                title: themeState ? 'Dark Mode' : 'Light Mode',
+                title: themeState ? 'Light Mode' : 'Dark Mode',
                 icons: LineIcons.lightbulb,
                 showLastWidget: true,
                 lastWidget: CustomSwitch(

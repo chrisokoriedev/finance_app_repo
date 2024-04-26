@@ -4,6 +4,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/user_avatar.dart';
@@ -127,12 +128,9 @@ class ProfileScreen extends HookConsumerWidget {
                               builder: (_) => const SettingAndSupport()),
                         ),
                         CustomButton(
-                          icons: LineIcons.userCircle,
-                          title: 'About us',
-                          press: () => showModalBottomSheet(
-                              context: context,
-                              builder: (_) => const CommingSoon()),
-                        ),
+                            icons: LineIcons.userCircle,
+                            title: 'About us',
+                            press: () => launchPortFolio()),
                         CustomButton(
                           icons: LineIcons.bookReader,
                           title: 'Terms & Condition',
