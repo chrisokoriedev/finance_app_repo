@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -187,4 +188,14 @@ class NoDataView extends StatelessWidget {
       ),
     );
   }
+}
+
+String getUserName() {
+  String lastName = '';
+  var userDetails = FirebaseAuth.instance.currentUser;
+  if (userDetails != null && userDetails.displayName != null) {
+    List<String> nameParts = userDetails.displayName!.split(' ');
+    lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+  }
+  return lastName;
 }

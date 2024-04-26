@@ -61,7 +61,7 @@ class DashboardHeader extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  'Christian Okorie',
+                                  getUserName(),
                                   style: TextStyle(
                                     color: AppColor.kWhitColor,
                                     fontSize: 17.sp,
