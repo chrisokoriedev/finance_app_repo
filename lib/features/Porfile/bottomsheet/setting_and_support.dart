@@ -157,7 +157,7 @@ class DeleteUserAccount extends HookConsumerWidget {
 
 launchEmail() async {
   const email = 'okoriec01@gmail.com';
-  const subject = 'App Feedback';
+  const subject = "App Feedback";
   const body = 'Type here...';
 
   final Uri emailLaunchUri = Uri(

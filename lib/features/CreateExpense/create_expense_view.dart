@@ -65,7 +65,7 @@ class CreateExpenseView extends ConsumerWidget {
               children: [
                 Container(
                   width: 80.w,
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                   decoration: BoxDecoration(
                       color: AppColor.kWhitColor,
                       borderRadius: BorderRadius.circular(10.sp),
