@@ -1,6 +1,7 @@
 class AppString {
   static const String hiveDb = 'data';
   static const String bioAuth = 'bioAuth';
+  static const String theme = 'themeColor';
   static const String expense = 'expenses';
   static const String userExpense = 'user_expenses';
   static const String appName = 'Nora';

@@ -4,17 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError(); // Implement this provider in your setup
-});
-
+final sharedPreferencesProvider =
+    Provider<SharedPreferences>((ref) => throw UnimplementedError());
+final localAuthProvider =
+    Provider<LocalAuthentication>((ref) => LocalAuthentication());
 final biometricAuthStateProvider = StateProvider<bool>((ref) {
   final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return sharedPreferences.getBool(AppString.bioAuth) ?? false;
 });
-
-final localAuthProvider =
-    Provider<LocalAuthentication>((ref) => LocalAuthentication());
 
 final bioAuthDataSourceProvider = Provider<BiometricAuthDataSource>(
   (ref) => BiometricAuthDataSource(ref.read(localAuthProvider), ref),

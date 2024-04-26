@@ -1,4 +1,5 @@
 import 'package:expense_app/domain/local_auth.dart';
+import 'package:expense_app/provider/local_auth.dart';
 import 'package:expense_app/state/local_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -23,4 +24,20 @@ class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
       (response) => const LocalAuthState.success(success: true),
     );
   }
+
+  Future loginBioWithLocalAuth() async {
+    state = const LocalAuthState.loading();
+    final response = await _bioAuth.loginWithBiometrics();
+    state = response.fold(
+      (failed) => const LocalAuthState.failed(failed: false),
+      (response) => const LocalAuthState.success(success: true),
+    );
+  }
 }
+
+final bioAuthNotifierProvider =
+    StateNotifierProvider<BiometricAuthNotifier, LocalAuthState>(
+  (ref) => BiometricAuthNotifier(
+    ref.read(bioAuthDataSourceProvider),
+  ),
+);
