@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'colors.dart';
 
@@ -16,6 +18,26 @@ List<String> expenseSubListType = [
   'Clothing'
 ];
 
+launchEmail() async {
+  const email = 'okoriec01@gmail.com';
+  const subject = "App Feedback";
+  const body = 'Type here...';
+
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: email,
+    queryParameters: {
+      'subject': subject,
+      'body': body,
+    },
+  );
+  await launchUrl(emailLaunchUri);
+}
+
+launchDonation() async =>
+    await launchUrl(Uri.parse('https://justpaga.me/ChrisIuil'));
+launchPortFolio() async =>
+    await launchUrl(Uri.parse('http://chrisdevokorie.unaux.com/'));
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 
@@ -68,7 +90,6 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-
                 color: AppColor.kWhitColor,
                 fontSize: 15.sp,
                 letterSpacing: 1.6,
@@ -98,11 +119,11 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   const CustomTextFormField({
     super.key,
-     this.textEditingController,
+    this.textEditingController,
     required this.hintText,
     required this.textInputType,
     required this.maxLine,
-     this.maxlength,
+    this.maxlength,
     this.onChanged,
   });
 
@@ -167,4 +188,14 @@ class NoDataView extends StatelessWidget {
       ),
     );
   }
+}
+
+String getUserName() {
+  String lastName = '';
+  var userDetails = FirebaseAuth.instance.currentUser;
+  if (userDetails != null && userDetails.displayName != null) {
+    List<String> nameParts = userDetails.displayName!.split(' ');
+    lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+  }
+  return lastName;
 }

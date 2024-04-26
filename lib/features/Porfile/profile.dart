@@ -4,6 +4,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/user_avatar.dart';
@@ -127,12 +128,9 @@ class ProfileScreen extends HookConsumerWidget {
                               builder: (_) => const SettingAndSupport()),
                         ),
                         CustomButton(
-                          icons: LineIcons.userCircle,
-                          title: 'About us',
-                          press: () => showModalBottomSheet(
-                              context: context,
-                              builder: (_) => const CommingSoon()),
-                        ),
+                            icons: LineIcons.userCircle,
+                            title: 'About us',
+                            press: () => launchPortFolio()),
                         CustomButton(
                           icons: LineIcons.bookReader,
                           title: 'Terms & Condition',
@@ -185,15 +183,18 @@ class CustomButton extends StatelessWidget {
   final String? title;
   final Color? color;
   final double? margin;
+  final Widget? lastWidget;
+  final bool? showLastWidget;
   final VoidCallback? press;
-  const CustomButton({
-    super.key,
-    this.title,
-    this.color = AppColor.kDarkGreyColor,
-    this.press,
-    required this.icons,
-    this.margin = 20,
-  });
+  const CustomButton(
+      {super.key,
+      this.title,
+      this.color = AppColor.kDarkGreyColor,
+      this.press,
+      required this.icons,
+      this.margin = 20,
+      this.lastWidget,
+      this.showLastWidget = false});
 
   @override
   Widget build(BuildContext context) {
@@ -209,13 +210,19 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.sp),
             color: color!.withOpacity(1.0.sp)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            LineIcon(icons),
-            Gap(2.w),
-            Text(
-              title!,
-              style: TextStyle(fontSize: 15.sp, letterSpacing: 1.5),
+            Row(
+              children: [
+                LineIcon(icons),
+                Gap(2.w),
+                Text(
+                  title!,
+                  style: TextStyle(fontSize: 15.sp, letterSpacing: 1.5),
+                ),
+              ],
             ),
+            if (showLastWidget ?? false) lastWidget ?? const SizedBox.shrink(),
           ],
         ),
       ),

@@ -47,14 +47,13 @@ class CreateExpenseView extends ConsumerWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Create data',
-          style: TextStyle(
-            fontSize: 17.sp,
-            color: AppColor.kBlackColor,
-            fontWeight: FontWeight.w700,
-          ),
+        centerTitle: true,
+        titleTextStyle: TextStyle(
+          fontSize: 17.sp,
+          color: AppColor.kBlackColor,
+          fontWeight: FontWeight.w700,
         ),
+        title: const Text('Create data'),
       ),
       body: Stack(
         children: [
@@ -65,7 +64,7 @@ class CreateExpenseView extends ConsumerWidget {
               children: [
                 Container(
                   width: 80.w,
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                   decoration: BoxDecoration(
                       color: AppColor.kWhitColor,
                       borderRadius: BorderRadius.circular(10.sp),
