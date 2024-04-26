@@ -16,7 +16,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-  scaffoldBackgroundColor: AppColor.kBlueColor.shade900,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 2, 7, 15),
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.indigo,
     brightness: Brightness.dark,

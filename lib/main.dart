@@ -37,7 +37,7 @@ import 'package:expense_app/provider/theme.dart';
 
     @override
     Widget build(BuildContext context, WidgetRef ref) {
-      final themeCntrl = ref.watch(themeStateNofiter.notifier);
+      final themeCntrl = ref.watch(themeProvider);
       return ResponsiveSizer(
         builder: (context, orientation, screenType) {
           return MaterialApp.router(
@@ -47,7 +47,7 @@ import 'package:expense_app/provider/theme.dart';
             builder: EasyLoading.init(),
             theme: lightTheme,
             darkTheme: darkTheme,
-            themeMode: themeCntrl.themeData,
+            themeMode: themeCntrl?ThemeMode.dark:ThemeMode.light,
           );
         },
       );

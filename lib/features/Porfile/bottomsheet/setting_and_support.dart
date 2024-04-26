@@ -3,6 +3,7 @@ import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/notifer/create_expense_notifer.dart';
 import 'package:expense_app/notifer/local_auth.dart';
 import 'package:expense_app/provider/local_auth.dart';
+import 'package:expense_app/provider/theme.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/switch.dart';
@@ -59,6 +60,8 @@ class SettingAndSupport extends HookConsumerWidget {
       );
     });
     final biometricAuthState = ref.watch(biometricAuthStateProvider);
+    final themeCntrl = ref.watch(themeStateNofiter.notifier);
+    final themeState = ref.watch(themeProvider);
 
     return ListView(
       shrinkWrap: true,
@@ -86,11 +89,17 @@ class SettingAndSupport extends HookConsumerWidget {
                             .createdBioWithLocalAuth();
                       }
                     })),
-            // const CustomButton(
-            //     title: 'Light Mode',
-            //     icons: LineIcons.lightbulb,
-            //     showLastWidget: true,
-            //     lastWidget: CustomSwitch()),
+            CustomButton(
+                title: themeState ? 'Dark Mode' : 'Light Mode',
+                icons: LineIcons.lightbulb,
+                showLastWidget: true,
+                lastWidget: CustomSwitch(
+                  value: themeState,
+                  onChanged: (value) {
+                    ref.read(themeProvider.notifier).state = value;
+                    themeCntrl.switchTheme();
+                  },
+                )),
             const CustomButton(
               title: 'Email us',
               icons: LineIcons.facebookMessenger,
