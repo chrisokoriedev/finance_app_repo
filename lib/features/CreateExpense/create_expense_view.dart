@@ -47,14 +47,13 @@ class CreateExpenseView extends ConsumerWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Create data',
-          style: TextStyle(
-            fontSize: 17.sp,
-            color: AppColor.kBlackColor,
-            fontWeight: FontWeight.w700,
-          ),
+        centerTitle: true,
+        titleTextStyle: TextStyle(
+          fontSize: 17.sp,
+          color: AppColor.kBlackColor,
+          fontWeight: FontWeight.w700,
         ),
+        title: const Text('Create data'),
       ),
       body: Stack(
         children: [
