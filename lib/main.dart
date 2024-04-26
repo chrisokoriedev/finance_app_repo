@@ -1,5 +1,6 @@
   import 'package:expense_app/domain/theme.dart';
   import 'package:expense_app/firebase_options.dart';
+import 'package:expense_app/provider/theme.dart';
   import 'package:expense_app/utils/string_app.dart';
   import 'package:firebase_core/firebase_core.dart';
   import 'package:flutter/material.dart';

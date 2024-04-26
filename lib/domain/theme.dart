@@ -1,11 +1,7 @@
-import 'package:expense_app/provider/local_auth.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-final themeStateNofiter = StateNotifierProvider((ref) =>
-    ThemeStateProvider(ref, ref, ref.watch(sharedPreferencesProvider)));
 
 class ThemeStateProvider extends StateNotifier {
   final Ref ref;
@@ -16,8 +12,10 @@ class ThemeStateProvider extends StateNotifier {
   Future loadTheme() async {
     if (sharedPreferences.getBool(AppString.theme) == true) {
       _currentTheme = ThemeMode.light;
+    } else if (sharedPreferences.getBool(AppString.theme) == false) {
+      _currentTheme = ThemeMode.light;
     } else {
-      _currentTheme = ThemeMode.dark;
+      _currentTheme = ThemeMode.system;
     }
     return _currentTheme;
   }
