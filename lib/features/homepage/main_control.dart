@@ -1,3 +1,4 @@
+import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
@@ -12,8 +13,6 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../Porfile/profile.dart';
-
 final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
 
 class MainControlComponent extends ConsumerWidget {
@@ -21,13 +20,12 @@ class MainControlComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme=Theme.of(context).colorScheme;
+    final theme = Theme.of(context).colorScheme;
 
     final selectedTab = ref.watch(selectedBottomTab);
-    ref.listen(cloudItemsProvider, (previous, next) { 
+    ref.listen(cloudItemsProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-       
       );
     });
 

@@ -178,7 +178,7 @@ class NoDataView extends StatelessWidget {
             'assets/gifs/coming_soon.gif',
             width: 50.w,
           ),
-          Gap(3.h),
+          Gap(2.h),
           TextWigdet(
             text: 'No items to display',
             color: theme.primary,
