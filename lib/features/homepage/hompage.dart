@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/expense_list_builder.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -17,7 +18,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final itemProvider = ref.watch(cloudItemsProvider);
-
+    final theme = Theme.of(context).colorScheme;
     return RefreshIndicator(
       onRefresh: () => ref.refresh(cloudItemsProvider.future),
       child: itemProvider.when(
@@ -36,22 +37,18 @@ class HomePage extends ConsumerWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Recent History',
-                                  style: TextStyle(
-                                      color: AppColor.kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                TextWigdet(
+                                    text: 'Recent History',
+                                    color: theme.primary,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500),
                                 GestureDetector(
                                   onTap: pageSelected,
-                                  child: Text(
-                                    'See all',
-                                    style: TextStyle(
-                                        color: AppColor.kGreyColor,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                  child: TextWigdet(
+                                      text: 'See all',
+                                      color: AppColor.kGreyColor,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
