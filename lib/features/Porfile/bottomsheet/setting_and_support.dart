@@ -29,7 +29,7 @@ class SettingAndSupport extends HookConsumerWidget {
       next.maybeWhen(
           orElse: () => null,
           success: (message) {
-            EasyLoading.showSuccess('Bio Updated Successfully');
+            EasyLoading.showSuccess('Updated');
           },
           failed: (message) {
             EasyLoading.showError('Something went wrong');
