@@ -1,5 +1,4 @@
 
-import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

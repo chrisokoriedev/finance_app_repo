@@ -206,34 +206,30 @@ class Statistics extends ConsumerWidget {
                             return ListTile(
                               title: Row(
                                 children: [
-                                  Text(
-                                    '${history.expenseType}\tfor\t${history.name}',
-                                    style: TextStyle(
-                                        color: AppColor.kDarkGreyColor,
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  TextWigdet(
+                                      text:
+                                          '${history.expenseType}\tfor\t${history.name}',
+                                      color: theme.primary,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w600),
                                 ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    history.explain,
-                                    style: TextStyle(
-                                        color: AppColor.kDarkGreyColor,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  TextWigdet(
+                                      text: history.explain,
+                                      color: theme.primary,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600),
                                 ],
                               ),
                               leading: iconData,
-                              trailing: Text(
-                                history.amount.toString(),
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                              trailing: TextWigdet(
+                                  text: history.amount.toString(),
+                                  color: theme.primary,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600),
                             );
                           })
                     ]),
