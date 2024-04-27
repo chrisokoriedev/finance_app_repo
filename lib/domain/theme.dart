@@ -1,5 +1,4 @@
 import 'package:expense_app/provider/local_auth.dart';
-import 'package:expense_app/provider/theme.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
