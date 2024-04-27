@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: AppColor.kWhitColor,
   colorScheme: ColorScheme.fromSeed(
+    primary: AppColor.kDarkGreyColor,
     seedColor: Colors.blue,
     brightness: Brightness.light,
     tertiary: Colors.black,
     onTertiary: Colors.grey[200],
-    primaryContainer: Colors.white,
+    primaryContainer: AppColor.kDarkGreyColor,
     shadow: Colors.grey[300],
   ),
   floatingActionButtonTheme:
@@ -16,15 +17,18 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-  scaffoldBackgroundColor: const Color.fromARGB(255, 2, 7, 15),
+  scaffoldBackgroundColor: AppColor.kDarkGreyColor,
+  bottomSheetTheme:
+      const BottomSheetThemeData(backgroundColor: AppColor.kDarkGreyColor),
   colorScheme: ColorScheme.fromSeed(
+    primary: AppColor.kWhitColor,
     seedColor: Colors.indigo,
     brightness: Brightness.dark,
     tertiary: Colors.white,
     onTertiary: Colors.grey[600],
-    primaryContainer: Colors.grey[900],
+    primaryContainer: AppColor.kGreyColor,
     shadow: Colors.black,
   ),
-  floatingActionButtonTheme:
-      FloatingActionButtonThemeData(backgroundColor: Colors.grey[700]),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColor.kDarkGreyColor),
 );

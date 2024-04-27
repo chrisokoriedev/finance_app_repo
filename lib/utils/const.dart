@@ -1,3 +1,5 @@
+import 'package:expense_app/model/create_expense.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -85,16 +87,12 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5.sp), color: dataColor),
               child: icon),
           Gap(2.h),
-          Text(
-            '₦$amount',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: AppColor.kWhitColor,
-                fontSize: 15.sp,
-                letterSpacing: 1.6,
-                fontWeight: FontWeight.w600),
-          ),
+          TextWigdet(
+              text: '₦$amount',
+              maxLine: 1,
+              fontSize: 15.sp,
+              letterSpacing: 1.6,
+              fontWeight: FontWeight.w600),
           Gap(9.sp),
           Text(
             title,
@@ -198,4 +196,14 @@ String getUserName() {
     lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
   }
   return lastName;
+}
+
+Map<String, int> calculateLengths(List<CreateExpenseModel> data) {
+  int incomeLength =
+      data.where((expense) => expense.expenseType == "Income").length;
+  int expenseLength =
+      data.where((expense) => expense.expenseType == "Expense").length;
+  int debtLength =
+      data.where((expense) => expense.expenseType == "Debt").length;
+  return {'Income': incomeLength, 'Expense': expenseLength, 'Debt': debtLength};
 }

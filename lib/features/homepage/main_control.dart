@@ -21,6 +21,8 @@ class MainControlComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme=Theme.of(context).colorScheme;
+
     final selectedTab = ref.watch(selectedBottomTab);
     ref.listen(cloudItemsProvider, (previous, next) { 
       next.maybeWhen(
@@ -52,6 +54,7 @@ class MainControlComponent extends ConsumerWidget {
       ProfileScreen(pageCntrl),
     ];
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) =>
@@ -61,7 +64,6 @@ class MainControlComponent extends ConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColor.kDarkGreyColor,
         child: LineIcon.plus(
           color: AppColor.kWhitColor,
           size: 18.sp,
@@ -69,7 +71,7 @@ class MainControlComponent extends ConsumerWidget {
         onPressed: () => context.push(AppRouter.createExpenseView),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: AppColor.kBlackColor,
+        color: theme.primaryContainer.withOpacity(1.0.sp),
         height: 8.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
