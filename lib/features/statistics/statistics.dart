@@ -59,7 +59,7 @@ class Statistics extends ConsumerWidget {
                       child: TextWigdet(
                         text: 'Statistics',
                         fontSize: 17.sp,
-                        color:theme.primary,
+                        color: theme.primary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -156,15 +156,13 @@ class Statistics extends ConsumerWidget {
                       Gap(2.5.h),
                       Row(
                         children: [
-                          Text(
-                            'Top $expenseType',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColor.kBlackColor,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          TextWigdet(
+                            text: 'Top $expenseType',
+                            fontSize: 14.sp,
+                            color: theme.primary,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Gap(1.w),
+                          Gap(2.w),
                           LineIcon.wallet(
                             size: 18.sp,
                             color: switch (expenseType) {

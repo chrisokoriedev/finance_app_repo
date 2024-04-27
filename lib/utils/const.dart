@@ -59,7 +59,7 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme=Theme.of(context).colorScheme;
+    final theme = Theme.of(context).colorScheme;
     return Container(
       width: 23.w,
       height: 15.h,
@@ -129,7 +129,7 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme=Theme.of(context).colorScheme;
+    final theme = Theme.of(context).colorScheme;
     return TextFormField(
       keyboardType: textInputType,
       controller: textEditingController,
@@ -149,7 +149,7 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: AppColor.kGreyColor.withOpacity(0.3),
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 14.sp, color:theme.primary),
+        hintStyle: TextStyle(fontSize: 14.sp, color: theme.primary),
         isCollapsed: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
         border: OutlineInputBorder(
@@ -168,22 +168,23 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     return ListTile(
       title: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Gap(1.h),
           Image.asset(
             'assets/gifs/coming_soon.gif',
-            width: 70.w,
+            width: 50.w,
           ),
-          Text(
-            'No items to display',
-            style: TextStyle(
-              color: AppColor.kDarkGreyColor,
-              fontSize: 15.sp,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w600,
-            ),
+          Gap(3.h),
+          TextWigdet(
+            text: 'No items to display',
+            color: theme.primary,
+            fontSize: 15.sp,
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.w600,
           ),
         ],
       ),
