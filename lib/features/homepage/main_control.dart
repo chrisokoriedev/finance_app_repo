@@ -71,7 +71,6 @@ class MainControlComponent extends ConsumerWidget {
         onPressed: () => context.push(AppRouter.createExpenseView),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: theme.primaryContainer.withOpacity(1.0.sp),
         height: 8.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,12 +87,12 @@ class MainControlComponent extends ConsumerWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: selectedTab == index
-                        ? AppColor.kGreyColor.withOpacity(0.3)
+                        ? theme.onPrimaryContainer
                         : Colors.transparent),
                 child: LineIcon(
                   iconData[index],
                   color: selectedTab == index
-                      ? AppColor.kWhitColor
+                      ? theme.primary
                       : AppColor.kGreyColor,
                   size: selectedTab == index ? 20.sp : 18.sp,
                 ),

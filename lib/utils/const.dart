@@ -59,19 +59,20 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme=Theme.of(context).colorScheme;
     return Container(
-      width: 25.w,
+      width: 23.w,
       height: 15.h,
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(
         horizontal: 15.sp,
       ),
       decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 48, 47, 47).withOpacity(0.8),
+          color: theme.onPrimary,
           borderRadius: BorderRadius.circular(10.sp),
           boxShadow: [
             BoxShadow(
-                color: AppColor.kBlackColor.withOpacity(0.3),
+                color: theme.primaryContainer.withOpacity(1.5.sp),
                 blurRadius: 12.sp,
                 spreadRadius: 4.sp,
                 offset: const Offset(0, 6))
@@ -92,6 +93,7 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
               maxLine: 1,
               fontSize: 15.sp,
               letterSpacing: 1.6,
+              color: theme.primary,
               fontWeight: FontWeight.w600),
           Gap(9.sp),
           Text(

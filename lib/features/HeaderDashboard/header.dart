@@ -5,6 +5,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:expense_app/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -24,6 +25,7 @@ class DashboardHeader extends ConsumerWidget {
     final cloud = ref.watch(cloudItemsProvider);
     final greeting = ref.watch(greetingProvider);
     final firebaseAuth = ref.watch(firebaseAuthProvider);
+    final theme = Theme.of(context).colorScheme;
 
     return cloud.when(
         data: (data) {
@@ -34,11 +36,11 @@ class DashboardHeader extends ConsumerWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 32.h,
+                    height: 30.h,
                     padding:
                         EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
                     decoration: BoxDecoration(
-                      color: AppColor.kBlackColor,
+                      color: theme.primaryContainer.withOpacity(1.5.sp),
                       borderRadius: BorderRadius.vertical(
                         bottom: Radius.circular(25.sp),
                       ),
@@ -52,21 +54,17 @@ class DashboardHeader extends ConsumerWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _getGreetingText(greeting),
-                                  style: TextStyle(
-                                    color: AppColor.kWhitColor,
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                TextWigdet(
+                                  text: _getGreetingText(greeting),
+                                  color: theme.primary,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                Text(
-                                  getUserName(),
-                                  style: TextStyle(
-                                    color: AppColor.kWhitColor,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                TextWigdet(
+                                  text: getUserName(),
+                                  color: theme.primary,
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ],
                             ),
@@ -98,11 +96,11 @@ class DashboardHeader extends ConsumerWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade900,
+                      color: theme.onPrimary,
                       borderRadius: BorderRadius.circular(15.sp),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColor.kBlackColor.withOpacity(0.4),
+                          color: theme.primaryContainer.withOpacity(1.5.sp),
                           offset: const Offset(0, 6),
                           blurRadius: 12,
                           spreadRadius: 6,
@@ -115,30 +113,26 @@ class DashboardHeader extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Total Balance',
-                              style: TextStyle(
-                                color: AppColor.kWhitColor,
-                                fontSize: 15.sp,
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.w400,
-                              ),
+                            TextWigdet(
+                              text: 'Total Balance',
+                              color: theme.primary,
+                              fontSize: 15.sp,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w400,
                             ),
                             LineIcon.horizontalEllipsis(
-                              color: AppColor.kWhitColor,
+                              color: theme.primary,
                               size: 16.sp,
                             ),
                           ],
                         ),
                         Gap(0.3.h),
-                        Text(
-                          "₦${totals.state.grandTotal}",
-                          style: TextStyle(
-                            color: AppColor.kWhitColor,
-                            fontSize: 18.sp,
-                            letterSpacing: 1.7,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        TextWigdet(
+                          text: "₦${totals.state.grandTotal}",
+                          color: theme.primary,
+                          fontSize: 18.sp,
+                          letterSpacing: 1.7,
+                          fontWeight: FontWeight.w500,
                         ),
                         Gap(1.5.h),
                         Row(
