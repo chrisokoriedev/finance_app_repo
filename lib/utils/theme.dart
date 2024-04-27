@@ -16,7 +16,7 @@ ThemeData lightTheme = ThemeData(
     
   ),
   floatingActionButtonTheme:
-      FloatingActionButtonThemeData(backgroundColor: Colors.grey[300]),
+      const FloatingActionButtonThemeData(backgroundColor: AppColor.kDarkGreyColor),
 );
 
 ThemeData darkTheme = ThemeData(

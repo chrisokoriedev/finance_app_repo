@@ -7,5 +7,6 @@ final themeProvider = StateProvider((ref) {
   final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return sharedPreferences.getBool(AppString.theme) ?? false;
 });
-final themeStateNofiter = StateNotifierProvider((ref) =>
-    ThemeStateProvider(ref, ref, ref.watch(sharedPreferencesProvider)));
+
+final themeStateNofiter =
+    StateNotifierProvider.autoDispose((ref) => ThemeStateProvider(ref, ref));
