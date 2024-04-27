@@ -28,6 +28,8 @@ class Statistics extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context).colorScheme;
+
     final selectedTab = ref.watch(selectedTabProvider);
     final itemProvider = ref.watch(cloudItemsProvider);
     final expenseType = ref.watch(expenseItemTypeProvider);

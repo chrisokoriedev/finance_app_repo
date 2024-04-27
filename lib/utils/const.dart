@@ -129,6 +129,7 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme=Theme.of(context).colorScheme;
     return TextFormField(
       keyboardType: textInputType,
       controller: textEditingController,
@@ -148,7 +149,7 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: AppColor.kGreyColor.withOpacity(0.3),
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.kDarkGreyColor),
+        hintStyle: TextStyle(fontSize: 14.sp, color:theme.primary),
         isCollapsed: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
         border: OutlineInputBorder(

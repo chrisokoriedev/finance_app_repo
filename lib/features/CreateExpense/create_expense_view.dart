@@ -3,6 +3,7 @@ import 'package:expense_app/state/local.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/loading.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +30,8 @@ class CreateExpenseView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context).colorScheme;
+
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
@@ -53,7 +56,13 @@ class CreateExpenseView extends ConsumerWidget {
           color: AppColor.kBlackColor,
           fontWeight: FontWeight.w700,
         ),
-        title: const Text('Create data'),
+        title: TextWigdet(
+          text: 'Create data',
+          color: theme.primary,
+          fontSize: 17.sp,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.5,
+        ),
       ),
       body: Stack(
         children: [
@@ -66,11 +75,11 @@ class CreateExpenseView extends ConsumerWidget {
                   width: 80.w,
                   padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                   decoration: BoxDecoration(
-                      color: AppColor.kWhitColor,
+                      color: theme.onPrimary,
                       borderRadius: BorderRadius.circular(10.sp),
                       boxShadow: [
                         BoxShadow(
-                            color: AppColor.kBlackColor.withOpacity(0.4),
+                            color: AppColor.kGreyColor.withOpacity(1.5.sp),
                             offset: const Offset(0, 6),
                             blurRadius: 12,
                             spreadRadius: 6)
