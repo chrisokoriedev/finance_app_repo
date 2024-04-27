@@ -5,13 +5,16 @@ ThemeData lightTheme = ThemeData(
   bottomAppBarTheme: const BottomAppBarTheme(color: AppColor.kWhitColor),
   scaffoldBackgroundColor: AppColor.kWhitColor,
   colorScheme: ColorScheme.fromSeed(
-      primary: AppColor.kDarkGreyColor,
-      onPrimary: AppColor.kWhitColor,
-      seedColor: Colors.blue,
-      brightness: Brightness.light,
-      primaryContainer: AppColor.kDarkGreyColor,
-      shadow: AppColor.kGreyColor.withOpacity(0.6),
-      onPrimaryContainer: AppColor.kGreyColor.withOpacity(0.4)),
+    primary: AppColor.kDarkGreyColor,
+    onPrimary: AppColor.kWhitColor,
+    seedColor: AppColor.kWhitColor,
+    brightness: Brightness.light,
+    primaryContainer: AppColor.kDarkGreyColor,
+    shadow: AppColor.kGreyColor.withOpacity(0.6),
+    tertiary: AppColor.kWhitColor,
+    onPrimaryContainer: AppColor.kGreyColor.withOpacity(0.4),
+    
+  ),
   floatingActionButtonTheme:
       FloatingActionButtonThemeData(backgroundColor: Colors.grey[300]),
 );

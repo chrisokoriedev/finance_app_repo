@@ -4,6 +4,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -55,13 +56,11 @@ class Statistics extends ConsumerWidget {
                   child: Column(children: [
                     Gap(5.h),
                     Center(
-                      child: Text(
-                        'Statistics',
-                        style: TextStyle(
-                          fontSize: 17.sp,
-                          color: AppColor.kBlackColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: TextWigdet(
+                        text: 'Statistics',
+                        fontSize: 17.sp,
+                        color:theme.primary,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Gap(2.h),
@@ -75,9 +74,10 @@ class Statistics extends ConsumerWidget {
                               .state = index,
                           child: Chip(
                             elevation: 0.0,
+                            side: BorderSide.none,
                             backgroundColor: selectedTab == index
                                 ? AppColor.kBlackColor
-                                : AppColor.kWhitColor,
+                                : AppColor.kGreyColor.withOpacity(0.8.spa),
                             label: Text(
                               dayType[index],
                               style: TextStyle(
@@ -85,7 +85,7 @@ class Statistics extends ConsumerWidget {
                                 letterSpacing: 1.7,
                                 fontWeight: FontWeight.w500,
                                 color: selectedTab == index
-                                    ? AppColor.kWhitColor
+                                    ? theme.tertiary
                                     : AppColor.kBlackColor,
                               ),
                             ),
