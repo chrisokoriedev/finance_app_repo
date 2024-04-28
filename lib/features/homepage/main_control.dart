@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:vibration/vibration.dart';
 
 final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
 
@@ -79,6 +80,7 @@ class MainControlComponent extends ConsumerWidget {
             iconData.length,
             (index) => GestureDetector(
               onTap: () {
+                Vibration.vibrate(duration: 500, amplitude: 10);
                 pageCntrl.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },

@@ -37,9 +37,8 @@ dependencies:
   injectable:
   timeago: ^3.5.0
   hooks_riverpod:
-  appwrite: ^8.1.0
   shared_preferences:
-  vibrate:
+  vibration: ^1.8.4
 
 dev_dependencies:
   flutter_test:
