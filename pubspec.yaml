@@ -39,6 +39,7 @@ dependencies:
   hooks_riverpod:
   appwrite: ^8.1.0
   shared_preferences:
+  vibrate:
 
 dev_dependencies:
   flutter_test:
