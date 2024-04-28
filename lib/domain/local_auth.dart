@@ -28,7 +28,7 @@ class BiometricAuthDataSource {
     }
     try {
       bool isAuthenticated = await _localAuth.authenticate(
-          localizedReason: 'Authenticate to access sensitive data',
+          localizedReason: 'Authenticate to access nora',
           options: const AuthenticationOptions(
               biometricOnly: true, stickyAuth: true, useErrorDialogs: true));
       if (isAuthenticated) {
