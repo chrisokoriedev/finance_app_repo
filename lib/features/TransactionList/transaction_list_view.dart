@@ -30,13 +30,13 @@ class TransactionListView extends HookConsumerWidget {
       child: historyProvider.when(
         skipLoadingOnReload: true,
         data: (data) {
-          List<CreateExpenseModel> expenseData = data
-              .where((expense) {
-                return expense.dateTime.year == selectedDay.year &&
-                  expense.dateTime.month == selectedDay.month &&
-                  expense.dateTime.day == selectedDay.day;
-              })
-              .toList();
+          var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+          List<CreateExpenseModel> expenseData = dataNew.where((expense) {
+            return expense.dateTime.year == selectedDay.year &&
+                expense.dateTime.month == selectedDay.month &&
+                expense.dateTime.day == selectedDay.day;
+          }).toList();
 
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 20.sp),

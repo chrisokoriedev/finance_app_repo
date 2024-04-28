@@ -131,7 +131,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
                   Text(
                     history.explain,
                     style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
+                        color: theme.primary,
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600),
                   ),

@@ -52,7 +52,7 @@ class BuildCreateDataComponent extends ConsumerWidget {
             expenseDescripritionController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty) {
           var add = CreateExpenseModel(
-              name: expenseAmountController.text,
+              name: expenseTitleController.text,
               amount: double.parse(expenseAmountController.text),
               expenseType: chooseExpense,
               explain: expenseDescripritionController.text,

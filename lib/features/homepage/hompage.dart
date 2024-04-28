@@ -22,44 +22,49 @@ class HomePage extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () => ref.refresh(cloudItemsProvider.future),
       child: itemProvider.when(
-          data: (data) => CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                        height: 52.h, child: DashboardHeader(pageCntrl)),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3.w),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextWigdet(
-                                    text: 'Recent History',
-                                    color: theme.primary,
-                                    fontSize: 16.sp,
+          data: (data) {
+            var dataNew = data
+              ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child:
+                      SizedBox(height: 52.h, child: DashboardHeader(pageCntrl)),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextWigdet(
+                                  text: 'Recent History',
+                                  color: theme.primary,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500),
+                              GestureDetector(
+                                onTap: pageSelected,
+                                child: TextWigdet(
+                                    text: 'See all',
+                                    color: AppColor.kGreyColor,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w500),
-                                GestureDetector(
-                                  onTap: pageSelected,
-                                  child: TextWigdet(
-                                      text: 'See all',
-                                      color: AppColor.kGreyColor,
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ]),
-                    ),
+                              ),
+                            ],
+                          ),
+                        ]),
                   ),
-                  ExpenseListBuilder(
-                      data: data,
-                      childCount: data.isNotEmpty ? min(data.length, 6) : 1),
-                ],
-              ),
+                ),
+                ExpenseListBuilder(
+                    data: dataNew,
+                    childCount:
+                        dataNew.isNotEmpty ? min(dataNew.length, 6) : 1),
+              ],
+            );
+          },
           error: (_, __) {
             debugPrint('Eror $__');
             return Text('Error $__');

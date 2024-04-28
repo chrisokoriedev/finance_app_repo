@@ -138,10 +138,10 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(
           fontSize: 14.sp,
-          color: AppColor.kDarkGreyColor,
+          color: theme.primary,
           fontWeight: FontWeight.w600),
       cursorWidth: 1.w,
-      cursorColor: AppColor.kDarkGreyColor,
+      cursorColor:  theme.primary,
       cursorRadius: Radius.circular(10.sp),
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
