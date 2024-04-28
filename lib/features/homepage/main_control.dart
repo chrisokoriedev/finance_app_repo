@@ -2,7 +2,9 @@ import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
+import 'package:expense_app/notifer/local_auth.dart';
 import 'package:expense_app/provider/item_provider.dart';
+import 'package:expense_app/provider/local_auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,7 @@ class MainControlComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).colorScheme;
-
+    final bioAuth = ref.watch(biometricAuthStateProvider);
     final selectedTab = ref.watch(selectedBottomTab);
     ref.listen(cloudItemsProvider, (previous, next) {
       next.maybeWhen(
@@ -53,12 +55,16 @@ class MainControlComponent extends ConsumerWidget {
     ];
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) =>
-            ref.read(selectedBottomTab.notifier).state = index,
-        controller: pageCntrl,
-        children: screenChangeList,
+      body: Stack(
+        children: [
+          PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) =>
+                ref.read(selectedBottomTab.notifier).state = index,
+            controller: pageCntrl,
+            children: screenChangeList,
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(

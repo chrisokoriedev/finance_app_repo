@@ -12,6 +12,10 @@ final biometricAuthStateProvider = StateProvider<bool>((ref) {
   final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return sharedPreferences.getBool(AppString.bioAuth) ?? false;
 });
+final biometricAuthStateFutureProvider = FutureProvider<bool>((ref) {
+  final sharedPreferences = ref.watch(sharedPreferencesProvider);
+  return sharedPreferences.getBool(AppString.bioAuth) ?? false;
+});
 
 final bioAuthDataSourceProvider = Provider<BiometricAuthDataSource>(
   (ref) => BiometricAuthDataSource(ref.read(localAuthProvider), ref),
