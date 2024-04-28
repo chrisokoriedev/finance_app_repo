@@ -86,6 +86,11 @@ class ProfileScreen extends HookConsumerWidget {
                         height: 25.h,
                         child: SfCircularChart(
                           margin: EdgeInsets.zero,
+                          palette: const [
+                            AppColor.kGreenColor,
+                            AppColor.kredColor,
+                            AppColor.kBlueColor
+                          ],
                           series: <CircularSeries>[
                             DoughnutSeries<MapEntry<String, int>, String>(
                               dataSource: lengths.entries.toList(),
@@ -93,8 +98,12 @@ class ProfileScreen extends HookConsumerWidget {
                               yValueMapper: (entry, _) => entry.value,
                               dataLabelMapper: (entry, _) =>
                                   '${entry.key}: ${entry.value}',
-                              dataLabelSettings:
-                                  const DataLabelSettings(isVisible: true),
+                              dataLabelSettings: DataLabelSettings(
+                                  isVisible: true,
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary)),
                             ),
                           ],
                           legend: const Legend(isVisible: true),
@@ -174,6 +183,3 @@ class CommingSoon extends StatelessWidget {
     );
   }
 }
-
-
-
