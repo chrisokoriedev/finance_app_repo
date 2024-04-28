@@ -10,9 +10,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-final selectedDayProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final selectedDayProvider =
+    StateProvider.autoDispose<DateTime>((ref) => DateTime.now());
 final calendarFormatProvider =
-    StateProvider<CalendarFormat>((ref) => CalendarFormat.week);
+    StateProvider.autoDispose<CalendarFormat>((ref) => CalendarFormat.week);
 
 class TransactionListView extends HookConsumerWidget {
   final PageController pageController;
