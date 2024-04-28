@@ -80,7 +80,7 @@ class MainControlComponent extends ConsumerWidget {
             iconData.length,
             (index) => GestureDetector(
               onTap: () {
-                Vibration.vibrate(duration: 500, amplitude: 10);
+                Vibration.vibrate(duration: 500, amplitude: 6);
                 pageCntrl.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },
