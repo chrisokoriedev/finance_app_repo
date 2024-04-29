@@ -10,9 +10,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-final selectedDayProvider = StateProvider<DateTime>((ref) => DateTime.now());
+final selectedDayProvider =
+    StateProvider.autoDispose<DateTime>((ref) => DateTime.now());
 final calendarFormatProvider =
-    StateProvider<CalendarFormat>((ref) => CalendarFormat.week);
+    StateProvider.autoDispose<CalendarFormat>((ref) => CalendarFormat.week);
 
 class TransactionListView extends HookConsumerWidget {
   final PageController pageController;
@@ -30,13 +31,13 @@ class TransactionListView extends HookConsumerWidget {
       child: historyProvider.when(
         skipLoadingOnReload: true,
         data: (data) {
-          List<CreateExpenseModel> expenseData = data
-              .where((expense) {
-                return expense.dateTime.year == selectedDay.year &&
-                  expense.dateTime.month == selectedDay.month &&
-                  expense.dateTime.day == selectedDay.day;
-              })
-              .toList();
+          var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+          List<CreateExpenseModel> expenseData = dataNew.where((expense) {
+            return expense.dateTime.year == selectedDay.year &&
+                expense.dateTime.month == selectedDay.month &&
+                expense.dateTime.day == selectedDay.day;
+          }).toList();
 
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 20.sp),

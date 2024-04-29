@@ -4,7 +4,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final cloudItemsProvider = FutureProvider.autoDispose((ref) async {
+final cloudItemsProvider = FutureProvider((ref) async {
   final fireAuth =
       ref.watch(firebaseAuthProvider.select((value) => value.currentUser!.uid));
   final fireStore = ref.watch(fireStoreProvider);
@@ -20,7 +20,7 @@ final cloudItemsProvider = FutureProvider.autoDispose((ref) async {
       expenseList.add(CreateExpenseModel.fromJson(data));
     }
   }
-  return expenseList.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+  return expenseList.toList();
 });
 
 // final cloudItemsProvider =

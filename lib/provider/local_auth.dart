@@ -7,12 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 final sharedPreferencesProvider =
     Provider<SharedPreferences>((ref) => throw UnimplementedError());
 final localAuthProvider =
-    Provider<LocalAuthentication>((ref) => LocalAuthentication());
-final biometricAuthStateProvider = StateProvider<bool>((ref) {
+    Provider.autoDispose<LocalAuthentication>((ref) => LocalAuthentication());
+final biometricAuthStateProvider = StateProvider.autoDispose<bool>((ref) {
+  final sharedPreferences = ref.watch(sharedPreferencesProvider);
+  return sharedPreferences.getBool(AppString.bioAuth) ?? false;
+});
+final biometricAuthStateFutureProvider =
+    FutureProvider.autoDispose<bool>((ref) {
   final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return sharedPreferences.getBool(AppString.bioAuth) ?? false;
 });
 
-final bioAuthDataSourceProvider = Provider<BiometricAuthDataSource>(
+final bioAuthDataSourceProvider = Provider.autoDispose<BiometricAuthDataSource>(
   (ref) => BiometricAuthDataSource(ref.read(localAuthProvider), ref),
 );

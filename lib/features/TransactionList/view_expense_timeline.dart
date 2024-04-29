@@ -5,6 +5,7 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/format_date.dart';
 import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
@@ -16,13 +17,15 @@ class ViewExpensesTimeline extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final historyProvider = ref.watch(cloudItemsProvider);
-
+    final theme = Theme.of(context).colorScheme;
     return historyProvider.when(
       skipLoadingOnReload: true,
       error: (_, __) => const Text('Something went wrong'),
       loading: () => const CircularProgressIndicator(color: Colors.red),
       data: (data) {
-        List<CreateExpenseModel> expenseData = data.toList();
+          var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+        
+        List<CreateExpenseModel> expenseData = dataNew.toList();
 
         Map<DateTime, List<CreateExpenseModel>> groupedExpenses = {};
 
@@ -37,10 +40,10 @@ class ViewExpensesTimeline extends HookConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
-              title: Text(
-            AppString.viewTimeline,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-          )),
+              title: TextWigdet(
+                  text: AppString.viewTimeline,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600)),
           body: expenseData.isEmpty
               ? const NoDataView()
               : ListView.builder(
@@ -103,21 +106,18 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     surfaceTintColor: AppColor.kBlackColor,
-                                    backgroundColor: AppColor.kWhitColor,
-                                    title: Text(
-                                      'Confirm Delete',
-                                      style: TextStyle(
-                                          color: AppColor.kBlackColor,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    content: Text(
-                                      'Are you sure you want to delete this item?',
-                                      style: TextStyle(
-                                          color: AppColor.kDarkGreyColor,
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                                    backgroundColor: theme.onPrimary,
+                                    title: TextWigdet(
+                                        text: 'Confirm Delete',
+                                        color: theme.primary,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600),
+                                    content: TextWigdet(
+                                        text:
+                                            'Are you sure you want to delete this item?',
+                                        color: theme.primary,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w500),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
@@ -144,34 +144,30 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                               child: ListTile(
                                 title: Row(
                                   children: [
-                                    Text(
-                                      '${history.expenseType}\tfor\t${history.name}',
-                                      style: TextStyle(
-                                          color: AppColor.kDarkGreyColor,
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.w600),
-                                    ),
+                                    TextWigdet(
+                                        text:
+                                            '${history.expenseType}\tfor\t${history.name}',
+                                        color: theme.primary,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600),
                                   ],
                                 ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      history.explain,
-                                      style: TextStyle(
-                                          color: AppColor.kDarkGreyColor,
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w600),
-                                    ),
+                                    TextWigdet(
+                                        text: history.explain,
+                                        color: theme.primary,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600),
                                   ],
                                 ),
                                 leading: iconData,
-                                trailing: Text(
-                                  history.amount.toString(),
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                trailing: TextWigdet(
+                                    text: history.amount.toString(),
+                                    fontSize: 18.sp,
+                                    color: theme.primary,
+                                    fontWeight: FontWeight.w600),
                               ),
                             );
                           },

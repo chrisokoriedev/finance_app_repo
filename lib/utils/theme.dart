@@ -2,29 +2,37 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
+  bottomAppBarTheme: const BottomAppBarTheme(color: AppColor.kWhitColor),
   scaffoldBackgroundColor: AppColor.kWhitColor,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.blue,
+    primary: AppColor.kDarkGreyColor,
+    onPrimary: AppColor.kWhitColor,
+    seedColor: AppColor.kWhitColor,
     brightness: Brightness.light,
-    tertiary: Colors.black,
-    onTertiary: Colors.grey[200],
-    primaryContainer: Colors.white,
-    shadow: Colors.grey[300],
+    primaryContainer: AppColor.kDarkGreyColor,
+    shadow: AppColor.kGreyColor.withOpacity(0.6),
+    tertiary: AppColor.kWhitColor,
+    onPrimaryContainer: AppColor.kGreyColor.withOpacity(0.4),
+    
   ),
   floatingActionButtonTheme:
-      FloatingActionButtonThemeData(backgroundColor: Colors.grey[300]),
+      const FloatingActionButtonThemeData(backgroundColor: AppColor.kDarkGreyColor),
 );
 
 ThemeData darkTheme = ThemeData(
-  scaffoldBackgroundColor: const Color.fromARGB(255, 2, 7, 15),
+  bottomAppBarTheme: const BottomAppBarTheme(color: AppColor.kDarkGreyColor),
+  scaffoldBackgroundColor: AppColor.kDarkGreyColor,
+  bottomSheetTheme:
+      const BottomSheetThemeData(backgroundColor: AppColor.kDarkGreyColor),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.indigo,
-    brightness: Brightness.dark,
-    tertiary: Colors.white,
-    onTertiary: Colors.grey[600],
-    primaryContainer: Colors.grey[900],
-    shadow: Colors.black,
-  ),
-  floatingActionButtonTheme:
-      FloatingActionButtonThemeData(backgroundColor: Colors.grey[700]),
+      primary: AppColor.kWhitColor,
+      onPrimary: AppColor.kDarkGreyColor,
+      seedColor: Colors.indigo,
+      brightness: Brightness.dark,
+      tertiary: Colors.white,
+      primaryContainer: AppColor.kGreyColor,
+      shadow: AppColor.kGreyColor,
+      onPrimaryContainer: AppColor.kGreyColor.withOpacity(0.4)),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColor.kDarkGreyColor),
 );

@@ -1,3 +1,5 @@
+import 'package:expense_app/model/create_expense.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -57,19 +59,20 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     return Container(
-      width: 25.w,
+      width: 23.w,
       height: 15.h,
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(
         horizontal: 15.sp,
       ),
       decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 48, 47, 47).withOpacity(0.8),
+          color: theme.onPrimary,
           borderRadius: BorderRadius.circular(10.sp),
           boxShadow: [
             BoxShadow(
-                color: AppColor.kBlackColor.withOpacity(0.3),
+                color: theme.primaryContainer.withOpacity(1.5.sp),
                 blurRadius: 12.sp,
                 spreadRadius: 4.sp,
                 offset: const Offset(0, 6))
@@ -85,16 +88,13 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5.sp), color: dataColor),
               child: icon),
           Gap(2.h),
-          Text(
-            '₦$amount',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: AppColor.kWhitColor,
-                fontSize: 15.sp,
-                letterSpacing: 1.6,
-                fontWeight: FontWeight.w600),
-          ),
+          TextWigdet(
+              text: '₦$amount',
+              maxLine: 1,
+              fontSize: 15.sp,
+              letterSpacing: 1.6,
+              color: theme.primary,
+              fontWeight: FontWeight.w600),
           Gap(9.sp),
           Text(
             title,
@@ -129,6 +129,7 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     return TextFormField(
       keyboardType: textInputType,
       controller: textEditingController,
@@ -137,10 +138,10 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       style: TextStyle(
           fontSize: 14.sp,
-          color: AppColor.kDarkGreyColor,
+          color: theme.primary,
           fontWeight: FontWeight.w600),
       cursorWidth: 1.w,
-      cursorColor: AppColor.kDarkGreyColor,
+      cursorColor:  theme.primary,
       cursorRadius: Radius.circular(10.sp),
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
@@ -148,7 +149,7 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: AppColor.kGreyColor.withOpacity(0.3),
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 14.sp, color: AppColor.kDarkGreyColor),
+        hintStyle: TextStyle(fontSize: 14.sp, color: theme.primary),
         isCollapsed: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
         border: OutlineInputBorder(
@@ -167,22 +168,23 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     return ListTile(
       title: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Gap(1.h),
           Image.asset(
             'assets/gifs/coming_soon.gif',
-            width: 70.w,
+            width: 50.w,
           ),
-          Text(
-            'No items to display',
-            style: TextStyle(
-              color: AppColor.kDarkGreyColor,
-              fontSize: 15.sp,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w600,
-            ),
+          Gap(2.h),
+          TextWigdet(
+            text: 'No items to display',
+            color: theme.primary,
+            fontSize: 15.sp,
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.w600,
           ),
         ],
       ),
@@ -198,4 +200,14 @@ String getUserName() {
     lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
   }
   return lastName;
+}
+
+Map<String, int> calculateLengths(List<CreateExpenseModel> data) {
+  int incomeLength =
+      data.where((expense) => expense.expenseType == "Income").length;
+  int expenseLength =
+      data.where((expense) => expense.expenseType == "Expense").length;
+  int debtLength =
+      data.where((expense) => expense.expenseType == "Debt").length;
+  return {'Income': incomeLength, 'Expense': expenseLength, 'Debt': debtLength};
 }

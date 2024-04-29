@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthDataSource {
   final FirebaseAuth _firebaseAuth;
-
+  final SharedPreferences sharedPreferences;
   final Ref ref;
 
-  AuthDataSource(this._firebaseAuth, this.ref);
+  AuthDataSource(this._firebaseAuth, this.ref, this.sharedPreferences);
 
   Future<Either<String, User>> continueWithGoogle() async {
     try {
@@ -45,6 +46,7 @@ class AuthDataSource {
     try {
       final googleSignIn = GoogleSignIn();
       if (_firebaseAuth.currentUser != null) {
+        await sharedPreferences.clear();
         await _firebaseAuth.signOut();
         await googleSignIn.signOut();
         return right('Sign-out successful');

@@ -1,6 +1,7 @@
 import 'package:expense_app/domain/cal.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
@@ -21,6 +22,8 @@ class ExpenseListBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context).colorScheme;
+
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         childCount: childCount,
@@ -68,23 +71,19 @@ class ExpenseListBuilder extends HookConsumerWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   surfaceTintColor: AppColor.kBlackColor,
-                  backgroundColor: AppColor.kWhitColor,
-                  title: Text(
-                    'Confirm Delete',
-                    style: TextStyle(
-                        color: AppColor.kBlackColor,
-                        fontSize: 16.sp,
-                        letterSpacing: 1.3,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  content: Text(
-                    'Are you sure you want to delete this item?',
-                    style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
-                        fontSize: 16.sp,
-                        letterSpacing: 1.3,
-                        fontWeight: FontWeight.w600),
-                  ),
+                  backgroundColor: theme.onPrimary,
+                  title: TextWigdet(
+                      text: 'Confirm Delete',
+                      color: theme.primary,
+                      fontSize: 16.sp,
+                      letterSpacing: 1.3,
+                      fontWeight: FontWeight.w600),
+                  content: TextWigdet(
+                      text: 'Are you sure you want to delete this item?',
+                      color: theme.primary,
+                      fontSize: 16.sp,
+                      letterSpacing: 1.3,
+                      fontWeight: FontWeight.w600),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
@@ -119,13 +118,11 @@ class ExpenseListBuilder extends HookConsumerWidget {
             child: ListTile(
               title: Row(
                 children: [
-                  Text(
-                    '${history.expenseType}\tfor\t${history.name}',
-                    style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
+                  TextWigdet(
+                      text: '${history.expenseType}\tfor\t${history.name}',
+                      color: theme.primary,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600),
                 ],
               ),
               subtitle: Column(
@@ -134,7 +131,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
                   Text(
                     history.explain,
                     style: TextStyle(
-                        color: AppColor.kDarkGreyColor,
+                        color: theme.primary,
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600),
                   ),

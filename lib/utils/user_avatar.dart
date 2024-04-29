@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'string_app.dart';
@@ -22,7 +23,7 @@ class UserAvatar extends StatelessWidget {
         placeholder: (BuildContext context, String url) =>
             const CircularProgressIndicator(),
         errorWidget: (BuildContext context, String url, dynamic error) =>
-            const Icon(Icons.error),
+             LineIcon.user(size: 5.sp,),
       ),
     );
   }

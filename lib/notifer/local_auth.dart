@@ -24,6 +24,12 @@ class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
       (response) => const LocalAuthState.success(success: true),
     );
   }
+}
+
+class BiometricAuthNotifierII extends StateNotifier<LocalAuthState> {
+  final BiometricAuthDataSource _bioAuth;
+  BiometricAuthNotifierII(this._bioAuth)
+      : super(const LocalAuthState.initial());
 
   Future loginBioWithLocalAuth() async {
     state = const LocalAuthState.loading();
@@ -34,6 +40,13 @@ class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
     );
   }
 }
+
+final bioAuthNotifierProviderII =
+    StateNotifierProvider<BiometricAuthNotifierII, LocalAuthState>(
+  (ref) => BiometricAuthNotifierII(
+    ref.read(bioAuthDataSourceProvider),
+  ),
+);
 
 final bioAuthNotifierProvider =
     StateNotifierProvider<BiometricAuthNotifier, LocalAuthState>(

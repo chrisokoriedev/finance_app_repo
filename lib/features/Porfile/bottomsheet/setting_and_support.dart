@@ -1,4 +1,3 @@
-import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/notifer/create_expense_notifer.dart';
 import 'package:expense_app/notifer/local_auth.dart';
@@ -6,6 +5,7 @@ import 'package:expense_app/provider/local_auth.dart';
 import 'package:expense_app/provider/theme.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/routes.dart';
+import 'package:expense_app/utils/setting_button.dart';
 import 'package:expense_app/utils/switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -29,7 +29,7 @@ class SettingAndSupport extends HookConsumerWidget {
       next.maybeWhen(
           orElse: () => null,
           success: (message) {
-            EasyLoading.showSuccess('Bio Updated Successfully');
+            EasyLoading.showSuccess('Updated');
           },
           failed: (message) {
             EasyLoading.showError('Something went wrong');
@@ -88,18 +88,18 @@ class SettingAndSupport extends HookConsumerWidget {
                             .read(bioAuthNotifierProvider.notifier)
                             .createdBioWithLocalAuth();
                       }
-                    })),
-            CustomButton(
-                title: themeState ? 'Light Mode' : 'Dark Mode',
-                icons: LineIcons.lightbulb,
-                showLastWidget: true,
-                lastWidget: CustomSwitch(
-                  value: themeState,
-                  onChanged: (value) {
-                    ref.read(themeProvider.notifier).state = value;
-                    themeCntrl.switchTheme();
-                  },
-                )),
+                      })),
+              CustomButton(
+                  title: themeState ? 'Light Mode' : 'Dark Mode',
+                  icons: LineIcons.lightbulb,
+                  showLastWidget: true,
+                  lastWidget: CustomSwitch(
+                    value: themeState,
+                    onChanged: (value) {
+                      ref.read(themeProvider.notifier).state = value;
+                      themeCntrl.switchTheme(value);
+                    },
+                  )),
             const CustomButton(
               title: 'Email us',
               icons: LineIcons.facebookMessenger,

@@ -1,3 +1,4 @@
+import 'package:expense_app/features/Porfile/profile.dart';
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
@@ -11,8 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../Porfile/profile.dart';
+import 'package:vibration/vibration.dart';
 
 final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
 
@@ -21,11 +21,11 @@ class MainControlComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context).colorScheme;
     final selectedTab = ref.watch(selectedBottomTab);
-    ref.listen(cloudItemsProvider, (previous, next) { 
+    ref.listen(cloudItemsProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-       
       );
     });
 
@@ -52,16 +52,20 @@ class MainControlComponent extends ConsumerWidget {
       ProfileScreen(pageCntrl),
     ];
     return Scaffold(
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) =>
-            ref.read(selectedBottomTab.notifier).state = index,
-        controller: pageCntrl,
-        children: screenChangeList,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: Stack(
+        children: [
+          PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) =>
+                ref.read(selectedBottomTab.notifier).state = index,
+            controller: pageCntrl,
+            children: screenChangeList,
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColor.kDarkGreyColor,
         child: LineIcon.plus(
           color: AppColor.kWhitColor,
           size: 18.sp,
@@ -69,7 +73,6 @@ class MainControlComponent extends ConsumerWidget {
         onPressed: () => context.push(AppRouter.createExpenseView),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: AppColor.kBlackColor,
         height: 8.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,6 +80,7 @@ class MainControlComponent extends ConsumerWidget {
             iconData.length,
             (index) => GestureDetector(
               onTap: () {
+                Vibration.vibrate(duration: 500, amplitude: 10);
                 pageCntrl.jumpToPage(index);
                 ref.read(selectedBottomTab.notifier).state = index;
               },
@@ -86,12 +90,12 @@ class MainControlComponent extends ConsumerWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: selectedTab == index
-                        ? AppColor.kGreyColor.withOpacity(0.3)
+                        ? theme.onPrimaryContainer
                         : Colors.transparent),
                 child: LineIcon(
                   iconData[index],
                   color: selectedTab == index
-                      ? AppColor.kWhitColor
+                      ? theme.primary
                       : AppColor.kGreyColor,
                   size: selectedTab == index ? 20.sp : 18.sp,
                 ),

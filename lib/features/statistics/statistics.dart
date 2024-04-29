@@ -4,6 +4,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -28,6 +29,8 @@ class Statistics extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context).colorScheme;
+
     final selectedTab = ref.watch(selectedTabProvider);
     final itemProvider = ref.watch(cloudItemsProvider);
     final expenseType = ref.watch(expenseItemTypeProvider);
@@ -53,13 +56,11 @@ class Statistics extends ConsumerWidget {
                   child: Column(children: [
                     Gap(5.h),
                     Center(
-                      child: Text(
-                        'Statistics',
-                        style: TextStyle(
-                          fontSize: 17.sp,
-                          color: AppColor.kBlackColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: TextWigdet(
+                        text: 'Statistics',
+                        fontSize: 17.sp,
+                        color: theme.primary,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     Gap(2.h),
@@ -73,9 +74,10 @@ class Statistics extends ConsumerWidget {
                               .state = index,
                           child: Chip(
                             elevation: 0.0,
+                            side: BorderSide.none,
                             backgroundColor: selectedTab == index
                                 ? AppColor.kBlackColor
-                                : AppColor.kWhitColor,
+                                : AppColor.kGreyColor.withOpacity(0.8.spa),
                             label: Text(
                               dayType[index],
                               style: TextStyle(
@@ -83,7 +85,7 @@ class Statistics extends ConsumerWidget {
                                 letterSpacing: 1.7,
                                 fontWeight: FontWeight.w500,
                                 color: selectedTab == index
-                                    ? AppColor.kWhitColor
+                                    ? theme.tertiary
                                     : AppColor.kBlackColor,
                               ),
                             ),
@@ -154,15 +156,13 @@ class Statistics extends ConsumerWidget {
                       Gap(2.5.h),
                       Row(
                         children: [
-                          Text(
-                            'Top $expenseType',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColor.kBlackColor,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          TextWigdet(
+                            text: 'Top $expenseType',
+                            fontSize: 14.sp,
+                            color: theme.primary,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Gap(1.w),
+                          Gap(2.w),
                           LineIcon.wallet(
                             size: 18.sp,
                             color: switch (expenseType) {
@@ -206,34 +206,30 @@ class Statistics extends ConsumerWidget {
                             return ListTile(
                               title: Row(
                                 children: [
-                                  Text(
-                                    '${history.expenseType}\tfor\t${history.name}',
-                                    style: TextStyle(
-                                        color: AppColor.kDarkGreyColor,
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  TextWigdet(
+                                      text:
+                                          '${history.expenseType}\tfor\t${history.name}',
+                                      color: theme.primary,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w600),
                                 ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    history.explain,
-                                    style: TextStyle(
-                                        color: AppColor.kDarkGreyColor,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  TextWigdet(
+                                      text: history.explain,
+                                      color: theme.primary,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600),
                                 ],
                               ),
                               leading: iconData,
-                              trailing: Text(
-                                history.amount.toString(),
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                              trailing: TextWigdet(
+                                  text: history.amount.toString(),
+                                  color: theme.primary,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600),
                             );
                           })
                     ]),

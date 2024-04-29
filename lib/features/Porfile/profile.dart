@@ -1,5 +1,4 @@
 import 'package:expense_app/notifer/auth_notifer.dart';
-import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
@@ -7,13 +6,14 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
+import 'package:expense_app/utils/setting_button.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:expense_app/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -63,21 +63,17 @@ class ProfileScreen extends HookConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        firebaseAuth.currentUser?.displayName ?? "",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            letterSpacing: 1.5,
-                            fontWeight: FontWeight.w600),
-                      ),
+                      TextWigdet(
+                          text: firebaseAuth.currentUser?.displayName ?? "",
+                          fontSize: 16.sp,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w600),
                       Gap(5.w),
-                      Text(
-                        firebaseAuth.currentUser?.email ?? "",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            letterSpacing: 1.5,
-                            fontWeight: FontWeight.w600),
-                      ),
+                      TextWigdet(
+                          text: firebaseAuth.currentUser?.email ?? "",
+                          fontSize: 16.sp,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w600),
                     ],
                   ),
                   Gap(2.h),
@@ -90,6 +86,11 @@ class ProfileScreen extends HookConsumerWidget {
                         height: 25.h,
                         child: SfCircularChart(
                           margin: EdgeInsets.zero,
+                          palette: const [
+                            AppColor.kGreenColor,
+                            AppColor.kredColor,
+                            AppColor.kBlueColor
+                          ],
                           series: <CircularSeries>[
                             DoughnutSeries<MapEntry<String, int>, String>(
                               dataSource: lengths.entries.toList(),
@@ -97,8 +98,12 @@ class ProfileScreen extends HookConsumerWidget {
                               yValueMapper: (entry, _) => entry.value,
                               dataLabelMapper: (entry, _) =>
                                   '${entry.key}: ${entry.value}',
-                              dataLabelSettings:
-                                  const DataLabelSettings(isVisible: true),
+                              dataLabelSettings: DataLabelSettings(
+                                  isVisible: true,
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary)),
                             ),
                           ],
                           legend: const Legend(isVisible: true),
@@ -169,73 +174,12 @@ class CommingSoon extends StatelessWidget {
       width: double.infinity,
       height: 20.h,
       child: Center(
-          child: Text(
-        'Comming soon',
-        style: TextStyle(
-            fontSize: 20.sp, fontWeight: FontWeight.w600, letterSpacing: 1.4),
-      )),
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  final IconData icons;
-  final String? title;
-  final Color? color;
-  final double? margin;
-  final Widget? lastWidget;
-  final bool? showLastWidget;
-  final VoidCallback? press;
-  const CustomButton(
-      {super.key,
-      this.title,
-      this.color = AppColor.kDarkGreyColor,
-      this.press,
-      required this.icons,
-      this.margin = 20,
-      this.lastWidget,
-      this.showLastWidget = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
-      child: Container(
-        width: double.infinity,
-        alignment: Alignment.centerLeft,
-        height: 5.h,
-        margin: EdgeInsets.only(bottom: margin!.sp),
-        padding: EdgeInsets.symmetric(horizontal: 15.sp),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.sp),
-            color: color!.withOpacity(1.0.sp)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                LineIcon(icons),
-                Gap(2.w),
-                Text(
-                  title!,
-                  style: TextStyle(fontSize: 15.sp, letterSpacing: 1.5),
-                ),
-              ],
-            ),
-            if (showLastWidget ?? false) lastWidget ?? const SizedBox.shrink(),
-          ],
-        ),
+        child: TextWigdet(
+            text: 'Comming soon',
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.4),
       ),
     );
   }
-}
-
-Map<String, int> calculateLengths(List<CreateExpenseModel> data) {
-  int incomeLength =
-      data.where((expense) => expense.expenseType == "Income").length;
-  int expenseLength =
-      data.where((expense) => expense.expenseType == "Expense").length;
-  int debtLength =
-      data.where((expense) => expense.expenseType == "Debt").length;
-  return {'Income': incomeLength, 'Expense': expenseLength, 'Debt': debtLength};
 }
