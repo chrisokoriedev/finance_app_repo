@@ -113,11 +113,10 @@ class SettingAndSupport extends HookConsumerWidget {
             CustomButton(
               title: 'Clear all data',
               icons: LineIcons.userInjured,
-              press: () {
-                ref
-                    .read(createExpenseNotifierProvider.notifier)
-                    .deleteUserRecord();
-              },
+               press: () => showModalBottomSheet(
+                  context: context,
+                  builder: (context) => const ClearUserData()),
+             
             ),
             CustomButton(
               title: 'Delete Account',
