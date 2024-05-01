@@ -13,10 +13,11 @@ dependencies:
     sdk: flutter
 
   cupertino_icons:
-  cloud_firestore: 
+  cloud_firestore:
   table_calendar:
   responsive_sizer: ^3.2.0
   gap:
+  icons_launcher: ^2.1.7
   line_icons: ^2.0.3
   flutter_riverpod: ^2.3.6
   firebase_core:
@@ -48,6 +49,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+icons_launcher:
+  image_path: "assets/app_icon.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
 
   assets:
     - assets/
