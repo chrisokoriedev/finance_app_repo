@@ -49,6 +49,7 @@ class AuthDataSource {
         await sharedPreferences.clear();
         await _firebaseAuth.signOut();
         await googleSignIn.signOut();
+
         return right('Sign-out successful');
       } else {
         return left('Logout operation already performed');
