@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
@@ -38,14 +39,19 @@ class AuthScreen extends HookConsumerWidget {
             child: Center(
               child: imageUrlAsync.when(
                 data: (imageUrl) {
-                  return Container(
+                  return CachedNetworkImage(
                     width: 100.w,
                     height: 100.h,
-                    padding: EdgeInsets.zero,
-                    margin: EdgeInsets.zero,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+                    fit: BoxFit.cover,
+                    imageUrl: imageUrl,
+                    placeholder: (BuildContext context, String url) =>
+                        const Center(
+                            child: CircularProgressIndicator.adaptive()),
+                    errorWidget:
+                        (BuildContext context, String url, dynamic error) =>
+                            LineIcon.user(
+                      size: 12.sp,
+                    ),
                   );
                 },
                 loading: () => const Text('Nora'),
