@@ -22,6 +22,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   firebase_core:
   firebase_auth:
+  firebase_remote_config:
   local_auth:
   url_launcher:
   flutter_easyloading:
@@ -51,7 +52,7 @@ flutter:
   uses-material-design: true
 
 icons_launcher:
-  image_path: "assets/app_icon.png"
+  image_path: "assets/images/app_icon.png"
   platforms:
     android:
       enable: true
@@ -59,8 +60,10 @@ icons_launcher:
       enable: true
 
   assets:
+    - assets/a.png
     - assets/
-    - assets/gifs/
+    - assets/gifs/  
+    - assets/images/
 
   # fonts:
   #   - family: Schyler

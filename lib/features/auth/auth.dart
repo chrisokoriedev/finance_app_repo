@@ -1,4 +1,5 @@
 import 'package:expense_app/notifer/auth_notifer.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
@@ -17,6 +18,7 @@ class AuthScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authNotifierProvider);
+    final imageUrlAsync = ref.watch(imageProvider);
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
@@ -30,20 +32,32 @@ class AuthScreen extends HookConsumerWidget {
       );
     });
     return Scaffold(
+      backgroundColor: AppColor.kGreyColor,
       body: Stack(
         fit: StackFit.expand,
         children: [
           Positioned(
-            top: 0,
-            child: Container(
-              width: 100.w,
-              height: 70.h,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  image: AssetImage('assets/bg.jpg'),
-                ),
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            child: Center(
+              child: imageUrlAsync.when(
+                data: (imageUrl) {
+                  return imageUrl.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : Container(
+                          width: double.infinity,
+                          height: 90.h,
+                          decoration: BoxDecoration(
+                              color: AppColor.kBlackColor,
+                              image: DecorationImage(
+                                  image: NetworkImage(imageUrl))),
+                        );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) =>
+                    const Center(child: Text('Error fetching image')),
               ),
             ),
           ),
@@ -101,5 +115,3 @@ class AuthScreen extends HookConsumerWidget {
     );
   }
 }
-
-

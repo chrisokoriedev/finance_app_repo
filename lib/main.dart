@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_app/firebase_options.dart';
+import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/theme.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -16,6 +18,7 @@ import 'utils/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
+//  FirebaseRemoteConfig.instance.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final firestore = FirebaseFirestore.instance;
