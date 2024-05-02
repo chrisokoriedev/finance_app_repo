@@ -32,30 +32,23 @@ class AuthScreen extends HookConsumerWidget {
       );
     });
     return Scaffold(
-      backgroundColor: AppColor.kGreyColor,
       body: Stack(
-        fit: StackFit.expand,
         children: [
           Positioned(
-            top: 10,
-            left: 10,
-            right: 10,
-            bottom: 10,
             child: Center(
               child: imageUrlAsync.when(
                 data: (imageUrl) {
-                  return imageUrl.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
-                      : Container(
-                          width: double.infinity,
-                          height: 90.h,
-                          decoration: BoxDecoration(
-                              color: AppColor.kBlackColor,
-                              image: DecorationImage(
-                                  image: NetworkImage(imageUrl))),
-                        );
+                  return Container(
+                    width: 100.w,
+                    height: 100.h,
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+                  );
                 },
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const Text('Nora'),
                 error: (error, stackTrace) =>
                     const Center(child: Text('Error fetching image')),
               ),
@@ -65,7 +58,7 @@ class AuthScreen extends HookConsumerWidget {
               bottom: 0,
               child: Container(
                 width: 100.w,
-                height: 30.h,
+                height: 25.h,
                 decoration: BoxDecoration(
                     color: AppColor.kDarkGreyColor,
                     borderRadius:

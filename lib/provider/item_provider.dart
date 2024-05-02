@@ -27,15 +27,11 @@ final cloudItemsProvider = FutureProvider((ref) async {
 
 final imageProvider = FutureProvider<String>((ref) async {
   final remoteConfig = ref.watch(remoteConfigProvider);
-
   try {
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: const Duration(minutes: 1),
         minimumFetchInterval: const Duration(seconds: 10)));
-        print('done');
-        await remoteConfig.fetchAndActivate();
-        print('fetchAndActivate');
-
+    await remoteConfig.fetchAndActivate();
     return remoteConfig.getString('auth_image');
   } on FirebaseException catch (e) {
     debugPrint(e.toString());
