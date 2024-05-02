@@ -1,4 +1,5 @@
 import 'package:expense_app/notifer/auth_notifer.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/auth.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
@@ -17,6 +18,7 @@ class AuthScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authNotifierProvider);
+    final imageUrlAsync = ref.watch(imageProvider);
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
@@ -31,19 +33,24 @@ class AuthScreen extends HookConsumerWidget {
     });
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand,
         children: [
           Positioned(
-            top: 0,
-            child: Container(
-              width: 100.w,
-              height: 70.h,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  image: AssetImage('assets/bg.jpg'),
-                ),
+            child: Center(
+              child: imageUrlAsync.when(
+                data: (imageUrl) {
+                  return Container(
+                    width: 100.w,
+                    height: 100.h,
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(imageUrl), fit: BoxFit.cover)),
+                  );
+                },
+                loading: () => const Text('Nora'),
+                error: (error, stackTrace) =>
+                    const Center(child: Text('Error fetching image')),
               ),
             ),
           ),
@@ -51,7 +58,7 @@ class AuthScreen extends HookConsumerWidget {
               bottom: 0,
               child: Container(
                 width: 100.w,
-                height: 30.h,
+                height: 25.h,
                 decoration: BoxDecoration(
                     color: AppColor.kDarkGreyColor,
                     borderRadius:
@@ -101,5 +108,3 @@ class AuthScreen extends HookConsumerWidget {
     );
   }
 }
-
-

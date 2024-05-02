@@ -50,7 +50,7 @@ class BioAuthScreen extends HookConsumerWidget {
                 .loginBioWithLocalAuth(),
             child: Icon(
               Icons.fingerprint_sharp,
-              size: 40.sp,
+              size: 30.sp,
             ),
           ),
           Gap(2.h),

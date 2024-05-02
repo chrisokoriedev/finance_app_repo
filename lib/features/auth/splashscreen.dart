@@ -13,11 +13,11 @@ class SplashScreen extends HookConsumerWidget {
       data: (enabled) {
         if (enabled) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.push(AppRouter.bioScreen);
+            context.pushReplacement(AppRouter.bioScreen);
           });
         } else {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.push(AppRouter.mainControl);
+            context.pushReplacement(AppRouter.mainControl);
           });
         }
         return const SizedBox.shrink();
