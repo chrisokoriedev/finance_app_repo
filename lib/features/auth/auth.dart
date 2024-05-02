@@ -6,6 +6,7 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
@@ -33,6 +34,7 @@ class AuthScreen extends HookConsumerWidget {
       );
     });
     return Scaffold(
+      backgroundColor: AppColor.kDarkGreyColor,
       body: Stack(
         children: [
           Positioned(
@@ -40,23 +42,24 @@ class AuthScreen extends HookConsumerWidget {
               child: imageUrlAsync.when(
                 data: (imageUrl) {
                   return CachedNetworkImage(
-                    width: 100.w,
-                    height: 100.h,
-                    fit: BoxFit.cover,
-                    imageUrl: imageUrl,
-                    placeholder: (BuildContext context, String url) =>
-                        const Center(
-                            child: CircularProgressIndicator.adaptive()),
-                    errorWidget:
-                        (BuildContext context, String url, dynamic error) =>
-                            LineIcon.user(
-                      size: 12.sp,
-                    ),
-                  );
+                      width: 100.w,
+                      height: 100.h,
+                      fit: BoxFit.cover,
+                      imageUrl: imageUrl,
+                      placeholder: (BuildContext context, String url) =>
+                          const Center(
+                              child: CircularProgressIndicator.adaptive()),
+                      errorWidget:
+                          (BuildContext context, String url, dynamic error) =>
+                              LineIcon.fighterJet(size: 20.sp));
                 },
-                loading: () => const Text('Nora'),
-                error: (error, stackTrace) =>
-                    const Center(child: Text('Error fetching image')),
+                loading: () => TextWigdet(
+                    text: 'Nora', color: AppColor.kWhitColor, fontSize: 20.sp),
+                error: (error, stackTrace) => Center(
+                    child: TextWigdet(
+                        text: error.toString(),
+                        color: AppColor.kWhitColor,
+                        fontSize: 15.sp)),
               ),
             ),
           ),
