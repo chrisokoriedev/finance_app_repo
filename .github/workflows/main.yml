@@ -20,7 +20,7 @@ jobs:
           java-version: '20.0.2'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.2.0'
+          flutter-version: '3.16.0'
       - run: flutter pub get
       - run: flutter test
       - run: flutter build apk --split-per-abi --release
