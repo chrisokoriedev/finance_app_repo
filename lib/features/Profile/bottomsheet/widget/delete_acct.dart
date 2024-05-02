@@ -1,4 +1,4 @@
-import 'package:expense_app/features/Porfile/bottomsheet/setting_and_support.dart';
+import 'package:expense_app/features/Profile/bottomsheet/setting_and_support.dart';
 import 'package:expense_app/notifer/auth_notifer.dart';
 import 'package:expense_app/notifer/create_expense_notifer.dart';
 import 'package:expense_app/provider/firebase.dart';

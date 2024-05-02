@@ -1,4 +1,4 @@
-import 'package:expense_app/features/Porfile/profile.dart';
+import 'package:expense_app/features/Profile/profile.dart';
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
 import 'package:expense_app/features/homepage/hompage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
