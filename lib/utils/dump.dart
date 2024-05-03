@@ -147,3 +147,43 @@
 //     return []; 
 //   }
 // });
+
+
+
+     // DropdownButton(
+          //   value: chooseSubExpense,
+          //   underline: Container(),
+          //   isExpanded: true,
+          //   hint: Text(
+          //     'Type',
+          //     style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
+          //   ),
+          //   selectedItemBuilder: (context) => expenseSubListType
+          //       .map(
+          //         (e) => DropdownMenuItem(
+          //           value: e,
+          //           child: Text(
+          //             e,
+          //             style: TextStyle(
+          //                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+          //           ),
+          //         ),
+          //       )
+          //       .toList(),
+          //   items: expenseSubListType
+          //       .map(
+          //         (e) => DropdownMenuItem(
+          //           value: e,
+          //           child: Text(
+          //             e,
+          //             style: TextStyle(
+          //                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+          //           ),
+          //         ),
+          //       )
+          //       .toList(),
+          //   onChanged: (value) {
+          //     ref.read(expenseSubItemTypeProvider.notifier).state =
+          //         value.toString();
+          //   },
+          // ),
