@@ -24,6 +24,7 @@ dependencies:
   firebase_core:
   firebase_auth:
   firebase_remote_config:
+  firebase_analytics:
   local_auth:
   url_launcher:
   flutter_easyloading:

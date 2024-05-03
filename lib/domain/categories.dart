@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:expense_app/provider/firebase.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ class ExpenseCatergory {
               .doc(userId)
               .collection(AppString.expenseSubList)
               .add({AppString.expenseSubList: category});
+          // ignore: unused_result
+          ref.refresh(expenseListCatProvider.future);
         }
       }
       return left('Success');

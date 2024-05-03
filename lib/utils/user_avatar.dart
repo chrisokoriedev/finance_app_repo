@@ -23,7 +23,7 @@ class UserAvatar extends StatelessWidget {
             const Center(child: CircularProgressIndicator.adaptive()),
         errorWidget: (BuildContext context, String url, dynamic error) =>
             LineIcon.user(
-          size: 12.sp,
+          size: 10.w,
         ),
       ),
     );
