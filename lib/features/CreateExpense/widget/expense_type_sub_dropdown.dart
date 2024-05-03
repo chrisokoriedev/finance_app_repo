@@ -72,7 +72,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
   });
 
   final String chooseSubExpense;
-  final List<String> expenseSubListType;
+  final List expenseSubListType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,7 +83,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
       decoration: BoxDecoration(
           color: AppColor.kGreyColor.withOpacity(0.3),
           borderRadius: customBorderRadius(10)),
-      child: DropdownButton<String>(
+      child: DropdownButton(
         value: chooseSubExpense,
         underline: Container(),
         isExpanded: true,
@@ -116,7 +116,8 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
             )
             .toList(),
         onChanged: (value) {
-          ref.read(expenseSubItemTypeProvider.notifier).state = value!;
+          ref.read(expenseSubItemTypeProvider.notifier).state =
+              value.toString();
         },
       ),
     );

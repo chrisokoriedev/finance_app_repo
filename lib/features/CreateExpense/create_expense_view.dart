@@ -1,4 +1,6 @@
 import 'package:expense_app/notifer/create_expense_notifer.dart';
+import 'package:expense_app/notifer/expense_category.dart';
+import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/state/local.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
@@ -36,6 +38,7 @@ class CreateExpenseView extends ConsumerWidget {
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
+    final expenseCatergoryList = ref.watch(expenseListCatProvider);
     final authState = ref.watch(createExpenseNotifierProvider);
     ref.listen(createExpenseNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -112,17 +115,26 @@ class CreateExpenseView extends ConsumerWidget {
                       chooseExpense == AppString.expenses
                           ? Column(
                               children: [
-                                ExpenseSubTypeComponent(
-                                    chooseSubExpense: chooseSubExpense,
-                                    expenseSubListType: expenseSubListType),
+                                expenseCatergoryList.when(
+                                    data: (data) {
+                                      var newDate =data[0];
+                                      print('$newDate');
+                                      return ExpenseSubTypeComponent(
+                                          chooseSubExpense: chooseSubExpense,
+                                          expenseSubListType: [
+                                            ...expenseSubListType,
+                                            ...data
+                                          ]);
+                                    },
+                                    loading: () => const Text('data'),
+                                    error: (_, __) {
+                                      print(__);
+                                      return Text('failed $__');
+                                    }),
                                 Gap(2.h),
                               ],
                             )
-                          : Column(
-                              children: [
-                                Container(),
-                              ],
-                            ),
+                          : Container(),
                       CustomTextFormField(
                           textEditingController: expenseAmountController,
                           hintText: 'Amount',
@@ -180,6 +192,9 @@ class CreateExpenseView extends ConsumerWidget {
                     ],
                   ),
                 ),
+                InkWell(
+                  onTap: ()=>ref.read(expenseCategoryNotifier.notifier).addToList('dog'),
+                  child: Text('add'))
               ],
             ),
           ),

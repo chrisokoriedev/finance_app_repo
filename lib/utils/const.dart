@@ -19,9 +19,7 @@ List<String> expenseSubListType = [
   'Transportation',
   'Housing',
   'Food',
-  'Health Care',
-  'Education',
-  'Debt Payments',
+  'Data',
   'Clothing'
 ];
 
