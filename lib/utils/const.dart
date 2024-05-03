@@ -1,4 +1,5 @@
 import 'package:expense_app/model/create_expense.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'colors.dart';
 
-List<String> expenseListType = ['Expense', 'Income', 'Debt'];
+List<String> expenseListType = [
+  AppString.income,
+  AppString.expenses,
+  AppString.debt
+];
 List<String> expenseSubListType = [
   '..',
   'Transportation',
   'Housing',
   'Food',
-  'Health Care',
-  'Education',
-  'Debt Payments',
+  'Data',
   'Clothing'
 ];
 
@@ -137,11 +140,9 @@ class CustomTextFormField extends StatelessWidget {
       maxLength: maxlength,
       onChanged: onChanged,
       style: TextStyle(
-          fontSize: 14.sp,
-          color: theme.primary,
-          fontWeight: FontWeight.w600),
+          fontSize: 14.sp, color: theme.primary, fontWeight: FontWeight.w600),
       cursorWidth: 1.w,
-      cursorColor:  theme.primary,
+      cursorColor: theme.primary,
       cursorRadius: Radius.circular(10.sp),
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
@@ -174,10 +175,10 @@ class NoDataView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Gap(1.h),
-          Image.asset(
-            'assets/gifs/coming_soon.gif',
-            width: 50.w,
-          ),
+          // Image.asset(
+          //   'assets/gifs/coming_soon.gif',
+          //   width: 50.w,
+          // ),
           Gap(2.h),
           TextWigdet(
             text: 'No items to display',

@@ -17,12 +17,14 @@ dependencies:
   table_calendar:
   responsive_sizer: ^3.2.0
   gap:
+  animated_custom_dropdown:
   icons_launcher: ^2.1.7
   line_icons: ^2.0.3
   flutter_riverpod: ^2.3.6
   firebase_core:
   firebase_auth:
   firebase_remote_config:
+  firebase_analytics:
   local_auth:
   url_launcher:
   flutter_easyloading:
@@ -61,7 +63,6 @@ icons_launcher:
       enable: true
 
   assets:
-    - assets/a.png
     - assets/
     - assets/gifs/  
     - assets/images/
