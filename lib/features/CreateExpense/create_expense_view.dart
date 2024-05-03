@@ -88,9 +88,10 @@ class CreateExpenseView extends HookConsumerWidget {
             left: 10,
             right: 10,
             child: Center(
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 600),
                 width: 80.w,
-                height: 54.h,
+                height: chooseExpense == AppString.expenses ? 60.h : 50.h,
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                 decoration: BoxDecoration(
@@ -197,7 +198,7 @@ class CreateExpenseView extends HookConsumerWidget {
                                   ref.read(selectedDateTimeStateProvider),
                               firstDate: DateTime(2001),
                               lastDate: DateTime(2080));
-                    
+
                           if (newDate != null) {
                             ref
                                 .read(selectedDateTimeStateProvider.notifier)

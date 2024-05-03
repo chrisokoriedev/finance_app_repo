@@ -2,7 +2,7 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-  appBarTheme: const AppBarTheme(surfaceTintColor: AppColor.kWhitColor),
+  appBarTheme: const AppBarTheme(backgroundColor: AppColor.kWhitColor),
   bottomAppBarTheme: const BottomAppBarTheme(color: AppColor.kWhitColor),
   scaffoldBackgroundColor: AppColor.kWhitColor,
   colorScheme: ColorScheme.fromSeed(
