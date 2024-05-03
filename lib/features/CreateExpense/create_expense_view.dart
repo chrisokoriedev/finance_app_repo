@@ -52,6 +52,17 @@ class CreateExpenseView extends ConsumerWidget {
         },
       );
     });
+    ref.listen(expenseCategoryNotifier, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        success: (message) async {
+          EasyLoading.showSuccess(message!);
+        },
+        failed: (message) {
+          EasyLoading.showError(message!);
+        },
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -116,19 +127,14 @@ class CreateExpenseView extends ConsumerWidget {
                           ? Column(
                               children: [
                                 expenseCatergoryList.when(
-                                    data: (data) {
-                                      var newDate =data[0];
-                                      print('$newDate');
-                                      return ExpenseSubTypeComponent(
-                                          chooseSubExpense: chooseSubExpense,
-                                          expenseSubListType: [
-                                            ...expenseSubListType,
-                                            ...data
-                                          ]);
-                                    },
+                                    data: (data) => ExpenseSubTypeComponent(
+                                            chooseSubExpense: chooseSubExpense,
+                                            expenseSubListType: [
+                                              ...expenseSubListType,
+                                              ...data
+                                            ]),
                                     loading: () => const Text('data'),
                                     error: (_, __) {
-                                      print(__);
                                       return Text('failed $__');
                                     }),
                                 Gap(2.h),
@@ -193,8 +199,10 @@ class CreateExpenseView extends ConsumerWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: ()=>ref.read(expenseCategoryNotifier.notifier).addToList('dog'),
-                  child: Text('add'))
+                    onTap: () => ref
+                        .read(expenseCategoryNotifier.notifier)
+                        .addToList('dog'),
+                    child: const Text('add'))
               ],
             ),
           ),

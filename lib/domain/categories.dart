@@ -21,11 +21,22 @@ class ExpenseCatergory {
       final firestoreInstance = _firebaseFirestore;
       final userId = _firebaseAuth.currentUser!.uid;
       if (userId.isNotEmpty) {
-        await firestoreInstance
+        final existingCategories = await firestoreInstance
             .collection(AppString.expenseSubList)
             .doc(userId)
             .collection(AppString.expenseSubList)
-            .add({AppString.expenseSubList: category});
+            .where(AppString.expenseSubList, isEqualTo: category)
+            .get();
+
+        if (existingCategories.docs.isNotEmpty) {
+          return right('Category already exists');
+        } else {
+          await firestoreInstance
+              .collection(AppString.expenseSubList)
+              .doc(userId)
+              .collection(AppString.expenseSubList)
+              .add({AppString.expenseSubList: category});
+        }
       }
       return left('Success');
     } catch (e) {

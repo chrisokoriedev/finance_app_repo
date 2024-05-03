@@ -76,6 +76,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -116,6 +117,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
             )
             .toList(),
         onChanged: (value) {
+          print(value);
           ref.read(expenseSubItemTypeProvider.notifier).state =
               value.toString();
         },

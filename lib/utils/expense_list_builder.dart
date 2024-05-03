@@ -1,15 +1,17 @@
 import 'package:expense_app/domain/cal.dart';
+import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ExpenseListBuilder extends HookConsumerWidget {
-  final List data;
+  final List<CreateExpenseModel> data;
   final bool showDateTIme;
 
   final int childCount;
@@ -128,29 +130,37 @@ class ExpenseListBuilder extends HookConsumerWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    history.explain,
-                    style: TextStyle(
-                        color: theme.primary,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600),
+                  Row(
+                    children: [
+                      TextWigdet(
+                          text: history.explain,
+                          color: theme.primary,
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w600),
+                      Gap(10.w),
+                      history.expenseSubList != '..'
+                          ? TextWigdet(
+                              text: history.expenseSubList,
+                              color: theme.primary,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600)
+                          : const SizedBox.shrink(),
+                    ],
                   ),
                   showDateTIme
-                      ? Text(
-                          timeago.format(history.dateTime),
-                          style: TextStyle(
-                              color: AppColor.kGreyColor.shade500,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500),
-                        )
+                      ? TextWigdet(
+                          text: timeago.format(history.dateTime),
+                          color: AppColor.kGreyColor.shade500,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500)
                       : const SizedBox.shrink(),
                 ],
               ),
               leading: iconData,
-              trailing: Text(
-                history.amount.toString(),
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-              ),
+              trailing: TextWigdet(
+                  text: history.amount.toString(),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600),
             ),
           );
         },
