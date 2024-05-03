@@ -23,8 +23,8 @@ class ViewExpensesTimeline extends HookConsumerWidget {
       error: (_, __) => const Text('Something went wrong'),
       loading: () => const CircularProgressIndicator(color: Colors.red),
       data: (data) {
-          var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-        
+        var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
         List<CreateExpenseModel> expenseData = dataNew.toList();
 
         Map<DateTime, List<CreateExpenseModel>> groupedExpenses = {};
@@ -135,11 +135,11 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                 return confirm;
                               },
                               onDismissed: (direction) {
-                                int expense = expenses.indexOf(history);
+                                String expenseName = history.name;
                                 ref
                                     .read(deleteExpenseProvider.notifier)
                                     .state
-                                    .deleteExpense(expense);
+                                    .deleteExpense(expenseName);
                               },
                               child: ListTile(
                                 title: Row(
