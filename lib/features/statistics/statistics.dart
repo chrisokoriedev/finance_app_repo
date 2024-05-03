@@ -191,12 +191,13 @@ class Statistics extends ConsumerWidget {
 
                             final history = expenseData[index];
                             Icon iconData;
-                            if (history.expenseType == "Income") {
+                            if (history.expenseType == AppString.income) {
                               iconData = LineIcon.wallet(
                                 size: 18.sp,
                                 color: AppColor.kGreenColor,
                               );
-                            } else if (history.expenseType == "Expense") {
+                            } else if (history.expenseType ==
+                                AppString.expenses) {
                               iconData = LineIcon.alternateWavyMoneyBill(
                                 size: 18.sp,
                                 color: AppColor.kredColor,
@@ -204,7 +205,7 @@ class Statistics extends ConsumerWidget {
                             } else {
                               iconData = LineIcon.alternateWavyMoneyBill(
                                 size: 18.sp,
-                                color: theme.primary,
+                                color: AppColor.kBlueColor,
                               );
                             }
                             return ListTile(
