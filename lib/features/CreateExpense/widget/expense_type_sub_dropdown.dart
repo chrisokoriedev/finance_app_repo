@@ -80,7 +80,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).colorScheme;
     return SizedBox(
-      height: 5.3.h,
+      height: 5.h,
       child: CustomDropdown.search(
         closedHeaderPadding:
             EdgeInsets.symmetric(horizontal: 2.w, vertical: 16.sp),

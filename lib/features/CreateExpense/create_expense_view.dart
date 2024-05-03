@@ -12,6 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:line_icons/line_icon.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -126,17 +127,29 @@ class CreateExpenseView extends ConsumerWidget {
                       chooseExpense == AppString.expenses
                           ? Column(
                               children: [
-                                expenseCatergoryList.when(
-                                    data: (data) => ExpenseSubTypeComponent(
-                                            chooseSubExpense: chooseSubExpense,
-                                            expenseSubListType: [
-                                              ...expenseSubListType,
-                                              ...data
-                                            ]),
-                                    loading: () => const Text('data'),
-                                    error: (_, __) {
-                                      return Text('failed $__');
-                                    }),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      flex: 10,
+                                      child: expenseCatergoryList.when(
+                                          data: (data) =>
+                                              ExpenseSubTypeComponent(
+                                                  chooseSubExpense:
+                                                      chooseSubExpense,
+                                                  expenseSubListType: [
+                                                    ...expenseSubListType,
+                                                    ...data
+                                                  ]),
+                                          loading: () => const Text('data'),
+                                          error: (_, __) {
+                                            return Text('failed $__');
+                                          }),
+                                    ),
+                                    const Flexible(
+                                        flex: 2, child: Center(child: LineIcon.plus())),
+                                  ],
+                                ),
                                 Gap(2.h),
                               ],
                             )
