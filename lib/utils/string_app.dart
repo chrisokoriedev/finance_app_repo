@@ -9,6 +9,7 @@ class AppString {
   static const String appUserIcon =
       'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid';
 
+  static const String expenseSubList = 'expenseSubList';
   static const String all = "All";
   static const String income = 'Income';
   static const String expenses = "Expense";
