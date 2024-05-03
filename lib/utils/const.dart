@@ -174,10 +174,10 @@ class NoDataView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Gap(1.h),
-          Image.asset(
-            'assets/gifs/coming_soon.gif',
-            width: 50.w,
-          ),
+          // Image.asset(
+          //   'assets/gifs/coming_soon.gif',
+          //   width: 50.w,
+          // ),
           Gap(2.h),
           TextWigdet(
             text: 'No items to display',

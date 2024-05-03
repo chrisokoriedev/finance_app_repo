@@ -4,6 +4,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,11 +17,11 @@ import 'model/day_model.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 final expenseItemTypeProvider =
-    StateProvider.autoDispose<String>((ref) => 'Income');
+    StateProvider<String>((ref) => AppString.income);
 List<String> expenseListType = [
-  'Expense',
-  'Income',
-  'Debt',
+  AppString.income,
+  AppString.expenses,
+  AppString.debt,
 ];
 
 class Statistics extends ConsumerWidget {
@@ -38,13 +39,16 @@ class Statistics extends ConsumerWidget {
       canPop: false,
       onPopInvoked: (value) => pageController.jumpToPage(0),
       child: itemProvider.when(
-        error: (_, __) => Text('Error $__'),
+        error: (_, __) => Text(
+          'Error $__',
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (data) {
           List<CreateExpenseModel> expenseData = data
               .where((expense) => expense.expenseType == expenseType)
               .toList()
             ..sort((a, b) => b.amount.compareTo(a.amount));
+
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 3.w),
             child: Column(
@@ -166,9 +170,9 @@ class Statistics extends ConsumerWidget {
                           LineIcon.wallet(
                             size: 18.sp,
                             color: switch (expenseType) {
-                              'Income' => AppColor.kGreenColor,
-                              'Expense' => AppColor.kredColor,
-                              'Debt' => AppColor.kBlueColor,
+                              AppString.income => AppColor.kGreenColor,
+                              AppString.expenses => AppColor.kredColor,
+                              AppString.debt => AppColor.kBlueColor,
                               _ => AppColor.kGreyColor,
                             },
                           )
@@ -200,7 +204,7 @@ class Statistics extends ConsumerWidget {
                             } else {
                               iconData = LineIcon.alternateWavyMoneyBill(
                                 size: 18.sp,
-                                color: AppColor.kBlueColor,
+                                color: theme.primary,
                               );
                             }
                             return ListTile(

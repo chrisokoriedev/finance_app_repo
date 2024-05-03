@@ -8,4 +8,9 @@ class AppString {
   static const String viewTimeline = 'View Timeline';
   static const String appUserIcon =
       'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid';
+
+  static const String all = "All";
+  static const String income = 'Income';
+  static const String expenses = "Expense";
+  static const String debt = "Debt";
 }

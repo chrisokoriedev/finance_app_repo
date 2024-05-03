@@ -61,7 +61,6 @@ icons_launcher:
       enable: true
 
   assets:
-    - assets/a.png
     - assets/
     - assets/gifs/  
     - assets/images/
