@@ -18,11 +18,6 @@ import 'model/day_model.dart';
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 final expenseItemTypeProvider =
     StateProvider<String>((ref) => AppString.income);
-List<String> expenseListType = [
-  AppString.income,
-  AppString.expenses,
-  AppString.debt,
-];
 
 class Statistics extends ConsumerWidget {
   final PageController pageController;

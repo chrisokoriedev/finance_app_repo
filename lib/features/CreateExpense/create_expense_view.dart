@@ -3,6 +3,7 @@ import 'package:expense_app/state/local.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
 import 'package:expense_app/utils/loading.dart';
+import 'package:expense_app/utils/string_app.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,7 +19,7 @@ import 'widget/submt_button.dart';
 final selectedDateTimeStateProvider =
     StateProvider.autoDispose<DateTime>((ref) => DateTime.now());
 final expenseItemTypeProvider =
-    StateProvider.autoDispose<String>((ref) => 'Income');
+    StateProvider.autoDispose<String>((ref) => AppString.income);
 final expenseSubItemTypeProvider =
     StateProvider.autoDispose<String>((ref) => '..');
 final expenseAmountController = TextEditingController();
@@ -108,7 +109,7 @@ class CreateExpenseView extends ConsumerWidget {
                         ],
                       ),
                       Gap(2.h),
-                      chooseExpense == 'Expense'
+                      chooseExpense == AppString.expenses
                           ? Column(
                               children: [
                                 ExpenseSubTypeComponent(
