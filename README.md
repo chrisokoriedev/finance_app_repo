@@ -2,7 +2,7 @@
 - Authentication:
 - Expense Entry: 
 - Expense List View:
-- Expense Categories: 
+- Expense Categories update and delete
 - Expense Deletion:
 - Expense Filtering
 - Cloud Sync
@@ -12,3 +12,4 @@
 - Expense Analytics
 - Notification
 
+![Uploading a.png…]()
