@@ -91,7 +91,7 @@ class CreateExpenseView extends HookConsumerWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 600),
                 width: 80.w,
-                height: chooseExpense == AppString.expenses ? 60.h : 50.h,
+                height: chooseExpense == AppString.expenses ? 58.h : 50.h,
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                 decoration: BoxDecoration(
@@ -183,28 +183,28 @@ class CreateExpenseView extends HookConsumerWidget {
                       maxlength: 30,
                     ),
                     Gap(2.h),
-                    Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      height: 5.h,
-                      decoration: BoxDecoration(
-                          color: AppColor.kGreyColor.withOpacity(0.3),
-                          borderRadius: customBorderRadius(10)),
-                      child: GestureDetector(
-                        onTap: () async {
-                          DateTime? newDate = await showDatePicker(
-                              context: context,
-                              initialDate:
-                                  ref.read(selectedDateTimeStateProvider),
-                              firstDate: DateTime(2001),
-                              lastDate: DateTime(2080));
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate:
+                                ref.read(selectedDateTimeStateProvider),
+                            firstDate: DateTime(2001),
+                            lastDate: DateTime(2080));
 
-                          if (newDate != null) {
-                            ref
-                                .read(selectedDateTimeStateProvider.notifier)
-                                .state = newDate;
-                          }
-                        },
+                        if (newDate != null) {
+                          ref
+                              .read(selectedDateTimeStateProvider.notifier)
+                              .state = newDate;
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        height: 5.h,
+                        decoration: BoxDecoration(
+                            color: AppColor.kGreyColor.withOpacity(0.3),
+                            borderRadius: customBorderRadius(10)),
                         child: Text(
                           'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
                           style: TextStyle(
