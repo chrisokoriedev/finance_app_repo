@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
       this.color,
       this.press,
       required this.icons,
-      this.margin = 20,
+      this.margin = 16,
       this.lastWidget,
       this.showLastWidget = false});
 

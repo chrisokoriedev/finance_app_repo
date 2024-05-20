@@ -6,6 +6,8 @@ class AppString {
   static const String userExpense = 'user_expenses';
   static const String appName = 'Nora';
   static const String viewTimeline = 'View Timeline';
+  static const String manage= 'Manage expense catergory';
+
   static const String appUserIcon =
       'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid';
 
