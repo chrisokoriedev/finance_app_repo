@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/expense_list_builder.dart';
+import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,7 +70,7 @@ class HomePage extends ConsumerWidget {
             debugPrint('Eror $__');
             return Text('Error $__');
           },
-          loading: () => const Center(child: CircularProgressIndicator())),
+          loading: () => const Center(child: LoadingWidget())),
     );
   }
 }
