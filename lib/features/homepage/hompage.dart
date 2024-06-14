@@ -70,7 +70,7 @@ class HomePage extends ConsumerWidget {
             debugPrint('Eror $__');
             return Text('Error $__');
           },
-          loading: () => const Center(child: LoadingWidget())),
+          loading: () => const LoadingWidget()),
     );
   }
 }

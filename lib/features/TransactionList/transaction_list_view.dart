@@ -2,6 +2,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/expense_list_builder.dart';
+import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/routes.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class TransactionListView extends HookConsumerWidget {
           );
         },
         error: (_, __) => const Text('Something went wrong'),
-        loading: () => const CircularProgressIndicator(color: Colors.red),
+        loading: () => const LoadingWidget(),
       ),
     );
   }

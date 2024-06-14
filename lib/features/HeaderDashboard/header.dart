@@ -5,6 +5,7 @@ import 'package:expense_app/provider/firebase.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:expense_app/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +174,7 @@ class DashboardHeader extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) => const Text('Error fetching data'),
-        loading: () => const CircularProgressIndicator());
+        loading: () => const LoadingWidget());
   }
 
   String _getGreetingText(Greeting greeting) {

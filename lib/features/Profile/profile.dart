@@ -128,7 +128,7 @@ class ProfileScreen extends HookConsumerWidget {
                         CustomButton(
                           icons: LineIcons.dropbox,
                           title: AppString.manage,
-                           press: () => showModalBottomSheet(
+                          press: () => showModalBottomSheet(
                               context: context,
                               builder: (_) => const CommingSoon()),
                         ),

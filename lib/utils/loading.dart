@@ -2,6 +2,7 @@ import 'package:expense_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({
     super.key,
@@ -18,11 +19,18 @@ class LoadingWidget extends StatelessWidget {
           width: 20.w,
           height: 10.h,
           decoration: BoxDecoration(
-              color: AppColor.kBlackColor,
-              borderRadius: BorderRadius.circular(10.sp)),
-          child: const Center(
+            color: theme.onPrimary,
+            borderRadius: BorderRadius.circular(10.sp),
+            boxShadow: [
+          BoxShadow(
+              blurRadius: 10,
+              offset: const Offset(0, 1),
+              color: AppColor.lightGrey.withOpacity(0.5))
+        ]
+          ),
+          child:  Center(
               child: SpinKitCubeGrid(
-            color: AppColor.kWhitColor,
+            color: theme.primary,
           )),
         ),
       ),

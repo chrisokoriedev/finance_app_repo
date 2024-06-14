@@ -4,6 +4,7 @@ import 'package:expense_app/model/create_expense.dart';
 import 'package:expense_app/provider/item_provider.dart';
 import 'package:expense_app/utils/colors.dart';
 import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/utils/loading.dart';
 import 'package:expense_app/utils/string_app.dart';
 import 'package:expense_app/utils/text.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class Statistics extends ConsumerWidget {
         error: (_, __) => Text(
           'Error $__',
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const LoadingWidget(),
         data: (data) {
           List<CreateExpenseModel> expenseData = data
               .where((expense) => expense.expenseType == expenseType)
