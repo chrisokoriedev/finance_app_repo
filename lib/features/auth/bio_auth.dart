@@ -24,6 +24,7 @@ class BioAuthScreen extends HookConsumerWidget {
           orElse: () => null,
           success: (message) {
             EasyLoading.showSuccess('Am in')
+                // ignore: use_build_context_synchronously
                 .then((value) => context.push(AppRouter.mainControl));
           },
           failed: (message) {
