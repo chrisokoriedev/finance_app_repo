@@ -14,19 +14,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'provider/local_auth.dart';
 import 'utils/routes.dart';
 import 'utils/theme.dart';
-import 'domain/expense.dart';
-import 'data/local/expense_local_datasource.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Hive for local storage
   await Hive.initFlutter();
-  
-  // Register Hive adapters
-  Hive.registerAdapter(ExpenseAdapter());
-  Hive.registerAdapter(ExpenseTypeAdapter());
-  Hive.registerAdapter(PendingSyncItemAdapter());
   
   final sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

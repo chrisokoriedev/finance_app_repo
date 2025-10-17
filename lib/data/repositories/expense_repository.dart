@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/expense.dart';
 import '../../domain/result.dart';
 import '../../domain/enums.dart';
@@ -38,15 +37,12 @@ abstract class ExpenseRepository {
 class ExpenseRepositoryImpl implements ExpenseRepository {
   final ExpenseRemoteDataSource _remoteDataSource;
   final ExpenseLocalDataSource _localDataSource;
-  final FirebaseAuth _auth;
 
   ExpenseRepositoryImpl({
     required ExpenseRemoteDataSource remoteDataSource,
     required ExpenseLocalDataSource localDataSource,
-    required FirebaseAuth auth,
   }) : _remoteDataSource = remoteDataSource,
-       _localDataSource = localDataSource,
-       _auth = auth;
+       _localDataSource = localDataSource;
 
   @override
   Future<Result<List<Expense>>> getExpenses({
@@ -288,7 +284,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         await _localDataSource.cacheExpenses(remoteExpenses.data!);
       }
 
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to sync expenses: ${e.toString()}');
     }
@@ -301,7 +297,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         await syncExpenses();
       } catch (e) {
         // Log error but don't throw
-        print('Background sync failed: $e');
+          print('Background sync failed: $e');
       }
     });
   }

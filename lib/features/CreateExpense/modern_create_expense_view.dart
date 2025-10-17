@@ -9,9 +9,7 @@ import '../../domain/expense.dart';
 import '../../domain/enums.dart';
 import '../../domain/result.dart';
 import '../../providers/expense_providers.dart';
-import '../../utils/colors.dart';
 import '../../utils/text.dart';
-import '../../utils/const.dart';
 
 /// Modern create expense view using new architecture
 class ModernCreateExpenseView extends ConsumerStatefulWidget {

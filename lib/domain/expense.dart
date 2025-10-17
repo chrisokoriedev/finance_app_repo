@@ -45,7 +45,7 @@ extension ExpenseExtension on Expense {
     return switch (difference) {
       0 => 'Today',
       1 => 'Yesterday',
-      _ when difference < 7 => '${difference} days ago',
+      _ when difference < 7 => '$difference days ago',
       _ when difference < 30 => '${(difference / 7).floor()} weeks ago',
       _ when difference < 365 => '${(difference / 30).floor()} months ago',
       _ => '${(difference / 365).floor()} years ago',

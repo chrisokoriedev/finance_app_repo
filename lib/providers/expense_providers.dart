@@ -63,7 +63,6 @@ ExpenseRepository expenseRepository(ExpenseRepositoryRef ref) {
   return ExpenseRepositoryImpl(
     remoteDataSource: ref.watch(expenseRemoteDataSourceProvider),
     localDataSource: ref.watch(expenseLocalDataSourceProvider),
-    auth: ref.watch(firebaseAuthProvider),
   );
 }
 

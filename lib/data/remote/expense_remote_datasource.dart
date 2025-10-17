@@ -164,7 +164,7 @@ class ExpenseRemoteDataSourceImpl implements ExpenseRemoteDataSource {
       final doc = await _expensesCollection.doc(id).get();
       
       if (!doc.exists) {
-        return Result.failure('Expense not found');
+        return const Result.failure('Expense not found');
       }
 
       final data = doc.data()!;
@@ -224,7 +224,7 @@ class ExpenseRemoteDataSourceImpl implements ExpenseRemoteDataSource {
       final doc = await docRef.get();
       
       if (!doc.exists) {
-        return Result.failure('Expense not found');
+        return const Result.failure('Expense not found');
       }
 
       final existingData = doc.data()!;
@@ -271,7 +271,7 @@ class ExpenseRemoteDataSourceImpl implements ExpenseRemoteDataSource {
   Future<Result<void>> deleteExpense(String id) async {
     try {
       await _expensesCollection.doc(id).delete();
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to delete expense: ${e.toString()}');
     }

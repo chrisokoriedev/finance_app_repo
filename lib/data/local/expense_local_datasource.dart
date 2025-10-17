@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/expense.dart';
 import '../../domain/result.dart';
@@ -15,6 +16,8 @@ abstract class ExpenseLocalDataSource {
   
   Future<Result<Expense>> updateExpenseById(String id, UpdateExpenseRequest request);
   
+  Future<Result<void>> updateExpense(Expense expense);
+  
   Future<Result<void>> deleteExpense(String id);
   
   Future<Result<List<String>>> getCategories();
@@ -24,6 +27,8 @@ abstract class ExpenseLocalDataSource {
   Future<Result<void>> cacheExpenses(List<Expense> expenses);
   
   Future<Result<void>> cacheExpense(Expense expense);
+  
+  Future<Result<void>> cacheCategories(List<String> categories);
   
   Future<Result<void>> markAsPendingSync(String id);
   
@@ -42,15 +47,15 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   static const String _categoryBoxName = 'categories';
   static const String _pendingSyncBoxName = 'pending_sync';
 
-  late Box<Expense> _expenseBox;
+  late Box<String> _expenseBox;
   late Box<String> _categoryBox;
-  late Box<PendingSyncItem> _pendingSyncBox;
+  late Box<String> _pendingSyncBox;
 
   /// Initialize Hive boxes
   Future<void> init() async {
-    _expenseBox = await Hive.openBox<Expense>(_expenseBoxName);
+    _expenseBox = await Hive.openBox<String>(_expenseBoxName);
     _categoryBox = await Hive.openBox<String>(_categoryBoxName);
-    _pendingSyncBox = await Hive.openBox<PendingSyncItem>(_pendingSyncBoxName);
+    _pendingSyncBox = await Hive.openBox<String>(_pendingSyncBoxName);
   }
 
   @override
@@ -59,7 +64,10 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
     int? limit,
   }) async {
     try {
-      final expenses = _expenseBox.values.toList();
+      final expenseJsonList = _expenseBox.values.toList();
+      final expenses = expenseJsonList
+          .map((json) => Expense.fromJson(jsonDecode(json)))
+          .toList();
       
       // Apply filters
       var filteredExpenses = expenses.where((expense) {
@@ -123,10 +131,11 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<Expense>> getExpenseById(String id) async {
     try {
-      final expense = _expenseBox.get(id);
-      if (expense == null) {
+      final expenseJson = _expenseBox.get(id);
+      if (expenseJson == null) {
         return const Result.failure('Expense not found');
       }
+      final expense = Expense.fromJson(jsonDecode(expenseJson));
       return Result.success(expense);
     } catch (e) {
       return Result.failure('Failed to get expense: ${e.toString()}');
@@ -156,7 +165,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
         updatedAt: DateTime.now(),
       );
       
-      await _expenseBox.put(id, expense);
+      await _expenseBox.put(id, jsonEncode(expense.toJson()));
       return Result.success(expense);
     } catch (e) {
       return Result.failure('Failed to create expense: ${e.toString()}');
@@ -166,11 +175,12 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<Expense>> updateExpenseById(String id, UpdateExpenseRequest request) async {
     try {
-      final existingExpense = _expenseBox.get(id);
-      if (existingExpense == null) {
+      final existingExpenseJson = _expenseBox.get(id);
+      if (existingExpenseJson == null) {
         return const Result.failure('Expense not found');
       }
       
+      final existingExpense = Expense.fromJson(jsonDecode(existingExpenseJson));
       final updatedExpense = existingExpense.copyWith(
         name: request.name ?? existingExpense.name,
         amount: request.amount ?? existingExpense.amount,
@@ -188,7 +198,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
         updatedAt: DateTime.now(),
       );
       
-      await _expenseBox.put(id, updatedExpense);
+      await _expenseBox.put(id, jsonEncode(updatedExpense.toJson()));
       return Result.success(updatedExpense);
     } catch (e) {
       return Result.failure('Failed to update expense: ${e.toString()}');
@@ -228,8 +238,8 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<void>> cacheExpenses(List<Expense> expenses) async {
     try {
-      final Map<String, Expense> expenseMap = {
-        for (final expense in expenses) expense.id: expense
+      final Map<String, String> expenseMap = {
+        for (final expense in expenses) expense.id: jsonEncode(expense.toJson())
       };
       await _expenseBox.putAll(expenseMap);
       return const Result.success(null);
@@ -241,22 +251,24 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<void>> cacheExpense(Expense expense) async {
     try {
-      await _expenseBox.put(expense.id, expense);
+      await _expenseBox.put(expense.id, jsonEncode(expense.toJson()));
       return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to cache expense: ${e.toString()}');
     }
   }
 
+  @override
   Future<Result<void>> updateExpense(Expense expense) async {
     try {
-      await _expenseBox.put(expense.id, expense);
+      await _expenseBox.put(expense.id, jsonEncode(expense.toJson()));
       return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to update expense: ${e.toString()}');
     }
   }
 
+  @override
   Future<Result<void>> cacheCategories(List<String> categories) async {
     try {
       final Map<String, String> categoryMap = {
@@ -272,8 +284,9 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<void>> markAsPendingSync(String id) async {
     try {
-      final expense = _expenseBox.get(id);
-      if (expense != null) {
+      final expenseJson = _expenseBox.get(id);
+      if (expenseJson != null) {
+        final expense = Expense.fromJson(jsonDecode(expenseJson));
         final pendingItem = PendingSyncItem(
           id: id,
           expense: expense,
@@ -281,7 +294,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
           isDeleted: false,
           timestamp: DateTime.now(),
         );
-        await _pendingSyncBox.put(id, pendingItem);
+        await _pendingSyncBox.put(id, jsonEncode(pendingItem.toJson()));
       }
       return const Result.success(null);
     } catch (e) {
@@ -292,8 +305,9 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<void>> markAsPendingDeletion(String id) async {
     try {
-      final expense = _expenseBox.get(id);
-      if (expense != null) {
+      final expenseJson = _expenseBox.get(id);
+      if (expenseJson != null) {
+        final expense = Expense.fromJson(jsonDecode(expenseJson));
         final pendingItem = PendingSyncItem(
           id: id,
           expense: expense,
@@ -301,7 +315,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
           isDeleted: true,
           timestamp: DateTime.now(),
         );
-        await _pendingSyncBox.put(id, pendingItem);
+        await _pendingSyncBox.put(id, jsonEncode(pendingItem.toJson()));
       }
       return const Result.success(null);
     } catch (e) {
@@ -323,7 +337,10 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<Result<List<PendingSyncItem>>> getPendingSyncItems() async {
     try {
-      final items = _pendingSyncBox.values.toList();
+      final itemJsonList = _pendingSyncBox.values.toList();
+      final items = itemJsonList
+          .map((json) => PendingSyncItem.fromJson(jsonDecode(json)))
+          .toList();
       return Result.success(items);
     } catch (e) {
       return Result.failure('Failed to get pending sync items: ${e.toString()}');
@@ -356,6 +373,26 @@ class PendingSyncItem {
     required this.isDeleted,
     required this.timestamp,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'expense': expense.toJson(),
+      'isNew': isNew,
+      'isDeleted': isDeleted,
+      'timestamp': timestamp.toIso8601String(),
+    };
+  }
+
+  factory PendingSyncItem.fromJson(Map<String, dynamic> json) {
+    return PendingSyncItem(
+      id: json['id'] as String,
+      expense: Expense.fromJson(json['expense'] as Map<String, dynamic>),
+      isNew: json['isNew'] as bool,
+      isDeleted: json['isDeleted'] as bool,
+      timestamp: DateTime.parse(json['timestamp'] as String),
+    );
+  }
 
   CreateExpenseRequest toCreateRequest() {
     return CreateExpenseRequest(

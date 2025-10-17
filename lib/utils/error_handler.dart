@@ -293,9 +293,7 @@ class _ErrorListenerImpl implements ErrorListener {
   @override
   void onError(AppError error) {
     if (_state.mounted) {
-      _state.setState(() {
-        _state._error = error;
-      });
+      _state._setError(error);
     }
   }
 }
@@ -385,6 +383,14 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
 
   late final ErrorListener _errorListener = _ErrorListenerImpl(this);
 
+  void _setError(AppError error) {
+    if (mounted) {
+      setState(() {
+        _error = error;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_error != null) {
@@ -400,13 +406,13 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             size: 48,
             color: Colors.red,
           ),
           const SizedBox(height: 16),
-          Text(
+          const Text(
             'Something went wrong',
             style: TextStyle(
               fontSize: 18,
@@ -417,7 +423,7 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
           Text(
             error.userMessage,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
@@ -426,7 +432,7 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                 _error = null;
               });
             },
-            child: Text('Try Again'),
+            child: const Text('Try Again'),
           ),
         ],
       ),

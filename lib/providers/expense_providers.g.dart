@@ -128,7 +128,7 @@ final expenseRemoteDataSourceProvider =
 
 typedef ExpenseRemoteDataSourceRef
     = AutoDisposeProviderRef<ExpenseRemoteDataSource>;
-String _$expenseRepositoryHash() => r'bfe5682044f5e7c1b2a284686873c282e8427325';
+String _$expenseRepositoryHash() => r'0c9cd7a5c4f74a6a238d5336250f2bdad2402175';
 
 /// Expense repository provider
 ///
@@ -707,7 +707,7 @@ class _ExpenseSummaryNotifierProviderElement
 }
 
 String _$createExpenseNotifierHash() =>
-    r'9e3903d05b3a31bfa270eb8920fc9d658e34afd0';
+    r'6e738905197fe6b24091a661b0abaac8f7f28237';
 
 /// Expense creation provider
 ///
@@ -726,7 +726,7 @@ final createExpenseNotifierProvider = AutoDisposeAsyncNotifierProvider<
 
 typedef _$CreateExpenseNotifier = AutoDisposeAsyncNotifier<Result<Expense>>;
 String _$updateExpenseNotifierHash() =>
-    r'367c50510f8f366fd31ba76a4a44679d4cacd759';
+    r'f78bb8248f639f719ae2130c85ced27e3fe26120';
 
 /// Expense update provider
 ///

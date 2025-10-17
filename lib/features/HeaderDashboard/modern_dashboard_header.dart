@@ -190,7 +190,7 @@ class ModernDashboardHeader extends ConsumerWidget {
           BoxShadow(
             color: theme.shadow.withOpacity(0.1),
             blurRadius: 10,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -315,7 +315,7 @@ class ModernDashboardHeader extends ConsumerWidget {
           BoxShadow(
             color: theme.shadow.withOpacity(0.1),
             blurRadius: 8,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
