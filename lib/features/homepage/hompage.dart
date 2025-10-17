@@ -40,14 +40,14 @@ class HomePage extends ConsumerWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextWigdet(
+                              TextWidget(
                                   text: 'Recent History',
                                   color: theme.primary,
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500),
                               GestureDetector(
                                 onTap: pageSelected,
-                                child: TextWigdet(
+                                child: TextWidget(
                                     text: 'See all',
                                     color: AppColor.kGreyColor,
                                     fontSize: 15.sp,

@@ -44,7 +44,7 @@ class CustomButton extends StatelessWidget {
               children: [
                 LineIcon(icons),
                 Gap(2.w),
-                TextWigdet(text: title!, fontSize: 15.sp, letterSpacing: 1.5),
+                TextWidget(text: title!, fontSize: 15.sp, letterSpacing: 1.5),
               ],
             ),
             if (showLastWidget ?? false) lastWidget ?? const SizedBox.shrink(),

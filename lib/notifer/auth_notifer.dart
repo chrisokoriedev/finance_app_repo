@@ -12,9 +12,12 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
   Future<void> continueWithGoogle() async {
     state = const AuthenticationState.loading();
     final response = await _dataSource.continueWithGoogle();
-    state = response.fold(
-      (error) => AuthenticationState.unauthenticated(message: error),
-      (response) => AuthenticationState.authenticated(user: response),
+    state = response.when(
+      success: (response) => AuthenticationState.authenticated(
+          user: response, loginTime: DateTime.now()),
+      failure: (error, exception) => AuthenticationState.unauthenticated(
+          message: error, exception: exception),
+      loading: () => const AuthenticationState.loading(),
     );
   }
 
@@ -22,9 +25,12 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
   Future<void> signOutGoogle() async {
     state = const AuthenticationState.loading();
     final response = await _dataSource.signOutGoogle();
-    state = response.fold(
-      (error) => AuthenticationState.failed(failed: error),
-      (response) => AuthenticationState.success(success: response),
+    state = response.when(
+      success: (response) => AuthenticationState.success(
+          message: response, timestamp: DateTime.now()),
+      failure: (error, exception) => AuthenticationState.failed(
+          message: error, exception: exception, timestamp: DateTime.now()),
+      loading: () => const AuthenticationState.loading(),
     );
   }
 
@@ -32,13 +38,14 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
   Future<void> deleteUserAccount() async {
     state = const AuthenticationState.loading();
     final response = await _dataSource.deleteUserAccount();
-    state = response.fold(
-      (error) => AuthenticationState.failed(failed: error),
-      (response) => AuthenticationState.success(success: response),
+    state = response.when(
+      success: (response) => AuthenticationState.success(
+          message: response, timestamp: DateTime.now()),
+      failure: (error, exception) => AuthenticationState.failed(
+          message: error, exception: exception, timestamp: DateTime.now()),
+      loading: () => const AuthenticationState.loading(),
     );
   }
-
- 
 }
 
 final authNotifierProvider =

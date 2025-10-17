@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/expense.dart';
 import '../../domain/result.dart';
-import '../../domain/enums.dart';
 
 /// Local data source for expense operations using Hive
 abstract class ExpenseLocalDataSource {
@@ -126,7 +125,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
     try {
       final expense = _expenseBox.get(id);
       if (expense == null) {
-        return Result.failure('Expense not found');
+        return const Result.failure('Expense not found');
       }
       return Result.success(expense);
     } catch (e) {
@@ -169,7 +168,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
     try {
       final existingExpense = _expenseBox.get(id);
       if (existingExpense == null) {
-        return Result.failure('Expense not found');
+        return const Result.failure('Expense not found');
       }
       
       final updatedExpense = existingExpense.copyWith(
@@ -200,7 +199,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   Future<Result<void>> deleteExpense(String id) async {
     try {
       await _expenseBox.delete(id);
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to delete expense: ${e.toString()}');
     }
@@ -233,7 +232,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
         for (final expense in expenses) expense.id: expense
       };
       await _expenseBox.putAll(expenseMap);
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to cache expenses: ${e.toString()}');
     }
@@ -243,9 +242,30 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   Future<Result<void>> cacheExpense(Expense expense) async {
     try {
       await _expenseBox.put(expense.id, expense);
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to cache expense: ${e.toString()}');
+    }
+  }
+
+  Future<Result<void>> updateExpense(Expense expense) async {
+    try {
+      await _expenseBox.put(expense.id, expense);
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure('Failed to update expense: ${e.toString()}');
+    }
+  }
+
+  Future<Result<void>> cacheCategories(List<String> categories) async {
+    try {
+      final Map<String, String> categoryMap = {
+        for (final category in categories) category: category
+      };
+      await _categoryBox.putAll(categoryMap);
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure('Failed to cache categories: ${e.toString()}');
     }
   }
 
@@ -263,7 +283,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
         );
         await _pendingSyncBox.put(id, pendingItem);
       }
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to mark as pending sync: ${e.toString()}');
     }
@@ -283,7 +303,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
         );
         await _pendingSyncBox.put(id, pendingItem);
       }
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to mark as pending deletion: ${e.toString()}');
     }
@@ -294,7 +314,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
     try {
       // For now, we'll handle category sync differently
       // This could be extended to track category changes
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to mark category as pending sync: ${e.toString()}');
     }
@@ -314,7 +334,7 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   Future<Result<void>> removePendingSync(String id) async {
     try {
       await _pendingSyncBox.delete(id);
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to remove pending sync: ${e.toString()}');
     }

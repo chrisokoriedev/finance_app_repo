@@ -58,7 +58,7 @@ extension ResultExtension<T> on Result<T> {
   }
 
   /// Handle different result states with default values
-  R whenOrNull<R>({
+  R? whenOrNull<R>({
     R Function(T data)? success,
     R Function(String message, Exception? exception)? failure,
     R Function()? loading,

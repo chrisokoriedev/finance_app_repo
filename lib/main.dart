@@ -10,14 +10,27 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'provider/local_auth.dart';
 import 'utils/routes.dart';
 import 'utils/theme.dart';
+import 'domain/expense.dart';
+import 'data/local/expense_local_datasource.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Hive for local storage
+  await Hive.initFlutter();
+  
+  // Register Hive adapters
+  Hive.registerAdapter(ExpenseAdapter());
+  Hive.registerAdapter(ExpenseTypeAdapter());
+  Hive.registerAdapter(PendingSyncItemAdapter());
+  
   final sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final firestore = FirebaseFirestore.instance;
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -26,6 +39,7 @@ void main() async {
     persistenceEnabled: true,
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
+  
   runApp(
     ProviderScope(
       overrides: [

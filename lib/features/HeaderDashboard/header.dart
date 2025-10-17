@@ -54,13 +54,13 @@ class DashboardHeader extends ConsumerWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextWigdet(
+                                TextWidget(
                                   text: _getGreetingText(greeting),
                                   color: theme.primary,
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                TextWigdet(
+                                TextWidget(
                                   text: getUserName(),
                                   color: theme.primary,
                                   fontSize: 17.sp,
@@ -113,7 +113,7 @@ class DashboardHeader extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TextWigdet(
+                            TextWidget(
                               text: 'Total Balance',
                               color: theme.primary,
                               fontSize: 15.sp,
@@ -127,7 +127,7 @@ class DashboardHeader extends ConsumerWidget {
                           ],
                         ),
                         Gap(0.3.h),
-                        TextWigdet(
+                        TextWidget(
                           text: "₦${totals.state.grandTotal}",
                           color: theme.primary,
                           fontSize: 18.sp,

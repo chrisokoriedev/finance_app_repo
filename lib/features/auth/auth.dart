@@ -24,12 +24,12 @@ class AuthScreen extends HookConsumerWidget {
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-        authenticated: (user) async {
+        authenticated: (user, loginTime) async {
           EasyLoading.showSuccess('Am in');
           context.pushReplacement(AppRouter.mainControl);
         },
-        unauthenticated: (message) {
-          EasyLoading.showError(message!);
+        unauthenticated: (message, exception) {
+          EasyLoading.showError(message ?? 'Unknown error');
         },
       );
     });
@@ -53,10 +53,10 @@ class AuthScreen extends HookConsumerWidget {
                           (BuildContext context, String url, dynamic error) =>
                               LineIcon.fighterJet(size: 20.sp));
                 },
-                loading: () => TextWigdet(
+                loading: () => TextWidget(
                     text: 'Nora', color: AppColor.kWhitColor, fontSize: 20.sp),
                 error: (error, stackTrace) => Center(
-                    child: TextWigdet(
+                    child: TextWidget(
                         text: error.toString(),
                         color: AppColor.kWhitColor,
                         fontSize: 15.sp)),

@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'result.dart';
 
 class AuthDataSource {
   final FirebaseAuth _firebaseAuth;
@@ -15,9 +15,9 @@ class AuthDataSource {
 
   AuthDataSource(this._firebaseAuth, this.ref, this.sharedPreferences);
 
-  Future<Either<String, User>> continueWithGoogle() async {
+  Future<Result<User>> continueWithGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser != null) {
         final GoogleSignInAuthentication googleAuth =
@@ -28,57 +28,56 @@ class AuthDataSource {
         );
         final response = await _firebaseAuth.signInWithCredential(credential);
 
-        return right(response.user!);
+        return Result.success(response.user!);
       } else {
-        return left('Unknown Error');
+        return const Result.failure('Unknown Error');
       }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
-      return left(e.message ?? 'Unknow Error');
+      return Result.failure(e.message ?? 'Unknown Error');
     } on PlatformException catch (e) {
       debugPrint(e.message);
-
-      return left(e.message ?? 'sign_in_failed');
+      return Result.failure(e.message ?? 'sign_in_failed');
     }
   }
 
-  Future<Either<String, dynamic>> signOutGoogle() async {
+  Future<Result<String>> signOutGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
       if (_firebaseAuth.currentUser != null) {
         await sharedPreferences.clear();
         await _firebaseAuth.signOut();
         await googleSignIn.signOut();
 
-        return right('Sign-out successful');
+        return const Result.success('Sign-out successful');
       } else {
-        return left('Logout operation already performed');
+        return const Result.failure('Logout operation already performed');
       }
     } on FirebaseAuthException catch (e) {
-      return left(e.message ?? 'Unknow Error');
+      return Result.failure(e.message ?? 'Unknown Error');
     } on PlatformException catch (e) {
-      return left(e.message ?? 'sign_out_failed');
+      return Result.failure(e.message ?? 'sign_out_failed');
     } on SocketException catch (e) {
-      return left(e.message);
+      return Result.failure(e.message);
     }
   }
 
-  Future<Either<String, dynamic>> deleteUserAccount() async {
+  Future<Result<String>> deleteUserAccount() async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
       if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.currentUser!.delete();
         await googleSignIn.disconnect();
-        return right('User account deleted');
+        return const Result.success('User account deleted');
       } else {
-        return left('Something went wrong');
+        return const Result.failure('Something went wrong');
       }
     } on FirebaseAuthException catch (e) {
-      return left(e.message ?? 'Unknow Error');
+      return Result.failure(e.message ?? 'Unknown Error');
     } on PlatformException catch (e) {
-      return left(e.message ?? 'sign_out_failed');
+      return Result.failure(e.message ?? 'sign_out_failed');
     } on SocketException catch (e) {
-      return left(e.message);
+      return Result.failure(e.message);
     }
   }
 }

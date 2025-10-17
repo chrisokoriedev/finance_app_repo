@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/expense.dart';
 import '../../domain/result.dart';
 import '../../domain/enums.dart';
@@ -176,7 +175,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         await _localDataSource.markAsPendingDeletion(id);
       }
 
-      return Result.success(null);
+      return const Result.success(null);
     } catch (e) {
       return Result.failure('Failed to delete expense: ${e.toString()}');
     }
@@ -262,7 +261,13 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   Future<Result<void>> syncExpenses() async {
     try {
       // Get pending sync items
-      final pendingItems = await _localDataSource.getPendingSyncItems();
+      final pendingItemsResult = await _localDataSource.getPendingSyncItems();
+      
+      if (pendingItemsResult.isFailure) {
+        return Result.failure(pendingItemsResult.errorMessage!);
+      }
+      
+      final pendingItems = pendingItemsResult.data!;
       
       for (final item in pendingItems) {
         if (item.isDeleted) {

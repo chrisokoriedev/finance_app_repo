@@ -38,7 +38,7 @@ class ExpenseTypeComponent extends ConsumerWidget {
             .map(
               (e) => DropdownMenuItem(
                 value: e,
-                child: TextWigdet(
+                child: TextWidget(
                   text: e,
                   fontSize: 13.9.sp,
                   fontWeight: FontWeight.w600,
@@ -50,7 +50,7 @@ class ExpenseTypeComponent extends ConsumerWidget {
             .map(
               (e) => DropdownMenuItem(
                 value: e,
-                child: TextWigdet(
+                child: TextWidget(
                   text: e,
                   fontSize: 13.9.sp,
                   fontWeight: FontWeight.w600,

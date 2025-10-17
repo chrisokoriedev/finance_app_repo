@@ -20,30 +20,36 @@ mixin _$AuthenticationState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -138,10 +144,13 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
     return initial();
   }
@@ -151,10 +160,12 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
     return initial?.call();
   }
@@ -164,10 +175,11 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -264,10 +276,13 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
     return loading();
   }
@@ -277,10 +292,12 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
     return loading?.call();
   }
@@ -290,10 +307,11 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -356,7 +374,7 @@ abstract class _$$UnAuthenticationImplCopyWith<$Res> {
           $Res Function(_$UnAuthenticationImpl) then) =
       __$$UnAuthenticationImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? message});
+  $Res call({String? message, Exception? exception});
 }
 
 /// @nodoc
@@ -371,12 +389,17 @@ class __$$UnAuthenticationImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? message = freezed,
+    Object? exception = freezed,
   }) {
     return _then(_$UnAuthenticationImpl(
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      exception: freezed == exception
+          ? _value.exception
+          : exception // ignore: cast_nullable_to_non_nullable
+              as Exception?,
     ));
   }
 }
@@ -384,14 +407,16 @@ class __$$UnAuthenticationImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UnAuthenticationImpl implements _UnAuthentication {
-  const _$UnAuthenticationImpl({this.message});
+  const _$UnAuthenticationImpl({this.message, this.exception});
 
   @override
   final String? message;
+  @override
+  final Exception? exception;
 
   @override
   String toString() {
-    return 'AuthenticationState.unauthenticated(message: $message)';
+    return 'AuthenticationState.unauthenticated(message: $message, exception: $exception)';
   }
 
   @override
@@ -399,11 +424,13 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UnAuthenticationImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.exception, exception) ||
+                other.exception == exception));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, message, exception);
 
   @JsonKey(ignore: true)
   @override
@@ -417,12 +444,15 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
-    return unauthenticated(message);
+    return unauthenticated(message, exception);
   }
 
   @override
@@ -430,12 +460,14 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
-    return unauthenticated?.call(message);
+    return unauthenticated?.call(message, exception);
   }
 
   @override
@@ -443,14 +475,15 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
-      return unauthenticated(message);
+      return unauthenticated(message, exception);
     }
     return orElse();
   }
@@ -500,10 +533,12 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
 }
 
 abstract class _UnAuthentication implements AuthenticationState {
-  const factory _UnAuthentication({final String? message}) =
-      _$UnAuthenticationImpl;
+  const factory _UnAuthentication(
+      {final String? message,
+      final Exception? exception}) = _$UnAuthenticationImpl;
 
   String? get message;
+  Exception? get exception;
   @JsonKey(ignore: true)
   _$$UnAuthenticationImplCopyWith<_$UnAuthenticationImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -515,7 +550,7 @@ abstract class _$$AuthenticatedImplCopyWith<$Res> {
           _$AuthenticatedImpl value, $Res Function(_$AuthenticatedImpl) then) =
       __$$AuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({User user});
+  $Res call({User user, DateTime loginTime});
 }
 
 /// @nodoc
@@ -530,12 +565,17 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = null,
+    Object? loginTime = null,
   }) {
     return _then(_$AuthenticatedImpl(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      loginTime: null == loginTime
+          ? _value.loginTime
+          : loginTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -543,14 +583,16 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthenticatedImpl implements _Authenticated {
-  const _$AuthenticatedImpl({required this.user});
+  const _$AuthenticatedImpl({required this.user, required this.loginTime});
 
   @override
   final User user;
+  @override
+  final DateTime loginTime;
 
   @override
   String toString() {
-    return 'AuthenticationState.authenticated(user: $user)';
+    return 'AuthenticationState.authenticated(user: $user, loginTime: $loginTime)';
   }
 
   @override
@@ -558,11 +600,13 @@ class _$AuthenticatedImpl implements _Authenticated {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthenticatedImpl &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.loginTime, loginTime) ||
+                other.loginTime == loginTime));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user);
+  int get hashCode => Object.hash(runtimeType, user, loginTime);
 
   @JsonKey(ignore: true)
   @override
@@ -575,12 +619,15 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
-    return authenticated(user);
+    return authenticated(user, loginTime);
   }
 
   @override
@@ -588,12 +635,14 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
-    return authenticated?.call(user);
+    return authenticated?.call(user, loginTime);
   }
 
   @override
@@ -601,14 +650,15 @@ class _$AuthenticatedImpl implements _Authenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(user);
+      return authenticated(user, loginTime);
     }
     return orElse();
   }
@@ -658,10 +708,12 @@ class _$AuthenticatedImpl implements _Authenticated {
 }
 
 abstract class _Authenticated implements AuthenticationState {
-  const factory _Authenticated({required final User user}) =
-      _$AuthenticatedImpl;
+  const factory _Authenticated(
+      {required final User user,
+      required final DateTime loginTime}) = _$AuthenticatedImpl;
 
   User get user;
+  DateTime get loginTime;
   @JsonKey(ignore: true)
   _$$AuthenticatedImplCopyWith<_$AuthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -673,7 +725,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? success});
+  $Res call({String message, DateTime? timestamp});
 }
 
 /// @nodoc
@@ -687,13 +739,18 @@ class __$$SuccessImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = freezed,
+    Object? message = null,
+    Object? timestamp = freezed,
   }) {
     return _then(_$SuccessImpl(
-      success: freezed == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as String?,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -701,14 +758,16 @@ class __$$SuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl({this.success});
+  const _$SuccessImpl({required this.message, this.timestamp});
 
   @override
-  final String? success;
+  final String message;
+  @override
+  final DateTime? timestamp;
 
   @override
   String toString() {
-    return 'AuthenticationState.success(success: $success)';
+    return 'AuthenticationState.success(message: $message, timestamp: $timestamp)';
   }
 
   @override
@@ -716,11 +775,13 @@ class _$SuccessImpl implements _Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            (identical(other.success, success) || other.success == success));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, success);
+  int get hashCode => Object.hash(runtimeType, message, timestamp);
 
   @JsonKey(ignore: true)
   @override
@@ -733,12 +794,15 @@ class _$SuccessImpl implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
-    return success(this.success);
+    return success(message, timestamp);
   }
 
   @override
@@ -746,12 +810,14 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
-    return success?.call(this.success);
+    return success?.call(message, timestamp);
   }
 
   @override
@@ -759,14 +825,15 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(this.success);
+      return success(message, timestamp);
     }
     return orElse();
   }
@@ -816,9 +883,12 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements AuthenticationState {
-  const factory _Success({final String? success}) = _$SuccessImpl;
+  const factory _Success(
+      {required final String message,
+      final DateTime? timestamp}) = _$SuccessImpl;
 
-  String? get success;
+  String get message;
+  DateTime? get timestamp;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -830,7 +900,7 @@ abstract class _$$FailedImplCopyWith<$Res> {
           _$FailedImpl value, $Res Function(_$FailedImpl) then) =
       __$$FailedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? failed});
+  $Res call({String message, Exception? exception, DateTime? timestamp});
 }
 
 /// @nodoc
@@ -844,13 +914,23 @@ class __$$FailedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? failed = freezed,
+    Object? message = null,
+    Object? exception = freezed,
+    Object? timestamp = freezed,
   }) {
     return _then(_$FailedImpl(
-      failed: freezed == failed
-          ? _value.failed
-          : failed // ignore: cast_nullable_to_non_nullable
-              as String?,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      exception: freezed == exception
+          ? _value.exception
+          : exception // ignore: cast_nullable_to_non_nullable
+              as Exception?,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -858,14 +938,18 @@ class __$$FailedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FailedImpl implements _Failed {
-  const _$FailedImpl({this.failed});
+  const _$FailedImpl({required this.message, this.exception, this.timestamp});
 
   @override
-  final String? failed;
+  final String message;
+  @override
+  final Exception? exception;
+  @override
+  final DateTime? timestamp;
 
   @override
   String toString() {
-    return 'AuthenticationState.failed(failed: $failed)';
+    return 'AuthenticationState.failed(message: $message, exception: $exception, timestamp: $timestamp)';
   }
 
   @override
@@ -873,11 +957,15 @@ class _$FailedImpl implements _Failed {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FailedImpl &&
-            (identical(other.failed, failed) || other.failed == failed));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.exception, exception) ||
+                other.exception == exception) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failed);
+  int get hashCode => Object.hash(runtimeType, message, exception, timestamp);
 
   @JsonKey(ignore: true)
   @override
@@ -890,12 +978,15 @@ class _$FailedImpl implements _Failed {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String? message) unauthenticated,
-    required TResult Function(User user) authenticated,
-    required TResult Function(String? success) success,
-    required TResult Function(String? failed) failed,
+    required TResult Function(String? message, Exception? exception)
+        unauthenticated,
+    required TResult Function(User user, DateTime loginTime) authenticated,
+    required TResult Function(String message, DateTime? timestamp) success,
+    required TResult Function(
+            String message, Exception? exception, DateTime? timestamp)
+        failed,
   }) {
-    return failed(this.failed);
+    return failed(message, exception, timestamp);
   }
 
   @override
@@ -903,12 +994,14 @@ class _$FailedImpl implements _Failed {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String? message)? unauthenticated,
-    TResult? Function(User user)? authenticated,
-    TResult? Function(String? success)? success,
-    TResult? Function(String? failed)? failed,
+    TResult? Function(String? message, Exception? exception)? unauthenticated,
+    TResult? Function(User user, DateTime loginTime)? authenticated,
+    TResult? Function(String message, DateTime? timestamp)? success,
+    TResult? Function(
+            String message, Exception? exception, DateTime? timestamp)?
+        failed,
   }) {
-    return failed?.call(this.failed);
+    return failed?.call(message, exception, timestamp);
   }
 
   @override
@@ -916,14 +1009,15 @@ class _$FailedImpl implements _Failed {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String? message)? unauthenticated,
-    TResult Function(User user)? authenticated,
-    TResult Function(String? success)? success,
-    TResult Function(String? failed)? failed,
+    TResult Function(String? message, Exception? exception)? unauthenticated,
+    TResult Function(User user, DateTime loginTime)? authenticated,
+    TResult Function(String message, DateTime? timestamp)? success,
+    TResult Function(String message, Exception? exception, DateTime? timestamp)?
+        failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(this.failed);
+      return failed(message, exception, timestamp);
     }
     return orElse();
   }
@@ -973,9 +1067,14 @@ class _$FailedImpl implements _Failed {
 }
 
 abstract class _Failed implements AuthenticationState {
-  const factory _Failed({final String? failed}) = _$FailedImpl;
+  const factory _Failed(
+      {required final String message,
+      final Exception? exception,
+      final DateTime? timestamp}) = _$FailedImpl;
 
-  String? get failed;
+  String get message;
+  Exception? get exception;
+  DateTime? get timestamp;
   @JsonKey(ignore: true)
   _$$FailedImplCopyWith<_$FailedImpl> get copyWith =>
       throw _privateConstructorUsedError;

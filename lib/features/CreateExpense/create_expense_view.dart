@@ -72,7 +72,7 @@ class CreateExpenseView extends HookConsumerWidget {
           color: AppColor.kBlackColor,
           fontWeight: FontWeight.w700,
         ),
-        title: TextWigdet(
+        title: TextWidget(
           text: 'Create data',
           color: theme.primary,
           fontSize: 17.sp,
@@ -296,7 +296,7 @@ class AddCategories extends HookConsumerWidget {
                             .addToList(text);
                       }
                     },
-              child: TextWigdet(
+              child: TextWidget(
                   text: authState == const AppStateManager.loading()
                       ? 'Loading'
                       : 'Add To Catogory List',

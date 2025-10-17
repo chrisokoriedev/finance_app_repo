@@ -38,11 +38,11 @@ class SettingAndSupport extends HookConsumerWidget {
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-        authenticated: (user) async {
+        authenticated: (user, loginTime ) async {
           EasyLoading.showSuccess('User Account Deleted');
           context.pushReplacement(AppRouter.authScreen);
         },
-        unauthenticated: (message) {
+        unauthenticated: (message, exception) {
           EasyLoading.showError(message!);
         },
       );

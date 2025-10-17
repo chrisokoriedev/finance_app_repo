@@ -74,13 +74,13 @@ class ExpenseListBuilder extends HookConsumerWidget {
                 builder: (context) => AlertDialog(
                   surfaceTintColor: AppColor.kBlackColor,
                   backgroundColor: theme.onPrimary,
-                  title: TextWigdet(
+                  title: TextWidget(
                       text: 'Confirm Delete',
                       color: theme.primary,
                       fontSize: 16.sp,
                       letterSpacing: 1.3,
                       fontWeight: FontWeight.w600),
-                  content: TextWigdet(
+                  content: TextWidget(
                       text: 'Are you sure you want to delete this item?',
                       color: theme.primary,
                       fontSize: 16.sp,
@@ -120,7 +120,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
             child: ListTile(
               title: Row(
                 children: [
-                  TextWigdet(
+                  TextWidget(
                       text: '${history.expenseType}\tfor\t${history.name}',
                       color: theme.primary,
                       fontSize: 15.sp,
@@ -132,14 +132,14 @@ class ExpenseListBuilder extends HookConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      TextWigdet(
+                      TextWidget(
                           text: history.explain,
                           color: theme.primary,
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w600),
                       Gap(10.w),
                       history.expenseSubList != '..'
-                          ? TextWigdet(
+                          ? TextWidget(
                               text: history.expenseSubList,
                               color: theme.primary,
                               fontSize: 15.sp,
@@ -148,7 +148,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
                     ],
                   ),
                   showDateTIme
-                      ? TextWigdet(
+                      ? TextWidget(
                           text: timeago.format(history.dateTime),
                           color: AppColor.kGreyColor.shade500,
                           fontSize: 12.sp,
@@ -157,7 +157,7 @@ class ExpenseListBuilder extends HookConsumerWidget {
                 ],
               ),
               leading: iconData,
-              trailing: TextWigdet(
+              trailing: TextWidget(
                   text: history.amount.toString(),
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600),

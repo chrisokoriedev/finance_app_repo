@@ -49,7 +49,8 @@ ExpenseLocalDataSource expenseLocalDataSource(ExpenseLocalDataSourceRef ref) {
 
 /// Remote data source provider
 @riverpod
-ExpenseRemoteDataSource expenseRemoteDataSource(ExpenseRemoteDataSourceRef ref) {
+ExpenseRemoteDataSource expenseRemoteDataSource(
+    ExpenseRemoteDataSourceRef ref) {
   return ExpenseRemoteDataSourceImpl(
     firestore: ref.watch(firestoreProvider),
     auth: ref.watch(firebaseAuthProvider),
@@ -92,15 +93,15 @@ class ExpensesNotifier extends _$ExpensesNotifier {
     if (currentState.isSuccess) {
       final currentExpenses = currentState.data!;
       final lastExpense = currentExpenses.last;
-      
+
       // This would need to be implemented with proper pagination
       // For now, we'll just refresh
       await refresh();
     }
   }
 
-  /// Filter expenses
-  void filter(ExpenseFilter filter) {
+  /// Apply filter to expenses
+  void applyFilter(ExpenseFilter filter) {
     ref.invalidateSelf();
   }
 }
@@ -109,9 +110,9 @@ class ExpensesNotifier extends _$ExpensesNotifier {
 @riverpod
 class ExpenseNotifier extends _$ExpenseNotifier {
   @override
-  Future<Result<Expense?>> build(String id) async {
-    if (id.isEmpty) return const Result.success(null);
-    
+  Future<Result<Expense>> build(String id) async {
+    if (id.isEmpty) return const Result.failure('Invalid expense ID');
+
     final repository = ref.watch(expenseRepositoryProvider);
     return await repository.getExpenseById(id);
   }
@@ -135,7 +136,7 @@ class CategoriesNotifier extends _$CategoriesNotifier {
   Future<void> addCategory(String category) async {
     final repository = ref.watch(expenseRepositoryProvider);
     final result = await repository.addCategory(category);
-    
+
     if (result.isSuccess) {
       ref.invalidateSelf();
     }
@@ -172,25 +173,25 @@ class ExpenseSummaryNotifier extends _$ExpenseSummaryNotifier {
 @riverpod
 class CreateExpenseNotifier extends _$CreateExpenseNotifier {
   @override
-  Future<Result<Expense?>> build() async {
-    return const Result.success(null);
+  Future<Result<Expense>> build() async {
+    return const Result.failure('No expense data');
   }
 
   /// Create new expense
   Future<Result<Expense>> createExpense(CreateExpenseRequest request) async {
     state = const AsyncValue.loading();
-    
+
     try {
       final repository = ref.watch(expenseRepositoryProvider);
       final result = await repository.createExpense(request);
-      
+
       if (result.isSuccess) {
         state = AsyncValue.data(result);
-        
+
         // Invalidate related providers
         ref.invalidate(expensesNotifierProvider);
         ref.invalidate(expenseSummaryNotifierProvider);
-        
+
         return result;
       } else {
         state = AsyncValue.error(result.errorMessage!, StackTrace.current);
@@ -207,26 +208,27 @@ class CreateExpenseNotifier extends _$CreateExpenseNotifier {
 @riverpod
 class UpdateExpenseNotifier extends _$UpdateExpenseNotifier {
   @override
-  Future<Result<Expense?>> build() async {
-    return const Result.success(null);
+  Future<Result<Expense>> build() async {
+    return const Result.failure('No expense data');
   }
 
   /// Update expense
-  Future<Result<Expense>> updateExpense(String id, UpdateExpenseRequest request) async {
+  Future<Result<Expense>> updateExpense(
+      String id, UpdateExpenseRequest request) async {
     state = const AsyncValue.loading();
-    
+
     try {
       final repository = ref.watch(expenseRepositoryProvider);
       final result = await repository.updateExpense(id, request);
-      
+
       if (result.isSuccess) {
         state = AsyncValue.data(result);
-        
+
         // Invalidate related providers
         ref.invalidate(expensesNotifierProvider);
         ref.invalidate(expenseNotifierProvider(id));
         ref.invalidate(expenseSummaryNotifierProvider);
-        
+
         return result;
       } else {
         state = AsyncValue.error(result.errorMessage!, StackTrace.current);
@@ -243,26 +245,26 @@ class UpdateExpenseNotifier extends _$UpdateExpenseNotifier {
 @riverpod
 class DeleteExpenseNotifier extends _$DeleteExpenseNotifier {
   @override
-  Future<Result<void?>> build() async {
+  Future<Result<void>> build() async {
     return const Result.success(null);
   }
 
   /// Delete expense
   Future<Result<void>> deleteExpense(String id) async {
     state = const AsyncValue.loading();
-    
+
     try {
       final repository = ref.watch(expenseRepositoryProvider);
       final result = await repository.deleteExpense(id);
-      
+
       if (result.isSuccess) {
         state = AsyncValue.data(result);
-        
+
         // Invalidate related providers
         ref.invalidate(expensesNotifierProvider);
         ref.invalidate(expenseNotifierProvider(id));
         ref.invalidate(expenseSummaryNotifierProvider);
-        
+
         return result;
       } else {
         state = AsyncValue.error(result.errorMessage!, StackTrace.current);
@@ -279,26 +281,26 @@ class DeleteExpenseNotifier extends _$DeleteExpenseNotifier {
 @riverpod
 class SyncNotifier extends _$SyncNotifier {
   @override
-  Future<Result<void?>> build() async {
+  Future<Result<void>> build() async {
     return const Result.success(null);
   }
 
   /// Sync expenses with remote
   Future<Result<void>> syncExpenses() async {
     state = const AsyncValue.loading();
-    
+
     try {
       final repository = ref.watch(expenseRepositoryProvider);
       final result = await repository.syncExpenses();
-      
+
       if (result.isSuccess) {
         state = AsyncValue.data(result);
-        
+
         // Invalidate all expense-related providers
         ref.invalidate(expensesNotifierProvider);
         ref.invalidate(categoriesNotifierProvider);
         ref.invalidate(expenseSummaryNotifierProvider);
-        
+
         return result;
       } else {
         state = AsyncValue.error(result.errorMessage!, StackTrace.current);

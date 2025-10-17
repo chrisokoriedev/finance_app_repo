@@ -28,9 +28,11 @@ class BiometricAuthDataSource {
     }
     try {
       bool isAuthenticated = await _localAuth.authenticate(
-          localizedReason: 'Authenticate to access nora',
-          options: const AuthenticationOptions(
-              biometricOnly: true, stickyAuth: true, useErrorDialogs: true));
+        localizedReason: 'Authenticate to access nora',
+        biometricOnly: true,
+        sensitiveTransaction: true,
+        persistAcrossBackgrounding: true,
+      );
       if (isAuthenticated) {
         debugPrint('start authentication successful');
         isBiometricAuthEnabled.state = isAuthenticated;
@@ -54,9 +56,11 @@ class BiometricAuthDataSource {
   Future<Either<String, dynamic>> loginWithBiometrics() async {
     try {
       bool isAuthenticated = await _localAuth.authenticate(
-          localizedReason: 'Authenticate to access sensitive data',
-          options: const AuthenticationOptions(
-              biometricOnly: true, stickyAuth: true, useErrorDialogs: true));
+        localizedReason: 'Authenticate to access sensitive data',
+        biometricOnly: true,
+        sensitiveTransaction: true,
+        persistAcrossBackgrounding: true,
+      );
       if (isAuthenticated) {
         EasyLoading.showSuccess(' Biometric authentication successful');
         return right(true);

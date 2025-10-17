@@ -42,7 +42,7 @@ class BioAuthScreen extends HookConsumerWidget {
             child: UserAvatar(firebaseAuth: firebaseAuth),
           ),
           Gap(3.h),
-          TextWigdet(
+          TextWidget(
               text: getUserName(), fontSize: 20.sp, color: theme.primary),
           Gap(3.h),
           GestureDetector(
@@ -59,7 +59,7 @@ class BioAuthScreen extends HookConsumerWidget {
             onPressed: () => ref
                 .read(bioAuthNotifierProviderII.notifier)
                 .loginBioWithLocalAuth(),
-            child: TextWigdet(
+            child: TextWidget(
                 text: 'Click to login with fingerprint',
                 fontSize: 14.sp,
                 color: theme.primary,

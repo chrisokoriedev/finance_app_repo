@@ -33,11 +33,11 @@ class ProfileScreen extends HookConsumerWidget {
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-        failed: (message) {
-          EasyLoading.showError(message!);
+        failed: (message, exception, timestamp) {
+          EasyLoading.showError(message);
         },
-        success: (message) async {
-          EasyLoading.showSuccess(message!);
+        success: (message, timestamp) async {
+          EasyLoading.showSuccess(message);
           context.pushReplacement(AppRouter.authScreen);
         },
       );
@@ -63,13 +63,13 @@ class ProfileScreen extends HookConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextWigdet(
+                      TextWidget(
                           text: firebaseAuth.currentUser?.displayName ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
                           fontWeight: FontWeight.w600),
                       Gap(5.w),
-                      TextWigdet(
+                      TextWidget(
                           text: firebaseAuth.currentUser?.email ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
@@ -174,7 +174,7 @@ class CommingSoon extends StatelessWidget {
       width: double.infinity,
       height: 20.h,
       child: Center(
-        child: TextWigdet(
+        child: TextWidget(
             text: 'Comming soon',
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,

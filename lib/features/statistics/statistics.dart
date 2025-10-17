@@ -55,7 +55,7 @@ class Statistics extends ConsumerWidget {
                   child: Column(children: [
                     Gap(5.h),
                     Center(
-                      child: TextWigdet(
+                      child: TextWidget(
                         text: 'Statistics',
                         fontSize: 17.sp,
                         color: theme.primary,
@@ -155,7 +155,7 @@ class Statistics extends ConsumerWidget {
                       Gap(2.5.h),
                       Row(
                         children: [
-                          TextWigdet(
+                          TextWidget(
                             text: 'Top $expenseType',
                             fontSize: 14.sp,
                             color: theme.primary,
@@ -206,7 +206,7 @@ class Statistics extends ConsumerWidget {
                             return ListTile(
                               title: Row(
                                 children: [
-                                  TextWigdet(
+                                  TextWidget(
                                       text:
                                           '${history.expenseType}\tfor\t${history.name}',
                                       color: theme.primary,
@@ -217,7 +217,7 @@ class Statistics extends ConsumerWidget {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  TextWigdet(
+                                  TextWidget(
                                       text: history.explain,
                                       color: theme.primary,
                                       fontSize: 13.sp,
@@ -225,7 +225,7 @@ class Statistics extends ConsumerWidget {
                                 ],
                               ),
                               leading: iconData,
-                              trailing: TextWigdet(
+                              trailing: TextWidget(
                                   text: history.amount.toString(),
                                   color: theme.primary,
                                   fontSize: 18.sp,
