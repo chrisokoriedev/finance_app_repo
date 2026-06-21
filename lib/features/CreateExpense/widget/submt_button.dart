@@ -48,12 +48,13 @@ class BuildCreateDataComponent extends ConsumerWidget {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
        else{
+         final amount = double.tryParse(expenseAmountController.text.trim());
          if (expenseTitleController.text.isNotEmpty &&
             expenseDescripritionController.text.isNotEmpty &&
-            expenseDescripritionController.text.isNotEmpty) {
+            amount != null) {
           var add = CreateExpenseModel(
               name: expenseTitleController.text,
-              amount: double.parse(expenseAmountController.text),
+              amount: amount,
               expenseType: chooseExpense,
               explain: expenseDescripritionController.text,
               dateTime: choosedDate,

@@ -60,19 +60,22 @@ class ProfileScreen extends HookConsumerWidget {
                     width: 20.w,
                     child: UserAvatar(firebaseAuth: firebaseAuth),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextWigdet(
                           text: firebaseAuth.currentUser?.displayName ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
+                          maxLine: 1,
                           fontWeight: FontWeight.w600),
-                      Gap(5.w),
+                      Gap(0.5.h),
                       TextWigdet(
                           text: firebaseAuth.currentUser?.email ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
+                          maxLine: 1,
                           fontWeight: FontWeight.w600),
                     ],
                   ),

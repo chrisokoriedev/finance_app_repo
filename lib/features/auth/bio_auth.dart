@@ -31,41 +31,43 @@ class BioAuthScreen extends HookConsumerWidget {
             EasyLoading.showError('Not regonised');
           });
     });
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 50.sp)
-          .copyWith(top: deviceSize.height * 0.1),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 20.w,
-            child: UserAvatar(firebaseAuth: firebaseAuth),
-          ),
-          Gap(3.h),
-          TextWigdet(
-              text: getUserName(), fontSize: 20.sp, color: theme.primary),
-          Gap(3.h),
-          GestureDetector(
-            onTap: () => ref
-                .read(bioAuthNotifierProviderII.notifier)
-                .loginBioWithLocalAuth(),
-            child: Icon(
-              Icons.fingerprint_sharp,
-              size: 30.sp,
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 50.sp)
+            .copyWith(top: deviceSize.height * 0.1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 20.w,
+              child: UserAvatar(firebaseAuth: firebaseAuth),
             ),
-          ),
-          Gap(2.h),
-          TextButton(
-            onPressed: () => ref
-                .read(bioAuthNotifierProviderII.notifier)
-                .loginBioWithLocalAuth(),
-            child: TextWigdet(
-                text: 'Click to login with fingerprint',
-                fontSize: 14.sp,
-                color: theme.primary,
-                fontWeight: FontWeight.w500),
-          ),
-        ],
+            Gap(3.h),
+            TextWigdet(
+                text: getUserName(), fontSize: 20.sp, color: theme.primary),
+            Gap(3.h),
+            GestureDetector(
+              onTap: () => ref
+                  .read(bioAuthNotifierProviderII.notifier)
+                  .loginBioWithLocalAuth(),
+              child: Icon(
+                Icons.fingerprint_sharp,
+                size: 30.sp,
+              ),
+            ),
+            Gap(2.h),
+            TextButton(
+              onPressed: () => ref
+                  .read(bioAuthNotifierProviderII.notifier)
+                  .loginBioWithLocalAuth(),
+              child: TextWigdet(
+                  text: 'Click to login with fingerprint',
+                  fontSize: 14.sp,
+                  color: theme.primary,
+                  fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }

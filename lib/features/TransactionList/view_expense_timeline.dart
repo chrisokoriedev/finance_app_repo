@@ -135,11 +135,13 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                 return confirm;
                               },
                               onDismissed: (direction) {
-                                String expenseName = history.name;
-                                ref
-                                    .read(deleteExpenseProvider.notifier)
-                                    .state
-                                    .deleteExpense(expenseName);
+                                final documentId = history.id;
+                                if (documentId != null) {
+                                  ref
+                                      .read(deleteExpenseProvider.notifier)
+                                      .state
+                                      .deleteExpense(documentId);
+                                }
                               },
                               child: ListTile(
                                 title: Row(

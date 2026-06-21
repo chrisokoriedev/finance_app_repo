@@ -111,39 +111,44 @@ class ExpenseListBuilder extends HookConsumerWidget {
               return confirm;
             },
             onDismissed: (direction) {
-              String expenseName = history.name;
-              ref
-                  .read(deleteExpenseProvider.notifier)
-                  .state
-                  .deleteExpense(expenseName);
+              final documentId = history.id;
+              if (documentId != null) {
+                ref
+                    .read(deleteExpenseProvider.notifier)
+                    .state
+                    .deleteExpense(documentId);
+              }
             },
             child: ListTile(
-              title: Row(
-                children: [
-                  TextWigdet(
-                      text: '${history.expenseType}\tfor\t${history.name}',
-                      color: theme.primary,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600),
-                ],
-              ),
+              title: TextWigdet(
+                  text: '${history.expenseType}\tfor\t${history.name}',
+                  color: theme.primary,
+                  fontSize: 15.sp,
+                  maxLine: 1,
+                  fontWeight: FontWeight.w600),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      TextWigdet(
-                          text: history.explain,
-                          color: theme.primary,
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: TextWigdet(
+                            text: history.explain,
+                            color: theme.primary,
+                            fontSize: 13.sp,
+                            maxLine: 1,
+                            fontWeight: FontWeight.w600),
+                      ),
                       Gap(10.w),
                       history.expenseSubList != '..'
-                          ? TextWigdet(
-                              text: history.expenseSubList,
-                              color: theme.primary,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w600)
+                          ? Flexible(
+                              child: TextWigdet(
+                                  text: history.expenseSubList,
+                                  color: theme.primary,
+                                  fontSize: 15.sp,
+                                  maxLine: 1,
+                                  fontWeight: FontWeight.w600),
+                            )
                           : const SizedBox.shrink(),
                     ],
                   ),

@@ -114,32 +114,23 @@ class DeleteExpense {
 
   DeleteExpense(this.ref, this._firebaseAuth, this._firebaseFirestore);
 
-  Future<void> deleteExpense(String expenseName) async {
-    final firestoreInstance = _firebaseFirestore;
-    final userId = _firebaseAuth.currentUser!.uid;
+  /// Deletes a single expense by its Firestore [documentId]. Deleting by id
+  /// (rather than matching on the name) guarantees the exact record the user
+  /// swiped is removed, even when multiple records share the same name.
+  Future<void> deleteExpense(String documentId) async {
+    final userId = _firebaseAuth.currentUser?.uid;
+    if (userId == null) return;
 
     try {
-      QuerySnapshot querySnapshot = await firestoreInstance
+      await _firebaseFirestore
           .collection(AppString.expense)
           .doc(userId)
           .collection(AppString.userExpense)
-          .where('name', isEqualTo: expenseName)
-          .get();
-      if (querySnapshot.docs.isNotEmpty) {
-        String documentId = querySnapshot.docs.first.id;
-        await firestoreInstance
-            .collection(AppString.expense)
-            .doc(userId)
-            .collection(AppString.userExpense)
-            .doc(documentId)
-            .delete();
-        ref.refresh(totalStateProvider.notifier).state;
-        ref.refresh(cloudItemsProvider.future);
-      } else {}
+          .doc(documentId)
+          .delete();
+      ref.refresh(cloudItemsProvider.future);
     } catch (e) {
       debugPrint(e.toString());
     }
   }
-
-
 }

@@ -9,26 +9,25 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        child: Container(
-          color: AppColor.kDarkGreyColor.withOpacity(0.7),
-          child: Center(
-            child: Container(
-              width: 20.w,
-              height: 10.h,
-              decoration: BoxDecoration(
-                  color: AppColor.kBlackColor,
-                  borderRadius: BorderRadius.circular(10.sp)),
-              child: const Center(
-                  child: CircularProgressIndicator(
-                color: AppColor.kWhitColor,
-              )),
-            ),
+    // SizedBox.expand fills its parent whether or not it sits inside a Stack,
+    // so this overlay can't crash with a `Positioned` outside a Stack.
+    return SizedBox.expand(
+      child: ColoredBox(
+        color: AppColor.kDarkGreyColor.withOpacity(0.7),
+        child: Center(
+          child: Container(
+            width: 20.w,
+            height: 10.h,
+            decoration: BoxDecoration(
+                color: AppColor.kBlackColor,
+                borderRadius: BorderRadius.circular(10.sp)),
+            child: const Center(
+                child: CircularProgressIndicator(
+              color: AppColor.kWhitColor,
+            )),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

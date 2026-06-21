@@ -54,6 +54,40 @@ class AuthDataSource {
     }
   }
 
+  Future<Either<String, User>> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final credential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+      return right(credential.user!);
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+      return left(e.message ?? 'Sign in failed');
+    } catch (e) {
+      debugPrint(e.toString());
+      return left(e.toString());
+    }
+  }
+
+  Future<Either<String, User>> signUpWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+      return right(credential.user!);
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+      return left(e.message ?? 'Registration failed');
+    } catch (e) {
+      debugPrint(e.toString());
+      return left(e.toString());
+    }
+  }
+
   Future<Either<String, dynamic>> signOutGoogle() async {
     try {
       final googleSignIn = GoogleSignIn.instance;
