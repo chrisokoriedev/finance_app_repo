@@ -17,6 +17,26 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
     );
   }
 
+  ///method to sign in with email and password
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    state = const AuthenticationState.loading();
+    final response = await _dataSource.signInWithEmailAndPassword(email, password);
+    state = response.fold(
+      (error) => AuthenticationState.unauthenticated(message: error),
+      (response) => AuthenticationState.authenticated(user: response),
+    );
+  }
+
+  ///method to sign up with email and password
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+    state = const AuthenticationState.loading();
+    final response = await _dataSource.signUpWithEmailAndPassword(email, password);
+    state = response.fold(
+      (error) => AuthenticationState.unauthenticated(message: error),
+      (response) => AuthenticationState.authenticated(user: response),
+    );
+  }
+
   ///method to sign out  with google
   Future<void> signOutGoogle() async {
     state = const AuthenticationState.loading();
