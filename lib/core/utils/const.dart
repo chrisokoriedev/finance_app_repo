@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/widgets/neu.dart';
-import 'colors.dart';
 
 List<String> expenseListType = [
   AppString.income,
