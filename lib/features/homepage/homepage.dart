@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/expense_list_builder.dart';
 import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../core/utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
 class HomePage extends ConsumerWidget {
@@ -18,58 +19,62 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final itemProvider = ref.watch(cloudItemsProvider);
-    final theme = Theme.of(context).colorScheme;
-    return RefreshIndicator(
-      onRefresh: () => ref.refresh(cloudItemsProvider.future),
-      child: itemProvider.when(
-          data: (data) {
-            var dataNew = data
-              ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child:
-                      SizedBox(height: 52.h, child: DashboardHeader(pageCntrl)),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    final neu = context.neu;
+    return Container(
+      color: neu.surface,
+      child: RefreshIndicator(
+        color: neu.primary,
+        backgroundColor: neu.surface,
+        onRefresh: () => ref.refresh(cloudItemsProvider.future),
+        child: itemProvider.when(
+            data: (data) {
+              var dataNew = data
+                ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(child: DashboardHeader(pageCntrl)),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 0.5.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextWidget(
-                                  text: 'Recent History',
-                                  color: theme.primary,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500),
-                              GestureDetector(
-                                onTap: pageSelected,
-                                child: TextWidget(
-                                    text: 'See all',
-                                    color: AppColor.kGreyColor,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
+                          TextWidget(
+                              text: 'Recent',
+                              color: neu.textPrimary,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500),
+                          GestureDetector(
+                            onTap: pageSelected,
+                            child: TextWidget(
+                                text: 'See all',
+                                color: neu.primary,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500),
                           ),
-                        ]),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                ExpenseListBuilder(
-                    data: dataNew,
-                    childCount:
-                        dataNew.isNotEmpty ? min(dataNew.length, 6) : 1),
-              ],
-            );
-          },
-          error: (_, __) {
-            debugPrint('Eror $__');
-            return Text('Error $__');
-          },
-          loading: () => const Center(child: CircularProgressIndicator())),
+                  ExpenseListBuilder(
+                      data: dataNew,
+                      childCount:
+                          dataNew.isNotEmpty ? min(dataNew.length, 6) : 1),
+                  const SliverToBoxAdapter(child: Gap(12)),
+                ],
+              );
+            },
+            error: (_, __) {
+              debugPrint('Eror $__');
+              return Center(
+                  child: TextWidget(
+                      text: 'Something went wrong',
+                      color: neu.textSecondary,
+                      fontSize: 14.sp));
+            },
+            loading: () =>
+                Center(child: CircularProgressIndicator(color: neu.primary))),
+      ),
     );
   }
 }

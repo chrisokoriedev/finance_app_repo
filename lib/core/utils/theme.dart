@@ -1,7 +1,9 @@
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
+  extensions: const [NeuColors.light],
   appBarTheme: const AppBarTheme(backgroundColor: AppColor.kWhitColor),
   bottomAppBarTheme: const BottomAppBarThemeData(color: AppColor.kWhitColor),
   scaffoldBackgroundColor: AppColor.kWhitColor,
@@ -20,6 +22,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  extensions: const [NeuColors.dark],
   bottomAppBarTheme:
       const BottomAppBarThemeData(color: AppColor.kDarkGreyColor),
   scaffoldBackgroundColor: AppColor.kDarkGreyColor,
