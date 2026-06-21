@@ -1,12 +1,13 @@
 import 'package:expense_app/core/domain/cal.dart';
 import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:line_icons/line_icon.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -33,24 +34,25 @@ class ExpenseListBuilder extends HookConsumerWidget {
           if (data.isEmpty) {
             return const NoDataView();
           }
+          final neu = context.neu;
           var history = data[index];
-          Icon iconData;
+          final Color catColor;
+          final IconData catIcon;
           if (history.expenseType == "Income") {
-            iconData = LineIcon.wallet(
-              size: 18.sp,
-              color: AppColor.kGreenColor,
-            );
+            catColor = neu.income;
+            catIcon = Icons.south_west;
           } else if (history.expenseType == "Expense") {
-            iconData = LineIcon.alternateWavyMoneyBill(
-              size: 18.sp,
-              color: AppColor.kredColor,
-            );
+            catColor = neu.expense;
+            catIcon = Icons.north_east;
           } else {
-            iconData = LineIcon.alternateWavyMoneyBill(
-              size: 18.sp,
-              color: AppColor.kBlueColor,
-            );
+            catColor = neu.debt;
+            catIcon = Icons.account_balance;
           }
+          final sign = history.expenseType == "Income" ? '+' : '-';
+          final subtitleText = (history.expenseSubList != '..'
+                  ? history.expenseSubList
+                  : history.expenseType) +
+              (showDateTIme ? ' · ${timeago.format(history.dateTime)}' : '');
           return Dismissible(
             key: ObjectKey(history),
             background: Container(
