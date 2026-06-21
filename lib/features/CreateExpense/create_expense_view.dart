@@ -1,7 +1,6 @@
 import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/state/local.dart';
-import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/loading.dart';
