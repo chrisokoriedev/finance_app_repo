@@ -39,27 +39,67 @@ class DashboardHeader extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextWidget(
-                      text: _getGreetingText(greeting),
+                  Text(
+                    'Hey ${getUserName()} 😊',
+                    style: TextStyle(
                       color: neu.textSecondary,
-                      fontSize: 12.sp),
-                  Gap(0.3.h),
-                  TextWidget(
-                      text: getUserName(),
-                      color: neu.textPrimary,
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w500),
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Gap(0.4.h),
+                  Row(
+                    children: [
+                      Text(
+                        'nora',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Gap(1.w),
+                      Container(
+                        width: 1.5.w,
+                        height: 1.5.w,
+                        decoration: BoxDecoration(
+                          color: neu.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               GestureDetector(
                 onTap: () => pageCntrl.jumpToPage(3),
-                child: SizedBox(
-                  width: 12.w,
-                  height: 12.w,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: UserAvatar(firebaseAuth: firebaseAuth),
-                  ),
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      width: 11.w,
+                      height: 11.w,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: UserAvatar(firebaseAuth: firebaseAuth),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        width: 2.2.w,
+                        height: 2.2.w,
+                        decoration: BoxDecoration(
+                          color: neu.accent, // yellow/orange notification dot
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            width: 1.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -69,17 +109,45 @@ class DashboardHeader extends ConsumerWidget {
             skipLoadingOnReload: true,
             data: (data) {
               final streak = _loggingStreak(data);
+              final trendVal = _calculateMonthlyTrend(data);
+              final totalSavings = totals.totalIncome - totals.totalExpense - totals.totalDebt;
+              final ratio = totals.totalIncome > 0
+                  ? (totalSavings / totals.totalIncome).clamp(0.0, 1.0)
+                  : 0.0;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (streak > 1) ...[
-                    NeuPill(
-                        icon: Icons.local_fire_department,
-                        label: '$streak-day logging streak',
-                        color: neu.accent),
+                  if (streak > 0) ...[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 11.sp, vertical: 5.sp),
+                      decoration: BoxDecoration(
+                        color: neu.accent.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(20.sp),
+                        border: Border.all(
+                          color: neu.accent.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.local_fire_department, color: neu.accent, size: 14.sp),
+                          Gap(1.5.w),
+                          Text(
+                            '$streak-day logging streak',
+                            style: TextStyle(
+                              color: neu.accent,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Gap(1.2.h),
                   ],
-                  _balanceCard(neu, totals),
+                  _balanceCard(neu, totals, trendVal, ratio, context),
                   Gap(1.6.h),
                   Row(
                     children: [
@@ -89,7 +157,7 @@ class DashboardHeader extends ConsumerWidget {
                       _stat(neu, Icons.north_east, neu.expense, 'Expense',
                           totals.totalExpense),
                       Gap(2.5.w),
-                      _stat(neu, Icons.account_balance, neu.debt, 'Debt',
+                      _stat(Icons.monetization_on_outlined, neu.debt, 'Debt',
                           totals.totalDebt),
                     ],
                   ),
@@ -115,44 +183,117 @@ class DashboardHeader extends ConsumerWidget {
     );
   }
 
-  Widget _balanceCard(NeuColors neu, Totals totals) {
-    final ratio = totals.totalIncome > 0
-        ? (totals.totalExpense / totals.totalIncome).clamp(0.0, 1.0)
-        : 0.0;
+  double _calculateMonthlyTrend(List<CreateExpenseModel> expenses) {
+    final now = DateTime.now();
+    double trend = 0;
+    for (final item in expenses) {
+      if (item.dateTime.year == now.year && item.dateTime.month == now.month) {
+        if (item.expenseType == 'Income') {
+          trend += item.amount;
+        } else {
+          trend -= item.amount;
+        }
+      }
+    }
+    return trend;
+  }
+
+  Widget _balanceCard(NeuColors neu, Totals totals, double trendVal, double ratio, BuildContext context) {
     final onTrack = totals.grandTotal >= 0;
-    return NeuCard(
-      radius: 26,
-      padding: EdgeInsets.all(5.w),
+    final isPositiveTrend = trendVal >= 0;
+    final trendColor = isPositiveTrend ? neu.primary : neu.expense;
+
+    return Container(
+      padding: EdgeInsets.all(18.sp),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: BorderRadius.circular(22.sp),
+        boxShadow: neu.raised,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextWidget(
-                  text: 'Total balance',
+              Text(
+                'Total balance',
+                style: TextStyle(
                   color: neu.textSecondary,
-                  fontSize: 12.sp),
-              NeuPill(
-                  icon: onTrack
-                      ? Icons.check_circle_outline
-                      : Icons.error_outline,
-                  label: onTrack ? 'On track' : 'Over budget',
-                  color: onTrack ? neu.primary : neu.expense),
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 4.sp),
+                decoration: BoxDecoration(
+                  color: (onTrack ? neu.primary : neu.expense).withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(20.sp),
+                  border: Border.all(
+                    color: (onTrack ? neu.primary : neu.expense).withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      onTrack ? Icons.check_circle_outline : Icons.error_outline,
+                      color: onTrack ? neu.primary : neu.expense,
+                      size: 13.sp,
+                    ),
+                    Gap(1.w),
+                    Text(
+                      onTrack ? 'On track' : 'Over budget',
+                      style: TextStyle(
+                        color: onTrack ? neu.primary : neu.expense,
+                        fontSize: 11.5.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-          Gap(0.8.h),
+          Gap(0.5.h),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: TextWidget(
-                    text: _money(totals.grandTotal),
-                    color: neu.textPrimary,
-                    fontSize: 26.sp,
-                    maxLine: 1,
-                    letterSpacing: 0.5,
-                    fontWeight: FontWeight.w500),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _money(totals.grandTotal),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    Gap(0.8.h),
+                    Row(
+                      children: [
+                        Icon(
+                          isPositiveTrend ? Icons.north_east : Icons.south_west,
+                          color: trendColor,
+                          size: 13.sp,
+                        ),
+                        Gap(1.w),
+                        Text(
+                          '${isPositiveTrend ? '+' : '-'}₦${NumberFormat('#,##0').format(trendVal.abs())} this month',
+                          style: TextStyle(
+                            color: trendColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               _spentRing(neu, ratio),
             ],
@@ -164,6 +305,7 @@ class DashboardHeader extends ConsumerWidget {
 
   Widget _spentRing(NeuColors neu, double ratio) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
           width: 14.w,
@@ -174,44 +316,74 @@ class DashboardHeader extends ConsumerWidget {
               SizedBox.expand(
                 child: CircularProgressIndicator(
                   value: ratio,
-                  strokeWidth: 5,
+                  strokeWidth: 4.5,
                   strokeCap: StrokeCap.round,
-                  backgroundColor: neu.shadowDark,
+                  backgroundColor: Colors.black.withOpacity(0.2),
                   valueColor: AlwaysStoppedAnimation(neu.accent),
                 ),
               ),
-              TextWidget(
-                  text: '${(ratio * 100).round()}%',
-                  color: neu.textPrimary,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w500),
+              Text(
+                '${(ratio * 100).round()}%',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
-        Gap(0.3.h),
-        TextWidget(text: 'spent', color: neu.textSecondary, fontSize: 10.sp),
+        Gap(0.6.h),
+        Text(
+          'goal',
+          style: TextStyle(
+            color: neu.textSecondary,
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _stat(
-      NeuColors neu, IconData icon, Color color, String label, double value) {
+  Widget _stat(NeuColors neu, IconData icon, Color color, String label, double value) {
     return Expanded(
-      child: NeuCard(
-        radius: 18,
-        padding: EdgeInsets.symmetric(vertical: 1.6.h, horizontal: 2.w),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 1.8.h, horizontal: 3.5.w),
+        decoration: BoxDecoration(
+          color: neu.surface,
+          borderRadius: BorderRadius.circular(18.sp),
+          boxShadow: neu.raised,
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            NeuIconWell(icon: icon, color: color, size: 32, radius: 11),
-            Gap(0.6.h),
-            TextWidget(text: label, color: neu.textSecondary, fontSize: 11.sp),
-            Gap(0.2.h),
-            TextWidget(
-                text: _compact(value),
-                color: neu.textPrimary,
-                fontSize: 13.sp,
-                maxLine: 1,
-                fontWeight: FontWeight.w500),
+            Container(
+              padding: EdgeInsets.all(7.sp),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 16.sp),
+            ),
+            Gap(1.2.h),
+            Text(
+              label,
+              style: TextStyle(
+                color: neu.textSecondary,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Gap(0.4.h),
+            Text(
+              _compact(value),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

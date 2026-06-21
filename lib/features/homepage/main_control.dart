@@ -64,69 +64,91 @@ class MainControlComponent extends HookConsumerWidget {
       ProfileScreen(pageCntrl),
     ];
     return Scaffold(
-      backgroundColor: neu.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      extendBody: true,
       body: SafeArea(
-        child: Stack(
-          children: [
-            PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) =>
-                  ref.read(selectedBottomTab.notifier).state = index,
-              controller: pageCntrl,
-              children: screenChangeList,
-            ),
-          ],
+        child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) =>
+              ref.read(selectedBottomTab.notifier).state = index,
+          controller: pageCntrl,
+          children: screenChangeList,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: neu.primary,
-        elevation: 0,
-        highlightElevation: 0,
-        shape: const CircleBorder(),
-        child: LineIcon.plus(
-          color: neu.surface,
-          size: 20.sp,
-        ),
-        onPressed: () => context.push(AppRouter.createExpenseView),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        height: 9.h,
-        color: neu.surface,
-        elevation: 0,
-        surfaceTintColor: neu.surface,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-            iconData.length,
-            (index) {
-              final isActive = selectedTab == index;
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
+      bottomNavigationBar: Container(
+        color: Colors.transparent,
+        padding: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 20.sp),
+        child: Container(
+          height: 8.h,
+          decoration: BoxDecoration(
+            color: neu.surface,
+            borderRadius: BorderRadius.circular(30.sp),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.35),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildNavItem(ref, pageCntrl, 0, LineIcons.home, selectedTab, neu),
+              _buildNavItem(ref, pageCntrl, 1, LineIcons.pieChart, selectedTab, neu),
+              GestureDetector(
                 onTap: () {
-                  Vibration.vibrate(duration: 500, amplitude: 6);
-                  pageCntrl.jumpToPage(index);
-                  ref.read(selectedBottomTab.notifier).state = index;
+                  try {
+                    Vibration.vibrate(duration: 40, amplitude: 10);
+                  } catch (_) {}
+                  context.push(AppRouter.createExpenseView);
                 },
                 child: Container(
-                  padding: EdgeInsets.all(isActive ? 2.5.w : 0),
-                  decoration: isActive
-                      ? BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: neu.surface,
-                          boxShadow: neu.inset)
-                      : null,
-                  child: LineIcon(
-                    iconData[index],
-                    color: isActive ? neu.primary : neu.textSecondary,
-                    size: isActive ? 20.sp : 19.sp,
+                  width: 12.w,
+                  height: 12.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: neu.primary,
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: 21.sp,
                   ),
                 ),
-              );
-            },
-          )..insert(2, Gap(8.w)),
+              ),
+              _buildNavItem(ref, pageCntrl, 2, LineIcons.wallet, selectedTab, neu),
+              _buildNavItem(ref, pageCntrl, 3, LineIcons.user, selectedTab, neu),
+            ],
+          ),
         ),
       ),
     );
   }
-}
+
+  Widget _buildNavItem(WidgetRef ref, PageController pageCntrl, int index,
+      IconData icon, int selectedTab, NeuColors neu) {
+    final isActive = selectedTab == index;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        try {
+          Vibration.vibrate(duration: 40, amplitude: 6);
+        } catch (_) {}
+        pageCntrl.jumpToPage(index);
+        ref.read(selectedBottomTab.notifier).state = index;
+      },
+      child: Container(
+        width: 12.w,
+        height: 12.w,
+        alignment: Alignment.center,
+        child: Icon(
+          icon,
+          color: isActive ? neu.primary : neu.textSecondary,
+          size: 20.sp,
+        ),
+      ),
+    );
+  }
+  }
+

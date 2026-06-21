@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:expense_app/core/domain/cal.dart';
 import 'package:expense_app/core/model/create_expense.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/string_app.dart';
@@ -27,221 +29,328 @@ class Statistics extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).colorScheme;
-
+    final neu = context.neu;
     final selectedTab = ref.watch(selectedTabProvider);
     final itemProvider = ref.watch(cloudItemsProvider);
-    final expenseType = ref.watch(expenseItemTypeProvider);
+    final totals = ref.watch(totalsProvider);
+
     return PopScope(
       canPop: false,
-      onPopInvoked: (value) => pageController.jumpToPage(0),
-      child: itemProvider.when(
-        error: (_, __) => Text(
-          'Error $__',
-        ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        data: (data) {
-          List<CreateExpenseModel> expenseData = data
-              .where((expense) => expense.expenseType == expenseType)
-              .toList()
-            ..sort((a, b) => b.amount.compareTo(a.amount));
-
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
+      onPopInvoked: (value) {
+        pageController.jumpToPage(0);
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IntrinsicWidth(
-                  stepWidth: double.infinity,
-                  stepHeight: 2.h,
-                  child: Column(children: [
-                    Gap(5.h),
-                    Center(
-                      child: TextWidget(
-                        text: 'Statistics',
-                        fontSize: 17.sp,
-                        color: theme.primary,
-                        fontWeight: FontWeight.w700,
+                Gap(1.5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Statistics',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Gap(2.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                        4,
-                        (index) => GestureDetector(
-                          onTap: () => ref
-                              .read(selectedTabProvider.notifier)
-                              .state = index,
-                          child: Chip(
-                            elevation: 0.0,
-                            side: BorderSide.none,
-                            backgroundColor: selectedTab == index
-                                ? AppColor.kBlackColor
-                                : AppColor.kGreyColor.withOpacity(0.8.spa),
-                            label: Text(
-                              dayType[index],
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                letterSpacing: 1.7,
-                                fontWeight: FontWeight.w500,
-                                color: selectedTab == index
-                                    ? theme.tertiary
-                                    : AppColor.kBlackColor,
-                              ),
-                            ),
-                          ),
-                        ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.tune_outlined,
+                        color: neu.textSecondary,
+                        size: 18.sp,
                       ),
+                      onPressed: () {},
                     ),
-                    Gap(1.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Chip(
-                          label: SizedBox(
-                            width: 20.w,
-                            height: 2.h,
-                            child: DropdownButton<String>(
-                              value: expenseType,
-                              underline: Container(),
-                              isExpanded: true,
-                              hint: Text(
-                                'Type',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColor.kBlackColor),
-                              ),
-                              selectedItemBuilder: (context) => expenseListType
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(
-                                            fontSize: 13.9.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              items: expenseListType
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(
-                                            fontSize: 13.9.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                ref
-                                    .read(expenseItemTypeProvider.notifier)
-                                    .state = value!;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
+                  ],
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      const ChartComponent(),
-                      Gap(2.5.h),
-                      Row(
-                        children: [
-                          TextWidget(
-                            text: 'Top $expenseType',
-                            fontSize: 14.sp,
-                            color: theme.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          Gap(2.w),
-                          LineIcon.wallet(
-                            size: 18.sp,
-                            color: switch (expenseType) {
-                              AppString.income => AppColor.kGreenColor,
-                              AppString.expenses => AppColor.kredColor,
-                              AppString.debt => AppColor.kBlueColor,
-                              _ => AppColor.kGreyColor,
-                            },
-                          )
-                        ],
-                      ),
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: expenseData.isNotEmpty
-                              ? min(expenseData.length, 5)
-                              : 1,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            if (expenseData.isEmpty) {
-                              return const NoDataView();
-                            }
-
-                            final history = expenseData[index];
-                            Icon iconData;
-                            if (history.expenseType == AppString.income) {
-                              iconData = LineIcon.wallet(
-                                size: 18.sp,
-                                color: AppColor.kGreenColor,
-                              );
-                            } else if (history.expenseType ==
-                                AppString.expenses) {
-                              iconData = LineIcon.alternateWavyMoneyBill(
-                                size: 18.sp,
-                                color: AppColor.kredColor,
-                              );
-                            } else {
-                              iconData = LineIcon.alternateWavyMoneyBill(
-                                size: 18.sp,
-                                color: AppColor.kBlueColor,
-                              );
-                            }
-                            return ListTile(
-                              title: Row(
-                                children: [
-                                  TextWidget(
-                                      text:
-                                          '${history.expenseType}\tfor\t${history.name}',
-                                      color: theme.primary,
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w600),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextWidget(
-                                      text: history.explain,
-                                      color: theme.primary,
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600),
-                                ],
-                              ),
-                              leading: iconData,
-                              trailing: TextWidget(
-                                  text: history.amount.toString(),
-                                  color: theme.primary,
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600),
-                            );
-                          })
-                    ]),
+                Gap(2.h),
+                NeuSegmented(
+                  segments: const ['Day', 'Week', 'Month', 'Year'],
+                  selectedIndex: selectedTab,
+                  activeColor: neu.primary,
+                  onChanged: (index) {
+                    ref.read(selectedTabProvider.notifier).state = index;
+                  },
+                ),
+                Gap(2.5.h),
+                itemProvider.when(
+                  loading: () => const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
                   ),
-                )
+                  error: (err, stack) => Expanded(
+                    child: Center(
+                      child: Text(
+                        'Something went wrong',
+                        style: TextStyle(color: neu.textSecondary),
+                      ),
+                    ),
+                  ),
+                  data: (data) {
+                    final chartData = [
+                      ChartData('Income', totals.totalIncome, neu.income),
+                      ChartData('Expense', totals.totalExpense, neu.expense),
+                      ChartData('Debt', totals.totalDebt, neu.debt),
+                    ];
+
+                    final topCategories = _calculateTopCategories(data);
+
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Donut Chart Card
+                            Container(
+                              padding: EdgeInsets.all(16.sp),
+                              decoration: BoxDecoration(
+                                color: neu.surface,
+                                borderRadius: BorderRadius.circular(22.sp),
+                                boxShadow: neu.raised,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: SizedBox(
+                                      height: 16.h,
+                                      child: SfCircularChart(
+                                        margin: EdgeInsets.zero,
+                                        annotations: <CircularChartAnnotation>[
+                                          CircularChartAnnotation(
+                                            widget: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  _compact(totals.totalExpense),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'spent',
+                                                  style: TextStyle(
+                                                    color: neu.textSecondary,
+                                                    fontSize: 11.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                        series: <CircularSeries>[
+                                          DoughnutSeries<ChartData, String>(
+                                            dataSource: chartData,
+                                            xValueMapper: (ChartData d, _) => d.x,
+                                            yValueMapper: (ChartData d, _) => d.y,
+                                            pointColorMapper: (ChartData d, _) => d.color,
+                                            innerRadius: '75%',
+                                            radius: '100%',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        _legendItem(neu.income, 'Income', totals.totalIncome, neu),
+                                        Gap(1.2.h),
+                                        _legendItem(neu.expense, 'Expense', totals.totalExpense, neu),
+                                        Gap(1.2.h),
+                                        _legendItem(neu.debt, 'Debt', totals.totalDebt, neu),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Gap(3.h),
+                            Text(
+                              'Top categories',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Gap(1.5.h),
+                            if (topCategories.isEmpty)
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4.h),
+                                child: Center(
+                                  child: Text(
+                                    'No expenses recorded yet',
+                                    style: TextStyle(
+                                      color: neu.textSecondary,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            else
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: topCategories.length,
+                                itemBuilder: (context, idx) {
+                                  return _categoryProgressBar(
+                                      topCategories[idx], totals.totalExpense, neu);
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
+
+  Widget _legendItem(Color color, String label, double value, NeuColors neu) {
+    return Row(
+      children: [
+        Container(
+          width: 10.sp,
+          height: 10.sp,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3.sp),
+          ),
+        ),
+        Gap(2.5.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: neu.textSecondary,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Gap(0.2.h),
+            Text(
+              _money(value),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _categoryProgressBar(CategorySpend cat, double totalExpense, NeuColors neu) {
+    final ratio = totalExpense > 0 ? (cat.amount / totalExpense).clamp(0.0, 1.0) : 0.0;
+    Color barColor = neu.primary;
+    final nameLower = cat.category.toLowerCase();
+    if (nameLower.contains('grocer') || nameLower.contains('food') || nameLower.contains('house') || nameLower.contains('general')) {
+      barColor = neu.expense; // coral
+    } else if (nameLower.contains('transport') || nameLower.contains('data') || nameLower.contains('cloth')) {
+      barColor = neu.debt; // slate blue
+    } else if (nameLower.contains('eat') || nameLower.contains('cafe')) {
+      barColor = neu.primary; // green
+    } else {
+      barColor = neu.accent; // gold
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.2.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                cat.category,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.5.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                _money(cat.amount),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.5.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          Gap(0.8.h),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.sp),
+            child: Container(
+              height: 6.dp,
+              width: double.infinity,
+              color: Colors.black.withOpacity(0.2),
+              alignment: Alignment.centerLeft,
+              child: FractionallySizedBox(
+                widthFactor: ratio,
+                child: Container(
+                  color: barColor,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<CategorySpend> _calculateTopCategories(List<CreateExpenseModel> expenses) {
+    final Map<String, double> categorySums = {};
+    for (final item in expenses) {
+      if (item.expenseType == 'Expense') {
+        final cat = item.expenseSubList == '..' ? 'General' : item.expenseSubList;
+        categorySums[cat] = (categorySums[cat] ?? 0) + item.amount;
+      }
+    }
+    final sorted = categorySums.entries.map((e) => CategorySpend(e.key, e.value)).toList()
+      ..sort((a, b) => b.amount.compareTo(a.amount));
+    return sorted;
+  }
+
+  String _money(num v) => '₦${NumberFormat('#,##0').format(v)}';
+
+  String _compact(num v) =>
+      NumberFormat.compactCurrency(symbol: '₦', decimalDigits: 0).format(v);
+}
+
+class ChartData {
+  ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
+}
+
+class CategorySpend {
+  final String category;
+  final double amount;
+  CategorySpend(this.category, this.amount);
 }

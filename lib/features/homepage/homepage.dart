@@ -21,7 +21,7 @@ class HomePage extends ConsumerWidget {
     final itemProvider = ref.watch(cloudItemsProvider);
     final neu = context.neu;
     return Container(
-      color: neu.surface,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: RefreshIndicator(
         color: neu.primary,
         backgroundColor: neu.surface,

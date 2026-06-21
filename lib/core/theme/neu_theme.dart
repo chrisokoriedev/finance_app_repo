@@ -33,25 +33,20 @@ class NeuColors extends ThemeExtension<NeuColors> {
     required this.debt,
   });
 
-  /// Raised (extruded) elevation — light source top-left.
+  /// Raised (extruded) elevation — soft modern drop shadow.
   List<BoxShadow> get raised => [
         BoxShadow(
-            color: shadowDark, offset: const Offset(5, 5), blurRadius: 12),
-        BoxShadow(
-            color: shadowLight, offset: const Offset(-5, -5), blurRadius: 12),
+            color: shadowDark.withOpacity(0.4),
+            offset: const Offset(0, 6),
+            blurRadius: 16),
       ];
 
   /// Inset (pressed-in) elevation, using inner blur for the dual shadow.
   List<BoxShadow> get inset => [
         BoxShadow(
             color: shadowDark,
-            offset: const Offset(3, 3),
-            blurRadius: 6,
-            blurStyle: BlurStyle.inner),
-        BoxShadow(
-            color: shadowLight,
-            offset: const Offset(-3, -3),
-            blurRadius: 6,
+            offset: const Offset(2, 2),
+            blurRadius: 4,
             blurStyle: BlurStyle.inner),
       ];
 
@@ -59,16 +54,16 @@ class NeuColors extends ThemeExtension<NeuColors> {
   Color tint(Color c) => c.withOpacity(0.16);
 
   static const NeuColors dark = NeuColors(
-    surface: Color(0xFF24262B),
-    shadowDark: Color(0xFF191A1E),
-    shadowLight: Color(0xFF2F3138),
+    surface: Color(0xFF202328), // Sleek slightly lighter card surface
+    shadowDark: Color(0xFF0F1113), // Deep dark shadow for contrast
+    shadowLight: Color(0xFF2E323A),
     textPrimary: Color(0xFFECEEF2),
-    textSecondary: Color(0xFF93969F),
-    primary: Color(0xFF4FC4B0),
-    accent: Color(0xFFE8B15A),
-    income: Color(0xFF4FC4B0),
-    expense: Color(0xFFE58A8A),
-    debt: Color(0xFF8AA8E6),
+    textSecondary: Color(0xFF8A909F),
+    primary: Color(0xFF60D3A8), // Elegant mint/teal green
+    accent: Color(0xFFECAE5C), // Warm gold/amber
+    income: Color(0xFF60D3A8),
+    expense: Color(0xFFDE7D6B), // Soft coral/red
+    debt: Color(0xFF7D99D6), // Slate blue
   );
 
   static const NeuColors light = NeuColors(
