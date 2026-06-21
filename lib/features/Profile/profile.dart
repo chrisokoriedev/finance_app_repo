@@ -2,7 +2,9 @@ import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/provider/firebase.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/state/auth.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/loading.dart';
 import 'package:expense_app/core/utils/routes.dart';
@@ -27,6 +29,7 @@ class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen(this.pageController, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final neu = context.neu;
     final firebaseAuth = ref.watch(firebaseAuthProvider);
     final itemProvider = ref.watch(cloudItemsProvider);
     final authState = ref.watch(authNotifierProvider);
@@ -56,27 +59,38 @@ class ProfileScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 20.w,
-                    child: UserAvatar(firebaseAuth: firebaseAuth),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: neu.surface,
+                      boxShadow: neu.raised,
+                    ),
+                    child: SizedBox(
+                      width: 20.w,
+                      height: 20.w,
+                      child: UserAvatar(firebaseAuth: firebaseAuth),
+                    ),
                   ),
+                  Gap(1.5.h),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextWidget(
                           text: firebaseAuth.currentUser?.displayName ?? "",
+                          color: neu.textPrimary,
                           fontSize: 16.sp,
-                          letterSpacing: 1.5,
+                          letterSpacing: 1.2,
                           maxLine: 1,
-                          fontWeight: FontWeight.w600),
-                      Gap(0.5.h),
+                          fontWeight: FontWeight.w500),
+                      Gap(0.4.h),
                       TextWidget(
                           text: firebaseAuth.currentUser?.email ?? "",
-                          fontSize: 16.sp,
-                          letterSpacing: 1.5,
+                          color: neu.textSecondary,
+                          fontSize: 13.sp,
                           maxLine: 1,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ],
                   ),
                   Gap(2.h),
@@ -84,38 +98,45 @@ class ProfileScreen extends HookConsumerWidget {
                     data: (data) {
                       Map<String, int> lengths = calculateLengths(data);
 
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 25.h,
-                        child: SfCircularChart(
-                          margin: EdgeInsets.zero,
-                          palette: const [
-                            AppColor.kGreenColor,
-                            AppColor.kredColor,
-                            AppColor.kBlueColor
-                          ],
-                          series: <CircularSeries>[
-                            DoughnutSeries<MapEntry<String, int>, String>(
-                              dataSource: lengths.entries.toList(),
-                              xValueMapper: (entry, _) => entry.key,
-                              yValueMapper: (entry, _) => entry.value,
-                              dataLabelMapper: (entry, _) =>
-                                  '${entry.key}: ${entry.value}',
-                              dataLabelSettings: DataLabelSettings(
-                                  isVisible: true,
-                                  textStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary)),
-                            ),
-                          ],
-                          legend: const Legend(isVisible: true),
+                      return NeuCard(
+                        radius: 22,
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 22.h,
+                          child: SfCircularChart(
+                            margin: EdgeInsets.zero,
+                            palette: [neu.income, neu.expense, neu.debt],
+                            series: <CircularSeries>[
+                              DoughnutSeries<MapEntry<String, int>, String>(
+                                dataSource: lengths.entries.toList(),
+                                xValueMapper: (entry, _) => entry.key,
+                                yValueMapper: (entry, _) => entry.value,
+                                innerRadius: '65%',
+                                dataLabelMapper: (entry, _) =>
+                                    '${entry.key}: ${entry.value}',
+                                dataLabelSettings: DataLabelSettings(
+                                    isVisible: true,
+                                    textStyle:
+                                        TextStyle(color: neu.textSecondary)),
+                              ),
+                            ],
+                            legend: Legend(
+                                isVisible: true,
+                                textStyle: TextStyle(color: neu.textPrimary)),
+                          ),
                         ),
                       );
                     },
-                    error: (_, __) => Text('error$__'),
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
+                    error: (_, __) => Padding(
+                      padding: EdgeInsets.symmetric(vertical: 3.h),
+                      child: TextWidget(
+                          text: 'Could not load chart',
+                          color: neu.textSecondary,
+                          fontSize: 13.sp),
+                    ),
+                    loading: () => Center(
+                        child: CircularProgressIndicator(color: neu.primary)),
                   ),
                   Gap(1.h),
                   Expanded(

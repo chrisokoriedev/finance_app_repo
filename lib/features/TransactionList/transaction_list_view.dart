@@ -3,7 +3,6 @@ import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/expense_list_builder.dart';
 import 'package:expense_app/core/utils/routes.dart';
-import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -36,9 +35,11 @@ class TransactionListView extends HookConsumerWidget {
             child: historyProvider.when(
               skipLoadingOnReload: true,
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const Center(child: Text('Something went wrong')),
+              error: (_, __) =>
+                  const Center(child: Text('Something went wrong')),
               data: (data) {
-                var dataNew = data..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+                var dataNew = data
+                  ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
                 List<CreateExpenseModel> expenseData = dataNew.where((expense) {
                   return expense.dateTime.year == selectedDay.year &&
@@ -64,7 +65,7 @@ class TransactionListView extends HookConsumerWidget {
                         Text(
                           'Transactions',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: neu.textPrimary,
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -86,10 +87,12 @@ class TransactionListView extends HookConsumerWidget {
                     _buildWeekStrip(selectedDay, ref, neu, context),
                     Gap(2.5.h),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 14.sp),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.sp, vertical: 14.sp),
                       decoration: BoxDecoration(
                         color: neu.surface,
                         borderRadius: BorderRadius.circular(16.sp),
+                        boxShadow: neu.raised,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,29 +140,29 @@ class TransactionListView extends HookConsumerWidget {
                               ],
                             ),
                     ),
-                    Gap(2.h),
-                    GestureDetector(
-                      onTap: () => context.push(AppRouter.viewAllExpenses),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 14.sp),
-                        margin: EdgeInsets.only(bottom: 12.h),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: neu.surface,
-                          borderRadius: BorderRadius.circular(16.sp),
-                          boxShadow: neu.raised,
-                        ),
-                        child: Text(
-                          'View full timeline',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Gap(2.h),
+                    // GestureDetector(
+                    //   onTap: () => context.push(AppRouter.viewAllExpenses),
+                    //   child: Container(
+                    //     width: double.infinity,
+                    //     padding: EdgeInsets.symmetric(vertical: 14.sp),
+                    //     margin: EdgeInsets.only(bottom: 12.h),
+                    //     alignment: Alignment.center,
+                    //     decoration: BoxDecoration(
+                    //       color: neu.surface,
+                    //       borderRadius: BorderRadius.circular(16.sp),
+                    //       boxShadow: neu.raised,
+                    //     ),
+                    //     child: Text(
+                    //       'View full timeline',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 14.sp,
+                    //         fontWeight: FontWeight.w500,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 );
               },
@@ -171,11 +174,13 @@ class TransactionListView extends HookConsumerWidget {
   }
 
   List<DateTime> _getWeekDays(DateTime selectedDay) {
-    DateTime start = selectedDay.subtract(Duration(days: selectedDay.weekday - 1));
+    DateTime start =
+        selectedDay.subtract(Duration(days: selectedDay.weekday - 1));
     return List.generate(7, (i) => start.add(Duration(days: i)));
   }
 
-  Widget _buildWeekStrip(DateTime selectedDay, WidgetRef ref, NeuColors neu, BuildContext context) {
+  Widget _buildWeekStrip(DateTime selectedDay, WidgetRef ref, NeuColors neu,
+      BuildContext context) {
     final days = _getWeekDays(selectedDay);
     final weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -212,7 +217,9 @@ class TransactionListView extends HookConsumerWidget {
                 Text(
                   weekdays[day.weekday - 1],
                   style: TextStyle(
-                    color: isSelected ? Colors.black.withOpacity(0.6) : neu.textSecondary,
+                    color: isSelected
+                        ? Colors.black.withOpacity(0.6)
+                        : neu.textSecondary,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -221,7 +228,7 @@ class TransactionListView extends HookConsumerWidget {
                 Text(
                   day.day.toString(),
                   style: TextStyle(
-                    color: isSelected ? Colors.black : Colors.white,
+                    color: isSelected ? Colors.black : neu.textPrimary,
                     fontSize: 13.5.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -236,7 +243,6 @@ class TransactionListView extends HookConsumerWidget {
 
   String _formatDayHeader(DateTime date) {
     final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return '${days[date.weekday - 1]} ${date.day}';
   }
 }

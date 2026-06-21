@@ -1,7 +1,8 @@
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CustomButton extends StatelessWidget {
@@ -24,29 +25,38 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).colorScheme;
+    final neu = context.neu;
+    final tint = color ?? neu.primary;
     return GestureDetector(
       onTap: press,
       child: Container(
         width: double.infinity,
-        alignment: Alignment.centerLeft,
-        height: 5.h,
         margin: EdgeInsets.only(bottom: margin!.sp),
-        padding: EdgeInsets.symmetric(horizontal: 15.sp),
+        padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.3.h),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.sp),
-            color: theme.primaryContainer.withOpacity(1.0.sp)),
+          color: neu.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: neu.raised,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                LineIcon(icons),
-                Gap(2.w),
-                TextWidget(text: title!, fontSize: 15.sp, letterSpacing: 1.5),
+                NeuIconWell(icon: icons, color: tint, size: 38, radius: 12),
+                Gap(3.5.w),
+                TextWidget(
+                    text: title!,
+                    color: color ?? neu.textPrimary,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500),
               ],
             ),
-            if (showLastWidget ?? false) lastWidget ?? const SizedBox.shrink(),
+            if (showLastWidget ?? false)
+              lastWidget ?? const SizedBox.shrink()
+            else
+              Icon(Icons.chevron_right,
+                  color: neu.textSecondary, size: 18.sp),
           ],
         ),
       ),

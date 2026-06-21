@@ -8,9 +8,7 @@ import 'package:expense_app/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:vibration/vibration.dart';
@@ -45,12 +43,6 @@ class MainControlComponent extends HookConsumerWidget {
       pageCntrl.addListener(listener);
       return () => pageCntrl.removeListener(listener);
     }, [pageCntrl]);
-    final iconData = [
-      LineIcons.home,
-      LineIcons.lineChart,
-      LineIcons.wallet,
-      LineIcons.user,
-    ];
     final screenChangeList = [
       HomePage(
         pageCntrl,

@@ -1,20 +1,15 @@
-import 'dart:math';
-
 import 'package:expense_app/core/domain/cal.dart';
 import 'package:expense_app/core/model/create_expense.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/theme/neu_theme.dart';
-import 'package:expense_app/core/utils/colors.dart';
-import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/string_app.dart';
-import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:line_icons/line_icon.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import 'chart_view.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 final expenseItemTypeProvider =
@@ -54,7 +49,7 @@ class Statistics extends ConsumerWidget {
                     Text(
                       'Statistics',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: neu.textPrimary,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
@@ -130,7 +125,7 @@ class Statistics extends ConsumerWidget {
                                                 Text(
                                                   _compact(totals.totalExpense),
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: neu.textPrimary,
                                                     fontSize: 16.sp,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -150,9 +145,12 @@ class Statistics extends ConsumerWidget {
                                         series: <CircularSeries>[
                                           DoughnutSeries<ChartData, String>(
                                             dataSource: chartData,
-                                            xValueMapper: (ChartData d, _) => d.x,
-                                            yValueMapper: (ChartData d, _) => d.y,
-                                            pointColorMapper: (ChartData d, _) => d.color,
+                                            xValueMapper: (ChartData d, _) =>
+                                                d.x,
+                                            yValueMapper: (ChartData d, _) =>
+                                                d.y,
+                                            pointColorMapper:
+                                                (ChartData d, _) => d.color,
                                             innerRadius: '75%',
                                             radius: '100%',
                                           ),
@@ -163,14 +161,19 @@ class Statistics extends ConsumerWidget {
                                   Expanded(
                                     flex: 5,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        _legendItem(neu.income, 'Income', totals.totalIncome, neu),
+                                        _legendItem(neu.income, 'Income',
+                                            totals.totalIncome, neu),
                                         Gap(1.2.h),
-                                        _legendItem(neu.expense, 'Expense', totals.totalExpense, neu),
+                                        _legendItem(neu.expense, 'Expense',
+                                            totals.totalExpense, neu),
                                         Gap(1.2.h),
-                                        _legendItem(neu.debt, 'Debt', totals.totalDebt, neu),
+                                        _legendItem(neu.debt, 'Debt',
+                                            totals.totalDebt, neu),
                                       ],
                                     ),
                                   ),
@@ -181,7 +184,7 @@ class Statistics extends ConsumerWidget {
                             Text(
                               'Top categories',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: neu.textPrimary,
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -207,7 +210,9 @@ class Statistics extends ConsumerWidget {
                                 itemCount: topCategories.length,
                                 itemBuilder: (context, idx) {
                                   return _categoryProgressBar(
-                                      topCategories[idx], totals.totalExpense, neu);
+                                      topCategories[idx],
+                                      totals.totalExpense,
+                                      neu);
                                 },
                               ),
                           ],
@@ -251,7 +256,7 @@ class Statistics extends ConsumerWidget {
             Text(
               _money(value),
               style: TextStyle(
-                color: Colors.white,
+                color: neu.textPrimary,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -262,13 +267,20 @@ class Statistics extends ConsumerWidget {
     );
   }
 
-  Widget _categoryProgressBar(CategorySpend cat, double totalExpense, NeuColors neu) {
-    final ratio = totalExpense > 0 ? (cat.amount / totalExpense).clamp(0.0, 1.0) : 0.0;
+  Widget _categoryProgressBar(
+      CategorySpend cat, double totalExpense, NeuColors neu) {
+    final ratio =
+        totalExpense > 0 ? (cat.amount / totalExpense).clamp(0.0, 1.0) : 0.0;
     Color barColor = neu.primary;
     final nameLower = cat.category.toLowerCase();
-    if (nameLower.contains('grocer') || nameLower.contains('food') || nameLower.contains('house') || nameLower.contains('general')) {
+    if (nameLower.contains('grocer') ||
+        nameLower.contains('food') ||
+        nameLower.contains('house') ||
+        nameLower.contains('general')) {
       barColor = neu.expense; // coral
-    } else if (nameLower.contains('transport') || nameLower.contains('data') || nameLower.contains('cloth')) {
+    } else if (nameLower.contains('transport') ||
+        nameLower.contains('data') ||
+        nameLower.contains('cloth')) {
       barColor = neu.debt; // slate blue
     } else if (nameLower.contains('eat') || nameLower.contains('cafe')) {
       barColor = neu.primary; // green
@@ -287,7 +299,7 @@ class Statistics extends ConsumerWidget {
               Text(
                 cat.category,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: neu.textPrimary,
                   fontSize: 14.5.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -295,7 +307,7 @@ class Statistics extends ConsumerWidget {
               Text(
                 _money(cat.amount),
                 style: TextStyle(
-                  color: Colors.white,
+                  color: neu.textPrimary,
                   fontSize: 14.5.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -304,17 +316,15 @@ class Statistics extends ConsumerWidget {
           ),
           Gap(0.8.h),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10.sp),
+            borderRadius: BorderRadius.circular(8),
             child: Container(
-              height: 6.dp,
+              height: 8,
               width: double.infinity,
-              color: Colors.black.withOpacity(0.2),
+              color: neu.shadowDark,
               alignment: Alignment.centerLeft,
               child: FractionallySizedBox(
                 widthFactor: ratio,
-                child: Container(
-                  color: barColor,
-                ),
+                child: Container(color: barColor),
               ),
             ),
           ),
@@ -323,15 +333,19 @@ class Statistics extends ConsumerWidget {
     );
   }
 
-  List<CategorySpend> _calculateTopCategories(List<CreateExpenseModel> expenses) {
+  List<CategorySpend> _calculateTopCategories(
+      List<CreateExpenseModel> expenses) {
     final Map<String, double> categorySums = {};
     for (final item in expenses) {
       if (item.expenseType == 'Expense') {
-        final cat = item.expenseSubList == '..' ? 'General' : item.expenseSubList;
+        final cat =
+            item.expenseSubList == '..' ? 'General' : item.expenseSubList;
         categorySums[cat] = (categorySums[cat] ?? 0) + item.amount;
       }
     }
-    final sorted = categorySums.entries.map((e) => CategorySpend(e.key, e.value)).toList()
+    final sorted = categorySums.entries
+        .map((e) => CategorySpend(e.key, e.value))
+        .toList()
       ..sort((a, b) => b.amount.compareTo(a.amount));
     return sorted;
   }

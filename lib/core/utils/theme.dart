@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
   extensions: const [NeuColors.light],
-  appBarTheme: const AppBarTheme(backgroundColor: AppColor.kWhitColor),
-  bottomAppBarTheme: const BottomAppBarThemeData(color: AppColor.kWhitColor),
-  scaffoldBackgroundColor: AppColor.kWhitColor,
+  // Background matches the neumorphic surface so raised/inset shadows read.
+  appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFE8EBF0)),
+  bottomAppBarTheme: const BottomAppBarThemeData(color: Color(0xFFE8EBF0)),
+  scaffoldBackgroundColor: const Color(0xFFE8EBF0),
   colorScheme: ColorScheme.fromSeed(
     primary: AppColor.kDarkGreyColor,
     onPrimary: AppColor.kWhitColor,
@@ -23,11 +24,11 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   extensions: const [NeuColors.dark],
-  bottomAppBarTheme:
-      const BottomAppBarThemeData(color: AppColor.kDarkGreyColor),
-  scaffoldBackgroundColor: AppColor.kDarkGreyColor,
+  // Background matches the neumorphic surface so raised/inset shadows read.
+  bottomAppBarTheme: const BottomAppBarThemeData(color: Color(0xFF24262B)),
+  scaffoldBackgroundColor: const Color(0xFF24262B),
   bottomSheetTheme:
-      const BottomSheetThemeData(backgroundColor: AppColor.kDarkGreyColor),
+      const BottomSheetThemeData(backgroundColor: Color(0xFF24262B)),
   colorScheme: ColorScheme.fromSeed(
       primary: AppColor.kWhitColor,
       onPrimary: AppColor.kDarkGreyColor,

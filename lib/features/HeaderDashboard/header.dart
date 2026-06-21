@@ -6,14 +6,12 @@ import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/text.dart';
 import 'package:expense_app/core/utils/user_avatar.dart';
-import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import 'controller/time_controller.dart';
 
 class DashboardHeader extends ConsumerWidget {
   final PageController pageCntrl;
@@ -24,7 +22,6 @@ class DashboardHeader extends ConsumerWidget {
     final neu = context.neu;
     final totals = ref.watch(totalsProvider);
     final cloud = ref.watch(cloudItemsProvider);
-    final greeting = ref.watch(greetingProvider);
     final firebaseAuth = ref.watch(firebaseAuthProvider);
 
     return Padding(
@@ -157,7 +154,7 @@ class DashboardHeader extends ConsumerWidget {
                       _stat(neu, Icons.north_east, neu.expense, 'Expense',
                           totals.totalExpense),
                       Gap(2.5.w),
-                      _stat(Icons.monetization_on_outlined, neu.debt, 'Debt',
+                      _stat(neu, Icons.monetization_on_outlined, neu.debt, 'Debt',
                           totals.totalDebt),
                     ],
                   ),
@@ -413,16 +410,5 @@ class DashboardHeader extends ConsumerWidget {
       cursor = cursor.subtract(const Duration(days: 1));
     }
     return streak;
-  }
-
-  String _getGreetingText(Greeting greeting) {
-    switch (greeting) {
-      case Greeting.morning:
-        return 'Good morning';
-      case Greeting.afternoon:
-        return 'Good afternoon';
-      case Greeting.evening:
-        return 'Good evening';
-    }
   }
 }

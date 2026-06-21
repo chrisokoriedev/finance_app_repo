@@ -4,7 +4,6 @@ import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/text.dart';
-import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
