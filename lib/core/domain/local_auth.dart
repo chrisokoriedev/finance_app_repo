@@ -29,8 +29,8 @@ class BiometricAuthDataSource {
     try {
       bool isAuthenticated = await _localAuth.authenticate(
           localizedReason: 'Authenticate to access nora',
-          options: const AuthenticationOptions(
-              biometricOnly: true, stickyAuth: true, useErrorDialogs: true));
+          biometricOnly: true,
+          persistAcrossBackgrounding: true);
       if (isAuthenticated) {
         debugPrint('start authentication successful');
         isBiometricAuthEnabled.state = isAuthenticated;
@@ -43,6 +43,11 @@ class BiometricAuthDataSource {
         debugPrint('start  authentication failed');
         return left('Biometric authentication failed');
       }
+    } on LocalAuthException catch (e) {
+      isBiometricAuthEnabled.state = false;
+      debugPrint('catch authentication failed');
+      debugPrint(e.toString());
+      return left('Biometric authentication error');
     } on PlatformException catch (e) {
       isBiometricAuthEnabled.state = false;
       debugPrint('catch authentication failed');
@@ -55,14 +60,17 @@ class BiometricAuthDataSource {
     try {
       bool isAuthenticated = await _localAuth.authenticate(
           localizedReason: 'Authenticate to access sensitive data',
-          options: const AuthenticationOptions(
-              biometricOnly: true, stickyAuth: true, useErrorDialogs: true));
+          biometricOnly: true,
+          persistAcrossBackgrounding: true);
       if (isAuthenticated) {
         EasyLoading.showSuccess(' Biometric authentication successful');
         return right(true);
       } else {
         return left('Biometric authentication failed');
       }
+    } on LocalAuthException catch (e) {
+      debugPrint(e.toString());
+      return left('Biometric authentication error');
     } on PlatformException catch (e) {
       debugPrint(e.toString());
       return left(e.message ?? 'Biometric authentication error');

@@ -10,6 +10,7 @@
 analyzer:
   errors:
     deprecated_member_use: ignore
+    no_wildcard_variable_uses: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

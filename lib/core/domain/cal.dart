@@ -114,7 +114,7 @@ class DeleteExpense {
 
   DeleteExpense(this.ref, this._firebaseAuth, this._firebaseFirestore);
 
-  Future<void> deleteExpense(var expenseName) async {
+  Future<void> deleteExpense(String expenseName) async {
     final firestoreInstance = _firebaseFirestore;
     final userId = _firebaseAuth.currentUser!.uid;
 

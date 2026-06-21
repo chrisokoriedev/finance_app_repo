@@ -147,7 +147,7 @@ class CreateExpenseView extends HookConsumerWidget {
                                                 ]),
                                         loading: () => const Text('data'),
                                         error: (_, __) {
-                                          return Text('failed $__');
+                                          return Text('failed ');
                                         }),
                                   ),
                                   Flexible(

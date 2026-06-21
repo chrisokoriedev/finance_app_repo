@@ -15,23 +15,35 @@ class AuthDataSource {
 
   AuthDataSource(this._firebaseAuth, this.ref, this.sharedPreferences);
 
+  /// google_sign_in 7.x requires [GoogleSignIn.initialize] to be called once
+  /// before authenticating. Guarded so repeated sign-in attempts only init once.
+  static bool _googleInitialized = false;
+
+  Future<void> _ensureGoogleInitialized() async {
+    if (!_googleInitialized) {
+      await GoogleSignIn.instance.initialize();
+      _googleInitialized = true;
+    }
+  }
+
   Future<Either<String, User>> continueWithGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        final response = await _firebaseAuth.signInWithCredential(credential);
+      await _ensureGoogleInitialized();
+      // authenticate() returns a non-null account or throws on cancel/failure.
+      final GoogleSignInAccount googleUser =
+          await GoogleSignIn.instance.authenticate();
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+      final response = await _firebaseAuth.signInWithCredential(credential);
 
-        return right(response.user!);
-      } else {
-        return left('Unknown Error');
-      }
+      return right(response.user!);
+    } on GoogleSignInException catch (e) {
+      debugPrint(e.toString());
+      return left(e.code == GoogleSignInExceptionCode.canceled
+          ? 'Sign in canceled'
+          : (e.description ?? 'sign_in_failed'));
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       return left(e.message ?? 'Unknow Error');
@@ -44,7 +56,7 @@ class AuthDataSource {
 
   Future<Either<String, dynamic>> signOutGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn.instance;
       if (_firebaseAuth.currentUser != null) {
         await sharedPreferences.clear();
         await _firebaseAuth.signOut();
@@ -65,7 +77,7 @@ class AuthDataSource {
 
   Future<Either<String, dynamic>> deleteUserAccount() async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn.instance;
       if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.currentUser!.delete();
         await googleSignIn.disconnect();

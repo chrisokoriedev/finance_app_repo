@@ -50,8 +50,7 @@ android {
         applicationId "com.example.expense_app"
         multiDexEnabled true
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
-        compileSdkVersion 34
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
