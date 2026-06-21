@@ -99,8 +99,8 @@ class DashboardHeader extends ConsumerWidget {
             },
             loading: () => Padding(
               padding: EdgeInsets.symmetric(vertical: 6.h),
-              child: Center(
-                  child: CircularProgressIndicator(color: neu.primary)),
+              child:
+                  Center(child: CircularProgressIndicator(color: neu.primary)),
             ),
             error: (error, stackTrace) => Padding(
               padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -194,8 +194,8 @@ class DashboardHeader extends ConsumerWidget {
     );
   }
 
-  Widget _stat(NeuColors neu, IconData icon, Color color, String label,
-      double value) {
+  Widget _stat(
+      NeuColors neu, IconData icon, Color color, String label, double value) {
     return Expanded(
       child: NeuCard(
         radius: 18,
@@ -204,8 +204,7 @@ class DashboardHeader extends ConsumerWidget {
           children: [
             NeuIconWell(icon: icon, color: color, size: 32, radius: 11),
             Gap(0.6.h),
-            TextWidget(
-                text: label, color: neu.textSecondary, fontSize: 11.sp),
+            TextWidget(text: label, color: neu.textSecondary, fontSize: 11.sp),
             Gap(0.2.h),
             TextWidget(
                 text: _compact(value),

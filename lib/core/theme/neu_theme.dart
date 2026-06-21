@@ -131,6 +131,5 @@ class NeuColors extends ThemeExtension<NeuColors> {
 
 /// Ergonomic access to the neumorphic tokens: `context.neu.primary`.
 extension NeuContext on BuildContext {
-  NeuColors get neu =>
-      Theme.of(this).extension<NeuColors>() ?? NeuColors.dark;
+  NeuColors get neu => Theme.of(this).extension<NeuColors>() ?? NeuColors.dark;
 }

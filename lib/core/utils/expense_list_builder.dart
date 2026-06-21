@@ -122,52 +122,25 @@ class ExpenseListBuilder extends HookConsumerWidget {
               }
             },
             child: ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 5.w, vertical: 0.2.h),
+              leading: NeuIconWell(icon: catIcon, color: catColor, size: 44),
               title: TextWidget(
-                  text: '${history.expenseType}\tfor\t${history.name}',
-                  color: theme.primary,
-                  fontSize: 15.sp,
+                  text: history.name,
+                  color: neu.textPrimary,
+                  fontSize: 14.sp,
                   maxLine: 1,
-                  fontWeight: FontWeight.w600),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextWidget(
-                            text: history.explain,
-                            color: theme.primary,
-                            fontSize: 13.sp,
-                            maxLine: 1,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Gap(10.w),
-                      history.expenseSubList != '..'
-                          ? Flexible(
-                              child: TextWidget(
-                                  text: history.expenseSubList,
-                                  color: theme.primary,
-                                  fontSize: 15.sp,
-                                  maxLine: 1,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                  showDateTIme
-                      ? TextWidget(
-                          text: timeago.format(history.dateTime),
-                          color: AppColor.kGreyColor.shade500,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500)
-                      : const SizedBox.shrink(),
-                ],
-              ),
-              leading: iconData,
+                  fontWeight: FontWeight.w500),
+              subtitle: TextWidget(
+                  text: subtitleText,
+                  color: neu.textSecondary,
+                  fontSize: 12.sp,
+                  maxLine: 1),
               trailing: TextWidget(
-                  text: history.amount.toString(),
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600),
+                  text: '$sign₦${NumberFormat('#,##0').format(history.amount)}',
+                  color: catColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500),
             ),
           );
         },
