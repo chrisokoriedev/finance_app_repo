@@ -46,35 +46,34 @@ class BuildCreateDataComponent extends ConsumerWidget {
             showCloseIcon: true,
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else {
+          final amount = double.tryParse(expenseAmountController.text.trim());
+          if (expenseTitleController.text.isNotEmpty &&
+              expenseDescripritionController.text.isNotEmpty &&
+              amount != null) {
+            var add = CreateExpenseModel(
+                name: expenseTitleController.text,
+                amount: amount,
+                expenseType: chooseExpense,
+                explain: expenseDescripritionController.text,
+                dateTime: choosedDate,
+                expenseSubList: chooseSubExpense);
+            ref.read(createExpenseNotifierProvider.notifier).addExpense(add);
+            expenseAmountController.clear();
+            expenseDescripritionController.clear();
+            expenseTitleController.clear();
+          } else {
+            SnackBar snackBar = SnackBar(
+              backgroundColor: AppColor.kDarkGreyColor,
+              content: Text(
+                'Enter All Field',
+                style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
+              ),
+              showCloseIcon: true,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         }
-       else{
-         final amount = double.tryParse(expenseAmountController.text.trim());
-         if (expenseTitleController.text.isNotEmpty &&
-            expenseDescripritionController.text.isNotEmpty &&
-            amount != null) {
-          var add = CreateExpenseModel(
-              name: expenseTitleController.text,
-              amount: amount,
-              expenseType: chooseExpense,
-              explain: expenseDescripritionController.text,
-              dateTime: choosedDate,
-              expenseSubList: chooseSubExpense);
-          ref.read(createExpenseNotifierProvider.notifier).addExpense(add);
-          expenseAmountController.clear();
-          expenseDescripritionController.clear();
-          expenseTitleController.clear();
-        }  else {
-          SnackBar snackBar = SnackBar(
-            backgroundColor: AppColor.kDarkGreyColor,
-            content: Text(
-              'Enter All Field',
-              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
-            ),
-            showCloseIcon: true,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-       }
       },
       child: Text(
         'Create',

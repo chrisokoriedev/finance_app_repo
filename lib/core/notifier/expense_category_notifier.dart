@@ -6,14 +6,14 @@ class ExpenseCategoryNotifier extends StateNotifier<AppStateManager> {
   ExpenseCategoryNotifier(this._dataSource)
       : super(const AppStateManager.initial());
 
-  final ExpenseCatergory _dataSource;
+  final ExpenseCategory _dataSource;
 
-  Future<void> addToList(String catergory) async {
+  Future<void> addToList(String category) async {
     state = const AppStateManager.loading();
-    final response = await _dataSource.addUserSubCategories(catergory);
+    final response = await _dataSource.addUserSubCategories(category);
     state = response.fold(
-      (response) => AppStateManager.success(success: response),
-      (error) => AppStateManager.failed(failed: error),
+      (failure) => AppStateManager.failed(failed: failure),
+      (success) => AppStateManager.success(success: success),
     );
   }
 
@@ -21,8 +21,8 @@ class ExpenseCategoryNotifier extends StateNotifier<AppStateManager> {
     state = const AppStateManager.loading();
     final response = await _dataSource.getUserSubCategories();
     state = response.fold(
-      (response) => AppStateManager.success(success: response),
-      (error) => AppStateManager.failed(failed: error),
+      (failure) => AppStateManager.failed(failed: failure),
+      (success) => AppStateManager.success(success: success),
     );
   }
 }

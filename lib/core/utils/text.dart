@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextWigdet extends StatelessWidget {
+class TextWidget extends StatelessWidget {
   final String text;
   final Color? color;
   final double? fontSize;
@@ -8,7 +8,7 @@ class TextWigdet extends StatelessWidget {
   final double? letterSpacing;
   final int? maxLine;
 
-  const TextWigdet(
+  const TextWidget(
       {super.key,
       required this.text,
       this.color,

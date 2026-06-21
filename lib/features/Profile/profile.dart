@@ -64,14 +64,14 @@ class ProfileScreen extends HookConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextWigdet(
+                      TextWidget(
                           text: firebaseAuth.currentUser?.displayName ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
                           maxLine: 1,
                           fontWeight: FontWeight.w600),
                       Gap(0.5.h),
-                      TextWigdet(
+                      TextWidget(
                           text: firebaseAuth.currentUser?.email ?? "",
                           fontSize: 16.sp,
                           letterSpacing: 1.5,
@@ -144,7 +144,7 @@ class ProfileScreen extends HookConsumerWidget {
                           title: 'Terms & Condition',
                           press: () => showModalBottomSheet(
                               context: context,
-                              builder: (_) => const CommingSoon()),
+                              builder: (_) => const ComingSoon()),
                         ),
                         CustomButton(
                             icons: LineIcons.doorClosed,
@@ -166,8 +166,8 @@ class ProfileScreen extends HookConsumerWidget {
   }
 }
 
-class CommingSoon extends StatelessWidget {
-  const CommingSoon({
+class ComingSoon extends StatelessWidget {
+  const ComingSoon({
     super.key,
   });
 
@@ -177,8 +177,8 @@ class CommingSoon extends StatelessWidget {
       width: double.infinity,
       height: 20.h,
       child: Center(
-        child: TextWigdet(
-            text: 'Comming soon',
+        child: TextWidget(
+            text: 'Coming soon',
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.4),

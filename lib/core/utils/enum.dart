@@ -1,1 +1,1 @@
-enum ExpenseCatergory<String> { income, expense, debt }
+enum ExpenseCategory<String> { income, expense, debt }

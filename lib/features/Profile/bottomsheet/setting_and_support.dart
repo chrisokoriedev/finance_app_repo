@@ -86,18 +86,18 @@ class SettingAndSupport extends HookConsumerWidget {
                             .read(bioAuthNotifierProvider.notifier)
                             .createdBioWithLocalAuth();
                       }
-                      })),
-              CustomButton(
-                  title: themeState ? 'Light Mode' : 'Dark Mode',
-                  icons: LineIcons.lightbulb,
-                  showLastWidget: true,
-                  lastWidget: CustomSwitch(
-                    value: themeState,
-                    onChanged: (value) {
-                      ref.read(themeProvider.notifier).state = value;
-                      themeCntrl.switchTheme(value);
-                    },
-                  )),
+                    })),
+            CustomButton(
+                title: themeState ? 'Light Mode' : 'Dark Mode',
+                icons: LineIcons.lightbulb,
+                showLastWidget: true,
+                lastWidget: CustomSwitch(
+                  value: themeState,
+                  onChanged: (value) {
+                    ref.read(themeProvider.notifier).state = value;
+                    themeCntrl.switchTheme(value);
+                  },
+                )),
             const CustomButton(
               title: 'Email us',
               icons: LineIcons.facebookMessenger,
@@ -111,10 +111,9 @@ class SettingAndSupport extends HookConsumerWidget {
             CustomButton(
               title: 'Clear all data',
               icons: LineIcons.userInjured,
-               press: () => showModalBottomSheet(
+              press: () => showModalBottomSheet(
                   context: context,
                   builder: (context) => const ClearUserData()),
-             
             ),
             CustomButton(
               title: 'Delete Account',

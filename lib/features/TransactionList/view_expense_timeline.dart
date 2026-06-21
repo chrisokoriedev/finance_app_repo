@@ -40,7 +40,7 @@ class ViewExpensesTimeline extends HookConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
-              title: TextWigdet(
+              title: TextWidget(
                   text: AppString.viewTimeline,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600)),
@@ -107,12 +107,12 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                   builder: (context) => AlertDialog(
                                     surfaceTintColor: AppColor.kBlackColor,
                                     backgroundColor: theme.onPrimary,
-                                    title: TextWigdet(
+                                    title: TextWidget(
                                         text: 'Confirm Delete',
                                         color: theme.primary,
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600),
-                                    content: TextWigdet(
+                                    content: TextWidget(
                                         text:
                                             'Are you sure you want to delete this item?',
                                         color: theme.primary,
@@ -146,7 +146,7 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                               child: ListTile(
                                 title: Row(
                                   children: [
-                                    TextWigdet(
+                                    TextWidget(
                                         text:
                                             '${history.expenseType}\tfor\t${history.name}',
                                         color: theme.primary,
@@ -157,7 +157,7 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextWigdet(
+                                    TextWidget(
                                         text: history.explain,
                                         color: theme.primary,
                                         fontSize: 13.sp,
@@ -165,7 +165,7 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                                   ],
                                 ),
                                 leading: iconData,
-                                trailing: TextWigdet(
+                                trailing: TextWidget(
                                     text: history.amount.toString(),
                                     fontSize: 18.sp,
                                     color: theme.primary,

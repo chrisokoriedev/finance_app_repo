@@ -1,38 +1,35 @@
 // eventLoader: (day) {
-                  //   List<DateTime> datesWithEvents = expenseData
-                  //       .where((expense) =>
-                  //           expense.dateTime.year == day.year &&
-                  //           expense.dateTime.month == day.month &&
-                  //           expense.dateTime.day == day.day)
-                  //       .map((expense) => DateTime(
-                  //             expense.dateTime.year,
-                  //             expense.dateTime.month,
-                  //             expense.dateTime.day,
-                  //           ))
-                  //       .toList();
-                  //   return datesWithEvents;
-                  // },
+//   List<DateTime> datesWithEvents = expenseData
+//       .where((expense) =>
+//           expense.dateTime.year == day.year &&
+//           expense.dateTime.month == day.month &&
+//           expense.dateTime.day == day.day)
+//       .map((expense) => DateTime(
+//             expense.dateTime.year,
+//             expense.dateTime.month,
+//             expense.dateTime.day,
+//           ))
+//       .toList();
+//   return datesWithEvents;
+// },
 
-                  // eventLoader: (day) {
-                  //   // if (expenseData.isNotEmpty) {
-                  //   //   return expenseData.map((e) => e.dateTime).toList();
-                  //   // } else {
-                  //   //   return expenseData.map((e) => e.dateTime).toList();
-                  //   // }
-                  //   bool hasEvents = expenseData.any((expense) =>
-                  //       expense.dateTime.year == day.year &&
-                  //       expense.dateTime.month == day.month &&
-                  //       expense.dateTime.day == day.day);
-                  //   return hasEvents ? [day] : [];
-                  // },// final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
+// eventLoader: (day) {
+//   // if (expenseData.isNotEmpty) {
+//   //   return expenseData.map((e) => e.dateTime).toList();
+//   // } else {
+//   //   return expenseData.map((e) => e.dateTime).toList();
+//   // }
+//   bool hasEvents = expenseData.any((expense) =>
+//       expense.dateTime.year == day.year &&
+//       expense.dateTime.month == day.month &&
+//       expense.dateTime.day == day.day);
+//   return hasEvents ? [day] : [];
+// },// final cloudItemsProvider = FutureProvider<List<CreateExpenseModel>>((ref) async {
 //   final box = await ref.watch(itemBoxProvider.future);
 //   return box.values.toList()..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 // });
 // final itemBoxProvider =
 //     FutureProvider((ref) => Hive.openBox<CreateExpenseModel>(AppString.hiveDb));
-
-
-
 
 // final cloudItemsProvider =
 //     FutureProvider<List<CreateExpenseModel>>((ref) async {
@@ -144,46 +141,44 @@
 //     return expenseList..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 //   } catch (e) {
 //     debugPrint('Error fetching data from Firestore: $e');
-//     return []; 
+//     return [];
 //   }
 // });
 
-
-
-     // DropdownButton(
-          //   value: chooseSubExpense,
-          //   underline: Container(),
-          //   isExpanded: true,
-          //   hint: Text(
-          //     'Type',
-          //     style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
-          //   ),
-          //   selectedItemBuilder: (context) => expenseSubListType
-          //       .map(
-          //         (e) => DropdownMenuItem(
-          //           value: e,
-          //           child: Text(
-          //             e,
-          //             style: TextStyle(
-          //                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-          //           ),
-          //         ),
-          //       )
-          //       .toList(),
-          //   items: expenseSubListType
-          //       .map(
-          //         (e) => DropdownMenuItem(
-          //           value: e,
-          //           child: Text(
-          //             e,
-          //             style: TextStyle(
-          //                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
-          //           ),
-          //         ),
-          //       )
-          //       .toList(),
-          //   onChanged: (value) {
-          //     ref.read(expenseSubItemTypeProvider.notifier).state =
-          //         value.toString();
-          //   },
-          // ),
+// DropdownButton(
+//   value: chooseSubExpense,
+//   underline: Container(),
+//   isExpanded: true,
+//   hint: Text(
+//     'Type',
+//     style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
+//   ),
+//   selectedItemBuilder: (context) => expenseSubListType
+//       .map(
+//         (e) => DropdownMenuItem(
+//           value: e,
+//           child: Text(
+//             e,
+//             style: TextStyle(
+//                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+//           ),
+//         ),
+//       )
+//       .toList(),
+//   items: expenseSubListType
+//       .map(
+//         (e) => DropdownMenuItem(
+//           value: e,
+//           child: Text(
+//             e,
+//             style: TextStyle(
+//                 fontSize: 13.9.sp, fontWeight: FontWeight.w600),
+//           ),
+//         ),
+//       )
+//       .toList(),
+//   onChanged: (value) {
+//     ref.read(expenseSubItemTypeProvider.notifier).state =
+//         value.toString();
+//   },
+// ),

@@ -8,26 +8,13 @@ class SplashScreen extends HookConsumerWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = ref.watch(biometricAuthStateFutureProvider);
-    return provider.when(
-      data: (enabled) {
-        if (enabled) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.pushReplacement(AppRouter.bioScreen);
-          });
-        } else {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            context.pushReplacement(AppRouter.mainControl);
-          });
-        }
-        return const SizedBox.shrink();
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (error, stackTrace) {
-        debugPrint('Error checking biometrics: $error');
-        debugPrint('StackTrace: $stackTrace');
-        return const Text('Error checking biometrics. Please try again later.');
-      },
-    );
+    // Read the biometric flag synchronously (it is backed by SharedPreferences
+    // already loaded at startup) so the splash routes without a loading flicker.
+    final enabled = ref.watch(biometricAuthStateProvider);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.pushReplacement(
+          enabled ? AppRouter.bioScreen : AppRouter.mainControl);
+    });
+    return const SizedBox.shrink();
   }
 }

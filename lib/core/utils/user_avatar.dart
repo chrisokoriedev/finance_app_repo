@@ -14,18 +14,20 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final photoUrl = firebaseAuth.currentUser?.photoURL;
     return ClipRRect(
       borderRadius: BorderRadius.circular(50.sp),
-      child: CachedNetworkImage(
-        imageUrl: firebaseAuth.currentUser?.photoURL ??
-            'https://static.vecteezy.com/system/resources/previews/004/607/791/non_2x/man-face-emotive-icon-smiling-male-character-in-blue-shirt-flat-illustration-isolated-on-white-happy-human-psychological-portrait-positive-emotions-user-avatar-for-app-web-design-vector.jpg',
-        placeholder: (BuildContext context, String url) =>
-            const Center(child: CircularProgressIndicator.adaptive()),
-        errorWidget: (BuildContext context, String url, dynamic error) =>
-            LineIcon.user(
-          size: 10.w,
-        ),
-      ),
+      // No remote placeholder: when there is no photo, render the offline
+      // LineIcon so the avatar stays reliable without a network round-trip.
+      child: photoUrl == null
+          ? LineIcon.user(size: 10.w)
+          : CachedNetworkImage(
+              imageUrl: photoUrl,
+              placeholder: (BuildContext context, String url) =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
+              errorWidget: (BuildContext context, String url, dynamic error) =>
+                  LineIcon.user(size: 10.w),
+            ),
     );
   }
 }

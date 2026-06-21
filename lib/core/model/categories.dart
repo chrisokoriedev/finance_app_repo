@@ -1,11 +1,11 @@
 import 'package:expense_app/core/utils/string_app.dart';
 
-class ExpenseCatergoryModel {
+class ExpenseCategoryModel {
   final List expenseCategory;
 
-  ExpenseCatergoryModel({required this.expenseCategory});
-  factory ExpenseCatergoryModel.fromJson(Map<String, dynamic> json) {
-    return ExpenseCatergoryModel(
+  ExpenseCategoryModel({required this.expenseCategory});
+  factory ExpenseCategoryModel.fromJson(Map<String, dynamic> json) {
+    return ExpenseCategoryModel(
         expenseCategory: json[AppString.expenseSubList] as List);
   }
   Map<String, dynamic> toJson() {
@@ -14,7 +14,7 @@ class ExpenseCatergoryModel {
     };
   }
 
-  ExpenseCatergoryModel copyWith({List? expenseCategory}) {
-    return ExpenseCatergoryModel(expenseCategory: expenseCategory!);
+  ExpenseCategoryModel copyWith({List? expenseCategory}) {
+    return ExpenseCategoryModel(expenseCategory: expenseCategory!);
   }
 }

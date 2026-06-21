@@ -14,14 +14,14 @@ ThemeData lightTheme = ThemeData(
     shadow: AppColor.kGreyColor.withOpacity(0.6),
     tertiary: AppColor.kWhitColor,
     onPrimaryContainer: AppColor.kGreyColor.withOpacity(0.4),
-    
   ),
-  floatingActionButtonTheme:
-      const FloatingActionButtonThemeData(backgroundColor: AppColor.kDarkGreyColor),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColor.kDarkGreyColor),
 );
 
 ThemeData darkTheme = ThemeData(
-  bottomAppBarTheme: const BottomAppBarThemeData(color: AppColor.kDarkGreyColor),
+  bottomAppBarTheme:
+      const BottomAppBarThemeData(color: AppColor.kDarkGreyColor),
   scaffoldBackgroundColor: AppColor.kDarkGreyColor,
   bottomSheetTheme:
       const BottomSheetThemeData(backgroundColor: AppColor.kDarkGreyColor),

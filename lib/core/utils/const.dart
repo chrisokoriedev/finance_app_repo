@@ -91,7 +91,7 @@ class BuildExpenseDashBoardComponent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5.sp), color: dataColor),
               child: icon),
           Gap(2.h),
-          TextWigdet(
+          TextWidget(
               text: '₦$amount',
               maxLine: 1,
               fontSize: 15.sp,
@@ -180,7 +180,7 @@ class NoDataView extends StatelessWidget {
           //   width: 50.w,
           // ),
           Gap(2.h),
-          TextWigdet(
+          TextWidget(
             text: 'No items to display',
             color: theme.primary,
             fontSize: 15.sp,

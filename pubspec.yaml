@@ -38,6 +38,7 @@ dependencies:
   injectable:
   timeago: ^3.5.0
   hooks_riverpod: ^2.5.1
+  flutter_hooks:
   shared_preferences:
   vibration: ^3.2.0
 

@@ -5,6 +5,7 @@
 /// their datasources and exposed as providers, so the UI only ever imports
 /// `provider/app_provider.dart` to reach app state.
 library;
+
 import 'package:expense_app/core/domain/cal.dart';
 import 'package:expense_app/core/domain/categories.dart';
 import 'package:expense_app/core/notifier/auth_notifier.dart';
@@ -38,22 +39,14 @@ final createExpenseNotifierProvider =
 final expenseCategoryNotifier =
     StateNotifierProvider<ExpenseCategoryNotifier, AppStateManager>(
   (ref) => ExpenseCategoryNotifier(
-    ref.read(expenseCatergoryState),
+    ref.read(expenseCategoryState),
   ),
 );
 
-/// Enabling / disabling biometric authentication.
+/// Biometric authentication — create (enable), disable, and login.
 final bioAuthNotifierProvider =
     StateNotifierProvider<BiometricAuthNotifier, LocalAuthState>(
   (ref) => BiometricAuthNotifier(
-    ref.read(bioAuthDataSourceProvider),
-  ),
-);
-
-/// Logging in with biometric authentication.
-final bioAuthNotifierProviderII =
-    StateNotifierProvider<BiometricAuthNotifierII, LocalAuthState>(
-  (ref) => BiometricAuthNotifierII(
     ref.read(bioAuthDataSourceProvider),
   ),
 );

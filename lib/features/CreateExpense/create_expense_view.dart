@@ -38,7 +38,7 @@ class CreateExpenseView extends HookConsumerWidget {
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
     final chooseSubExpense = ref.watch(expenseSubItemTypeProvider);
-    final expenseCatergoryList = ref.watch(expenseListCatProvider);
+    final expenseCategoryList = ref.watch(expenseListCatProvider);
     final authState = ref.watch(createExpenseNotifierProvider);
     ref.listen(createExpenseNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -71,7 +71,7 @@ class CreateExpenseView extends HookConsumerWidget {
           color: AppColor.kBlackColor,
           fontWeight: FontWeight.w700,
         ),
-        title: TextWigdet(
+        title: TextWidget(
           text: 'Create data',
           color: theme.primary,
           fontSize: 17.sp,
@@ -136,7 +136,7 @@ class CreateExpenseView extends HookConsumerWidget {
                                 children: [
                                   Expanded(
                                     flex: 10,
-                                    child: expenseCatergoryList.when(
+                                    child: expenseCategoryList.when(
                                         data: (data) =>
                                             ExpenseSubTypeComponent(
                                                 chooseSubExpense:
@@ -295,7 +295,7 @@ class AddCategories extends HookConsumerWidget {
                             .addToList(text);
                       }
                     },
-              child: TextWigdet(
+              child: TextWidget(
                   text: authState == const AppStateManager.loading()
                       ? 'Loading'
                       : 'Add To Catogory List',

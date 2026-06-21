@@ -10,9 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final totalStateProvider = StateProvider((ref) => TotalNotifier());
-final totalProvider = StateProvider<Totals>((ref) => const Totals(0, 0, 0));
-
 class Totals {
   final double totalExpense;
   final double totalIncome;
@@ -23,27 +20,31 @@ class Totals {
   double get grandTotal => totalIncome - (totalExpense + totalDebt);
 }
 
-class TotalNotifier extends StateNotifier<Totals> {
-  TotalNotifier() : super(const Totals(0, 0, 0));
-
-  void calculateTotals(List<CreateExpenseModel> expenses) {
-    double totalExpense = 0;
-    double totalIncome = 0;
-    double totalDebt = 0;
-
-    for (var expense in expenses) {
-      double amount = expense.amount;
-      if (expense.expenseType == 'Income') {
-        totalIncome += amount;
-      } else if (expense.expenseType == 'Expense') {
-        totalExpense += amount;
-      } else if (expense.expenseType == 'Debt') {
-        totalDebt += amount;
+/// Reactive totals derived directly from [cloudItemsProvider]. Recomputes
+/// automatically whenever the expense list changes, so there is no separate
+/// notifier to keep in sync and no manual `calculateTotals` call from the UI.
+final totalsProvider = Provider.autoDispose<Totals>((ref) {
+  final itemsAsync = ref.watch(cloudItemsProvider);
+  return itemsAsync.maybeWhen(
+    data: (expenses) {
+      double income = 0;
+      double expense = 0;
+      double debt = 0;
+      for (final item in expenses) {
+        switch (item.expenseType) {
+          case 'Income':
+            income += item.amount;
+          case 'Expense':
+            expense += item.amount;
+          case 'Debt':
+            debt += item.amount;
+        }
       }
-    }
-    state = Totals(totalExpense, totalIncome, totalDebt);
-  }
-}
+      return Totals(expense, income, debt);
+    },
+    orElse: () => const Totals(0, 0, 0),
+  );
+});
 
 final addExpenseProvider = StateProvider((ref) => AddExpenseNotifer(
     ref, ref.read(firebaseAuthProvider), ref.read(fireStoreProvider)));
@@ -71,14 +72,14 @@ class AddExpenseNotifer {
           'expenseSubList': expense.expenseSubList,
         });
       }
-      ref.refresh(totalStateProvider);
       ref.refresh(cloudItemsProvider);
-      return left('Expense Added');
+      return right('Expense Added');
     } catch (e) {
       debugPrint(e.toString());
-      return right(e);
+      return left(e.toString());
     }
   }
+
   Future<Either<String, dynamic>> deleteDataStore() async {
     final firestoreInstance = _firebaseFirestore;
     try {
@@ -95,7 +96,6 @@ class AddExpenseNotifer {
         });
       }
       ref.refresh(cloudItemsProvider.future);
-      ref.refresh(totalStateProvider.notifier).state;
       return right('Data store deleted successfully');
     } catch (e) {
       debugPrint(e.toString());

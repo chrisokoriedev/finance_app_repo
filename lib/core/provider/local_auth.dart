@@ -12,11 +12,6 @@ final biometricAuthStateProvider = StateProvider.autoDispose<bool>((ref) {
   final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return sharedPreferences.getBool(AppString.bioAuth) ?? false;
 });
-final biometricAuthStateFutureProvider =
-    FutureProvider.autoDispose<bool>((ref) {
-  final sharedPreferences = ref.watch(sharedPreferencesProvider);
-  return sharedPreferences.getBool(AppString.bioAuth) ?? false;
-});
 
 final bioAuthDataSourceProvider = Provider.autoDispose<BiometricAuthDataSource>(
   (ref) => BiometricAuthDataSource(ref.read(localAuthProvider), ref),

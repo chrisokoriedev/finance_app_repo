@@ -21,7 +21,7 @@ class DashboardHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totals = ref.watch(totalStateProvider);
+    final totals = ref.watch(totalsProvider);
     final cloud = ref.watch(cloudItemsProvider);
     final greeting = ref.watch(greetingProvider);
     final firebaseAuth = ref.watch(firebaseAuthProvider);
@@ -29,7 +29,6 @@ class DashboardHeader extends ConsumerWidget {
 
     return cloud.when(
         data: (data) {
-          ref.read(totalStateProvider.notifier).state.calculateTotals(data);
           return Stack(
             children: [
               Column(
@@ -54,13 +53,13 @@ class DashboardHeader extends ConsumerWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextWigdet(
+                                TextWidget(
                                   text: _getGreetingText(greeting),
                                   color: theme.primary,
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                TextWigdet(
+                                TextWidget(
                                   text: getUserName(),
                                   color: theme.primary,
                                   fontSize: 17.sp,
@@ -113,7 +112,7 @@ class DashboardHeader extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TextWigdet(
+                            TextWidget(
                               text: 'Total Balance',
                               color: theme.primary,
                               fontSize: 15.sp,
@@ -127,8 +126,8 @@ class DashboardHeader extends ConsumerWidget {
                           ],
                         ),
                         Gap(0.3.h),
-                        TextWigdet(
-                          text: "₦${totals.state.grandTotal}",
+                        TextWidget(
+                          text: "₦${totals.grandTotal}",
                           color: theme.primary,
                           fontSize: 18.sp,
                           letterSpacing: 1.7,
@@ -144,7 +143,7 @@ class DashboardHeader extends ConsumerWidget {
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),
-                                '${totals.state.totalIncome}',
+                                '${totals.totalIncome}',
                                 AppColor.kGreenColor),
                             _buildExpenseDashBoardComponent(
                                 'Expense',
@@ -152,7 +151,7 @@ class DashboardHeader extends ConsumerWidget {
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),
-                                '${totals.state.totalExpense}',
+                                '${totals.totalExpense}',
                                 AppColor.kredColor),
                             _buildExpenseDashBoardComponent(
                                 'Debt',
@@ -160,7 +159,7 @@ class DashboardHeader extends ConsumerWidget {
                                   size: 17.sp,
                                   color: AppColor.kWhitColor,
                                 ),
-                                '${totals.state.totalDebt}',
+                                '${totals.totalDebt}',
                                 AppColor.kBlueColor),
                           ],
                         ),
@@ -184,7 +183,7 @@ class DashboardHeader extends ConsumerWidget {
         return 'Good Afternoon';
       case Greeting.evening:
         return 'Good Evening';
-      }
+    }
   }
 
   Widget _buildExpenseDashBoardComponent(

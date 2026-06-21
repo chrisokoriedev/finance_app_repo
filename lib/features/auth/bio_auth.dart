@@ -19,7 +19,7 @@ class BioAuthScreen extends HookConsumerWidget {
     final firebaseAuth = ref.watch(firebaseAuthProvider);
     final theme = Theme.of(context).colorScheme;
 
-    ref.listen(bioAuthNotifierProviderII, (previous, next) {
+    ref.listen(bioAuthNotifierProvider, (previous, next) {
       next.maybeWhen(
           orElse: () => null,
           success: (message) {
@@ -43,12 +43,12 @@ class BioAuthScreen extends HookConsumerWidget {
               child: UserAvatar(firebaseAuth: firebaseAuth),
             ),
             Gap(3.h),
-            TextWigdet(
+            TextWidget(
                 text: getUserName(), fontSize: 20.sp, color: theme.primary),
             Gap(3.h),
             GestureDetector(
               onTap: () => ref
-                  .read(bioAuthNotifierProviderII.notifier)
+                  .read(bioAuthNotifierProvider.notifier)
                   .loginBioWithLocalAuth(),
               child: Icon(
                 Icons.fingerprint_sharp,
@@ -58,9 +58,9 @@ class BioAuthScreen extends HookConsumerWidget {
             Gap(2.h),
             TextButton(
               onPressed: () => ref
-                  .read(bioAuthNotifierProviderII.notifier)
+                  .read(bioAuthNotifierProvider.notifier)
                   .loginBioWithLocalAuth(),
-              child: TextWigdet(
+              child: TextWidget(
                   text: 'Click to login with fingerprint',
                   fontSize: 14.sp,
                   color: theme.primary,

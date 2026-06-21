@@ -1,12 +1,13 @@
 import 'package:expense_app/features/Profile/profile.dart';
 import 'package:expense_app/features/TransactionList/transaction_list_view.dart';
-import 'package:expense_app/features/homepage/hompage.dart';
+import 'package:expense_app/features/homepage/homepage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
@@ -16,7 +17,7 @@ import 'package:vibration/vibration.dart';
 
 final selectedBottomTab = StateProvider.autoDispose<int>((ref) => 0);
 
-class MainControlComponent extends ConsumerWidget {
+class MainControlComponent extends HookConsumerWidget {
   const MainControlComponent({super.key});
 
   @override
@@ -29,10 +30,21 @@ class MainControlComponent extends ConsumerWidget {
       );
     });
 
-    final PageController pageCntrl = PageController(initialPage: selectedTab);
-    pageCntrl.addListener(() {
-      ref.read(selectedBottomTab.notifier).state = pageCntrl.page!.round();
-    });
+    // usePageController keeps a single controller across rebuilds and disposes
+    // it automatically, avoiding the leak from rebuilding it every build.
+    final pageCntrl =
+        usePageController(initialPage: ref.read(selectedBottomTab));
+    useEffect(() {
+      void listener() {
+        final page = pageCntrl.page;
+        if (page != null) {
+          ref.read(selectedBottomTab.notifier).state = page.round();
+        }
+      }
+
+      pageCntrl.addListener(listener);
+      return () => pageCntrl.removeListener(listener);
+    }, [pageCntrl]);
     final iconData = [
       LineIcons.home,
       LineIcons.lineChart,

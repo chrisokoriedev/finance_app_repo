@@ -65,11 +65,11 @@ class AuthScreen extends HookConsumerWidget {
                             LineIcon.fighterJet(size: 20.sp));
               },
               loading: () => Center(
-                child: TextWigdet(
+                child: TextWidget(
                     text: 'Nora', color: AppColor.kWhitColor, fontSize: 20.sp),
               ),
               error: (error, stackTrace) => Center(
-                  child: TextWigdet(
+                  child: TextWidget(
                       text: error.toString(),
                       color: AppColor.kWhitColor,
                       fontSize: 15.sp)),
@@ -94,251 +94,247 @@ class AuthScreen extends HookConsumerWidget {
                         BorderRadius.vertical(top: Radius.circular(20.sp))),
                 child: Form(
                   key: formKey,
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          AppString.appName,
-                          style: TextStyle(
-                              color: AppColor.kWhitColor,
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Gap(1.h),
-                        Text(
-                          isLogin.value
-                              ? 'Sign in to your account'
-                              : 'Create a new account',
-                          style: TextStyle(
-                              color: AppColor.kGreyColor, fontSize: 14.sp),
-                        ),
-                        Gap(3.h),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Text(
+                      AppString.appName,
+                      style: TextStyle(
+                          color: AppColor.kWhitColor,
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Gap(1.h),
+                    Text(
+                      isLogin.value
+                          ? 'Sign in to your account'
+                          : 'Create a new account',
+                      style: TextStyle(
+                          color: AppColor.kGreyColor, fontSize: 14.sp),
+                    ),
+                    Gap(3.h),
 
-                        // Email Input
-                        TextFormField(
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(color: AppColor.kWhitColor),
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: TextStyle(
-                                color: AppColor.kWhitColor.withOpacity(0.5),
-                                fontSize: 15.sp),
-                            prefixIcon: Icon(Icons.mail_outline,
-                                color: AppColor.kWhitColor.withOpacity(0.7)),
-                            filled: true,
-                            fillColor: AppColor.kGreyColor.withOpacity(0.1),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 4.w, vertical: 1.5.h),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor.withOpacity(0.2),
-                                  width: 0.2.w),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor.withOpacity(0.2),
-                                  width: 0.2.w),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor, width: 0.4.w),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: const BorderSide(
-                                  color: AppColor.kredColor, width: 0.4.w),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: const BorderSide(
-                                  color: AppColor.kredColor, width: 0.4.w),
-                            ),
+                    // Email Input
+                    TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(color: AppColor.kWhitColor),
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        hintStyle: TextStyle(
+                            color: AppColor.kWhitColor.withOpacity(0.5),
+                            fontSize: 15.sp),
+                        prefixIcon: Icon(Icons.mail_outline,
+                            color: AppColor.kWhitColor.withOpacity(0.7)),
+                        filled: true,
+                        fillColor: AppColor.kGreyColor.withOpacity(0.1),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 1.5.h),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor.withOpacity(0.2),
+                              width: 0.2.w),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor.withOpacity(0.2),
+                              width: 0.2.w),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor, width: 0.4.w),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kredColor, width: 0.4.w),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kredColor, width: 0.4.w),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value.trim())) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    Gap(2.h),
+
+                    // Password Input
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: !isPasswordVisible.value,
+                      style: const TextStyle(color: AppColor.kWhitColor),
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        hintStyle: TextStyle(
+                            color: AppColor.kWhitColor.withOpacity(0.5),
+                            fontSize: 15.sp),
+                        prefixIcon: Icon(Icons.lock_outline,
+                            color: AppColor.kWhitColor.withOpacity(0.7)),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isPasswordVisible.value
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: AppColor.kWhitColor.withOpacity(0.7),
                           ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                .hasMatch(value.trim())) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
+                          onPressed: () => isPasswordVisible.value =
+                              !isPasswordVisible.value,
                         ),
-                        Gap(2.h),
-
-                        // Password Input
-                        TextFormField(
-                          controller: passwordController,
-                          obscureText: !isPasswordVisible.value,
-                          style: const TextStyle(color: AppColor.kWhitColor),
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            hintStyle: TextStyle(
-                                color: AppColor.kWhitColor.withOpacity(0.5),
-                                fontSize: 15.sp),
-                            prefixIcon: Icon(Icons.lock_outline,
-                                color: AppColor.kWhitColor.withOpacity(0.7)),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isPasswordVisible.value
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility_outlined,
-                                color: AppColor.kWhitColor.withOpacity(0.7),
-                              ),
-                              onPressed: () =>
-                                  isPasswordVisible.value = !isPasswordVisible.value,
-                            ),
-                            filled: true,
-                            fillColor: AppColor.kGreyColor.withOpacity(0.1),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 4.w, vertical: 1.5.h),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor.withOpacity(0.2),
-                                  width: 0.2.w),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor.withOpacity(0.2),
-                                  width: 0.2.w),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: BorderSide(
-                                  color: AppColor.kWhitColor, width: 0.4.w),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: const BorderSide(
-                                  color: AppColor.kredColor, width: 0.4.w),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              borderSide: const BorderSide(
-                                  color: AppColor.kredColor, width: 0.4.w),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
+                        filled: true,
+                        fillColor: AppColor.kGreyColor.withOpacity(0.1),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 1.5.h),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor.withOpacity(0.2),
+                              width: 0.2.w),
                         ),
-                        Gap(3.h),
-
-                        // Submit Button
-                        GestureDetector(
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              if (isLogin.value) {
-                                ref
-                                    .read(authNotifierProvider.notifier)
-                                    .signInWithEmailAndPassword(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                              } else {
-                                ref
-                                    .read(authNotifierProvider.notifier)
-                                    .signUpWithEmailAndPassword(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                              }
-                            }
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 14.sp),
-                            decoration: BoxDecoration(
-                                color: AppColor.kWhitColor,
-                                borderRadius: BorderRadius.circular(10.sp)),
-                            child: Center(
-                              child: Text(
-                                isLogin.value ? 'Sign In' : 'Create Account',
-                                style: TextStyle(
-                                    color: AppColor.kBlackColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp),
-                              ),
-                            ),
-                          ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor.withOpacity(0.2),
+                              width: 0.2.w),
                         ),
-                        Gap(2.h),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kWhitColor, width: 0.4.w),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kredColor, width: 0.4.w),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
+                          borderSide: BorderSide(
+                              color: AppColor.kredColor, width: 0.4.w),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    Gap(3.h),
 
-                        // Mode Toggle
-                        TextButton(
-                          onPressed: () => isLogin.value = !isLogin.value,
+                    // Submit Button
+                    GestureDetector(
+                      onTap: () {
+                        if (formKey.currentState!.validate()) {
+                          if (isLogin.value) {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .signInWithEmailAndPassword(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+                          } else {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .signUpWithEmailAndPassword(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+                          }
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 14.sp),
+                        decoration: BoxDecoration(
+                            color: AppColor.kWhitColor,
+                            borderRadius: BorderRadius.circular(10.sp)),
+                        child: Center(
                           child: Text(
-                            isLogin.value
-                                ? "Don't have an account? Sign Up"
-                                : "Already have an account? Sign In",
+                            isLogin.value ? 'Sign In' : 'Create Account',
                             style: TextStyle(
-                                color: AppColor.kWhitColor.withOpacity(0.8),
-                                fontSize: 14.sp),
+                                color: AppColor.kBlackColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp),
                           ),
                         ),
+                      ),
+                    ),
+                    Gap(2.h),
 
-                        Row(
+                    // Mode Toggle
+                    TextButton(
+                      onPressed: () => isLogin.value = !isLogin.value,
+                      child: Text(
+                        isLogin.value
+                            ? "Don't have an account? Sign Up"
+                            : "Already have an account? Sign In",
+                        style: TextStyle(
+                            color: AppColor.kWhitColor.withOpacity(0.8),
+                            fontSize: 14.sp),
+                      ),
+                    ),
+
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Divider(
+                                color: AppColor.kWhitColor.withOpacity(0.2))),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                          child: Text('OR',
+                              style: TextStyle(
+                                  color: AppColor.kWhitColor.withOpacity(0.5),
+                                  fontSize: 13.sp)),
+                        ),
+                        Expanded(
+                            child: Divider(
+                                color: AppColor.kWhitColor.withOpacity(0.2))),
+                      ],
+                    ),
+                    Gap(2.h),
+
+                    // Google Login Button
+                    GestureDetector(
+                      onTap: () => ref
+                          .read(authNotifierProvider.notifier)
+                          .continueWithGoogle(),
+                      child: Container(
+                        width: 60.w,
+                        padding: EdgeInsets.symmetric(vertical: 8.sp),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColor.kWhitColor, width: 0.4.w),
+                            borderRadius: BorderRadius.circular(10.sp)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                                child: Divider(
-                                    color: AppColor.kWhitColor.withOpacity(0.2))),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4.w),
-                              child: Text('OR',
-                                  style: TextStyle(
-                                      color:
-                                          AppColor.kWhitColor.withOpacity(0.5),
-                                      fontSize: 13.sp)),
+                            LineIcon.googlePlay(
+                                color: AppColor.kWhitColor, size: 19.sp),
+                            Gap(2.w),
+                            Text(
+                              'Continue with google',
+                              style: TextStyle(
+                                  color: AppColor.kWhitColor, fontSize: 15.sp),
                             ),
-                            Expanded(
-                                child: Divider(
-                                    color: AppColor.kWhitColor.withOpacity(0.2))),
                           ],
                         ),
-                        Gap(2.h),
-
-                        // Google Login Button
-                        GestureDetector(
-                          onTap: () => ref
-                              .read(authNotifierProvider.notifier)
-                              .continueWithGoogle(),
-                          child: Container(
-                            width: 60.w,
-                            padding: EdgeInsets.symmetric(vertical: 8.sp),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColor.kWhitColor, width: 0.4.w),
-                                borderRadius: BorderRadius.circular(10.sp)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LineIcon.googlePlay(
-                                    color: AppColor.kWhitColor, size: 19.sp),
-                                Gap(2.w),
-                                Text(
-                                  'Continue with google',
-                                  style: TextStyle(
-                                      color: AppColor.kWhitColor,
-                                      fontSize: 15.sp),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ]),
+                      ),
+                    )
+                  ]),
                 ),
               ),
             ),

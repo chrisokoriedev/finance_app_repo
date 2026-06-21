@@ -13,8 +13,8 @@ class CreateExpenseNotifier extends StateNotifier<AppStateManager> {
     state = const AppStateManager.loading();
     final response = await _dataSource.addExpense(add);
     state = response.fold(
-      (response) => AppStateManager.success(success: response),
-      (error) => AppStateManager.failed(failed: error),
+      (failure) => AppStateManager.failed(failed: failure),
+      (success) => AppStateManager.success(success: success),
     );
   }
 

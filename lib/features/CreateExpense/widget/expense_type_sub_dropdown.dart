@@ -38,7 +38,7 @@ class ExpenseTypeComponent extends ConsumerWidget {
             .map(
               (e) => DropdownMenuItem(
                 value: e,
-                child: TextWigdet(
+                child: TextWidget(
                   text: e,
                   fontSize: 13.9.sp,
                   fontWeight: FontWeight.w600,
@@ -50,7 +50,7 @@ class ExpenseTypeComponent extends ConsumerWidget {
             .map(
               (e) => DropdownMenuItem(
                 value: e,
-                child: TextWigdet(
+                child: TextWidget(
                   text: e,
                   fontSize: 13.9.sp,
                   fontWeight: FontWeight.w600,
@@ -96,7 +96,7 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
                 fontWeight: FontWeight.w600),
             closedFillColor: AppColor.kGreyColor.withOpacity(0.3),
             expandedFillColor: theme.onPrimary),
-        hintText: 'Select expense catergory',
+        hintText: 'Select expense category',
         noResultFoundText: 'Cat not find any result',
         items: expenseSubListType,
         excludeSelected: false,

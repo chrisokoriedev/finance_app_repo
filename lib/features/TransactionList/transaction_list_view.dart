@@ -88,7 +88,8 @@ class TransactionListView extends HookConsumerWidget {
                 Expanded(
                     child: expenseData.isEmpty
                         ? Center(
-                            child: Text('You vent saved  any expense today yet',
+                            child: Text(
+                                "You haven't recorded any expense today yet",
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w600)))

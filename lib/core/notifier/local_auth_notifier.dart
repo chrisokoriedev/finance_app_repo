@@ -2,11 +2,13 @@ import 'package:expense_app/core/domain/local_auth.dart';
 import 'package:expense_app/core/state/local_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Single notifier for biometric authentication, handling the three commands:
+/// create (enable), disable, and login.
 class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
   final BiometricAuthDataSource _bioAuth;
   BiometricAuthNotifier(this._bioAuth) : super(const LocalAuthState.initial());
 
-  Future createdBioWithLocalAuth() async {
+  Future<void> createdBioWithLocalAuth() async {
     state = const LocalAuthState.loading();
     final response = await _bioAuth.authenticateWithBiometrics();
     state = response.fold(
@@ -15,7 +17,7 @@ class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
     );
   }
 
-  Future disableBioWithLocalAuth() async {
+  Future<void> disableBioWithLocalAuth() async {
     state = const LocalAuthState.loading();
     final response = await _bioAuth.disableBiometricAuth();
     state = response.fold(
@@ -23,14 +25,8 @@ class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
       (response) => const LocalAuthState.success(success: true),
     );
   }
-}
 
-class BiometricAuthNotifierII extends StateNotifier<LocalAuthState> {
-  final BiometricAuthDataSource _bioAuth;
-  BiometricAuthNotifierII(this._bioAuth)
-      : super(const LocalAuthState.initial());
-
-  Future loginBioWithLocalAuth() async {
+  Future<void> loginBioWithLocalAuth() async {
     state = const LocalAuthState.loading();
     final response = await _bioAuth.loginWithBiometrics();
     state = response.fold(

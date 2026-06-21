@@ -7,15 +7,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final expenseCatergoryState = StateProvider((ref) => ExpenseCatergory(
+final expenseCategoryState = StateProvider((ref) => ExpenseCategory(
     ref.read(firebaseAuthProvider), ref.read(fireStoreProvider), ref));
 
-class ExpenseCatergory {
+class ExpenseCategory {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
   final Ref ref;
 
-  ExpenseCatergory(this._firebaseAuth, this._firebaseFirestore, this.ref);
+  ExpenseCategory(this._firebaseAuth, this._firebaseFirestore, this.ref);
 
   Future<Either<String, dynamic>> addUserSubCategories(String category) async {
     try {
@@ -30,7 +30,7 @@ class ExpenseCatergory {
             .get();
 
         if (existingCategories.docs.isNotEmpty) {
-          return right('Category already exists');
+          return left('Category already exists');
         } else {
           await firestoreInstance
               .collection(AppString.expenseSubList)
@@ -41,10 +41,10 @@ class ExpenseCatergory {
           ref.refresh(expenseListCatProvider.future);
         }
       }
-      return left('Success');
+      return right('Category added');
     } catch (e) {
       debugPrint(e.toString());
-      return Right(e.toString());
+      return left(e.toString());
     }
   }
 
@@ -58,10 +58,10 @@ class ExpenseCatergory {
             .doc(userId)
             .get();
       }
-      return left('Success');
+      return right('Success');
     } catch (e) {
       debugPrint(e.toString());
-      return Right(e.toString());
+      return left(e.toString());
     }
   }
 }
