@@ -1,7 +1,8 @@
 import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
-import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -24,34 +25,33 @@ class BuildCreateDataComponent extends ConsumerWidget {
   final String chooseSubExpense;
   final DateTime choosedDate;
 
+  void _snack(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: AppColor.kDarkGreyColor,
+      content: Text(message,
+          style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor)),
+      showCloseIcon: true,
+    ));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      style: ButtonStyle(
-          fixedSize: MaterialStateProperty.all(
-            Size(double.maxFinite, 2.h),
-          ),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: customBorderRadius(10))),
-          backgroundColor: MaterialStateColor.resolveWith(
-              (states) => const Color.fromARGB(255, 36, 35, 35))),
-      onPressed: () {
-        if (chooseExpense == 'Expense' && chooseSubExpense == '..') {
-          SnackBar snackBar = SnackBar(
-            backgroundColor: AppColor.kDarkGreyColor,
-            content: Text(
-              'Choose expense type',
-              style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
-            ),
-            showCloseIcon: true,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        } else {
+    final neu = context.neu;
+    return SizedBox(
+      width: double.infinity,
+      child: NeuButton(
+        filled: true,
+        color: neu.primary,
+        onTap: () {
+          if (chooseExpense == 'Expense' && chooseSubExpense == '..') {
+            _snack(context, 'Choose a category');
+            return;
+          }
           final amount = double.tryParse(expenseAmountController.text.trim());
           if (expenseTitleController.text.isNotEmpty &&
               expenseDescripritionController.text.isNotEmpty &&
               amount != null) {
-            var add = CreateExpenseModel(
+            final add = CreateExpenseModel(
                 name: expenseTitleController.text,
                 amount: amount,
                 expenseType: chooseExpense,
@@ -63,24 +63,14 @@ class BuildCreateDataComponent extends ConsumerWidget {
             expenseDescripritionController.clear();
             expenseTitleController.clear();
           } else {
-            SnackBar snackBar = SnackBar(
-              backgroundColor: AppColor.kDarkGreyColor,
-              content: Text(
-                'Enter All Field',
-                style: TextStyle(fontSize: 14.sp, color: AppColor.kWhitColor),
-              ),
-              showCloseIcon: true,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            _snack(context, 'Please fill all fields');
           }
-        }
-      },
-      child: Text(
-        'Create',
-        style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColor.kWhitColor,
-            fontWeight: FontWeight.bold),
+        },
+        child: Text('Create transaction',
+            style: TextStyle(
+                fontSize: 14.sp,
+                color: neu.surface,
+                fontWeight: FontWeight.bold)),
       ),
     );
   }

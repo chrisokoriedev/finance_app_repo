@@ -47,16 +47,21 @@ class ExpenseListBuilder extends HookConsumerWidget {
             catColor = neu.debt;
           }
 
-          final IconData catIcon = _getCategoryIcon(history.expenseSubList, history.expenseType);
+          final IconData catIcon =
+              _getCategoryIcon(history.expenseSubList, history.expenseType);
 
           final sign = history.expenseType == "Income" ? '+' : '-';
-          
+
           final String subtitleText;
-          final categoryName = history.expenseSubList != '..' ? history.expenseSubList : history.expenseType;
+          final categoryName = history.expenseSubList != '..'
+              ? history.expenseSubList
+              : history.expenseType;
           if (showTime) {
-            subtitleText = '$categoryName · ${DateFormat.jm().format(history.dateTime).toLowerCase()}';
+            subtitleText =
+                '$categoryName · ${DateFormat.jm().format(history.dateTime).toLowerCase()}';
           } else if (showDateTIme) {
-            subtitleText = '$categoryName · ${timeago.format(history.dateTime)}';
+            subtitleText =
+                '$categoryName · ${timeago.format(history.dateTime)}';
           } else {
             subtitleText = categoryName;
           }
@@ -178,18 +183,27 @@ class ExpenseListBuilder extends HookConsumerWidget {
     final catLower = category.toLowerCase();
     if (catLower.contains("grocer") || catLower.contains("shop")) {
       return Icons.shopping_cart_outlined;
-    } else if (catLower.contains("transport") || catLower.contains("gas") || catLower.contains("fuel") || catLower.contains("car")) {
+    } else if (catLower.contains("transport") ||
+        catLower.contains("gas") ||
+        catLower.contains("fuel") ||
+        catLower.contains("car")) {
       return Icons.local_gas_station_outlined;
-    } else if (catLower.contains("eat") || catLower.contains("cafe") || catLower.contains("coffee") || catLower.contains("restaurant") || catLower.contains("food")) {
+    } else if (catLower.contains("eat") ||
+        catLower.contains("cafe") ||
+        catLower.contains("coffee") ||
+        catLower.contains("restaurant") ||
+        catLower.contains("food")) {
       return Icons.coffee_outlined;
     } else if (catLower.contains("house") || catLower.contains("rent")) {
       return Icons.home_outlined;
-    } else if (catLower.contains("data") || catLower.contains("wifi") || catLower.contains("phone")) {
+    } else if (catLower.contains("data") ||
+        catLower.contains("wifi") ||
+        catLower.contains("phone")) {
       return Icons.wifi;
     } else if (catLower.contains("cloth") || catLower.contains("dress")) {
       return Icons.checkroom_outlined;
     }
-    
+
     if (type == "Expense") {
       return Icons.north_east;
     }

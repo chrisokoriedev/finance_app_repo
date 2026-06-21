@@ -12,7 +12,6 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-
 class DashboardHeader extends ConsumerWidget {
   final PageController pageCntrl;
   const DashboardHeader(this.pageCntrl, {super.key});
@@ -107,7 +106,8 @@ class DashboardHeader extends ConsumerWidget {
             data: (data) {
               final streak = _loggingStreak(data);
               final trendVal = _calculateMonthlyTrend(data);
-              final totalSavings = totals.totalIncome - totals.totalExpense - totals.totalDebt;
+              final totalSavings =
+                  totals.totalIncome - totals.totalExpense - totals.totalDebt;
               final ratio = totals.totalIncome > 0
                   ? (totalSavings / totals.totalIncome).clamp(0.0, 1.0)
                   : 0.0;
@@ -117,7 +117,8 @@ class DashboardHeader extends ConsumerWidget {
                 children: [
                   if (streak > 0) ...[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 11.sp, vertical: 5.sp),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 11.sp, vertical: 5.sp),
                       decoration: BoxDecoration(
                         color: neu.accent.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(20.sp),
@@ -129,7 +130,8 @@ class DashboardHeader extends ConsumerWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.local_fire_department, color: neu.accent, size: 14.sp),
+                          Icon(Icons.local_fire_department,
+                              color: neu.accent, size: 14.sp),
                           Gap(1.5.w),
                           Text(
                             '$streak-day logging streak',
@@ -154,8 +156,8 @@ class DashboardHeader extends ConsumerWidget {
                       _stat(neu, Icons.north_east, neu.expense, 'Expense',
                           totals.totalExpense),
                       Gap(2.5.w),
-                      _stat(neu, Icons.monetization_on_outlined, neu.debt, 'Debt',
-                          totals.totalDebt),
+                      _stat(neu, Icons.monetization_on_outlined, neu.debt,
+                          'Debt', totals.totalDebt),
                     ],
                   ),
                   Gap(1.h),
@@ -195,7 +197,8 @@ class DashboardHeader extends ConsumerWidget {
     return trend;
   }
 
-  Widget _balanceCard(NeuColors neu, Totals totals, double trendVal, double ratio, BuildContext context) {
+  Widget _balanceCard(NeuColors neu, Totals totals, double trendVal,
+      double ratio, BuildContext context) {
     final onTrack = totals.grandTotal >= 0;
     final isPositiveTrend = trendVal >= 0;
     final trendColor = isPositiveTrend ? neu.primary : neu.expense;
@@ -222,12 +225,15 @@ class DashboardHeader extends ConsumerWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 4.sp),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 10.sp, vertical: 4.sp),
                 decoration: BoxDecoration(
-                  color: (onTrack ? neu.primary : neu.expense).withOpacity(0.08),
+                  color:
+                      (onTrack ? neu.primary : neu.expense).withOpacity(0.08),
                   borderRadius: BorderRadius.circular(20.sp),
                   border: Border.all(
-                    color: (onTrack ? neu.primary : neu.expense).withOpacity(0.2),
+                    color:
+                        (onTrack ? neu.primary : neu.expense).withOpacity(0.2),
                     width: 1,
                   ),
                 ),
@@ -235,7 +241,9 @@ class DashboardHeader extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      onTrack ? Icons.check_circle_outline : Icons.error_outline,
+                      onTrack
+                          ? Icons.check_circle_outline
+                          : Icons.error_outline,
                       color: onTrack ? neu.primary : neu.expense,
                       size: 13.sp,
                     ),
@@ -343,7 +351,8 @@ class DashboardHeader extends ConsumerWidget {
     );
   }
 
-  Widget _stat(NeuColors neu, IconData icon, Color color, String label, double value) {
+  Widget _stat(
+      NeuColors neu, IconData icon, Color color, String label, double value) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 1.8.h, horizontal: 3.5.w),

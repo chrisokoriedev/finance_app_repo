@@ -79,8 +79,8 @@ class BioAuthScreen extends HookConsumerWidget {
                     color: neu.surface,
                     boxShadow: neu.raised,
                   ),
-                  child: Icon(Icons.fingerprint,
-                      size: 28.sp, color: neu.primary),
+                  child:
+                      Icon(Icons.fingerprint, size: 28.sp, color: neu.primary),
                 ),
               ),
               Gap(2.h),

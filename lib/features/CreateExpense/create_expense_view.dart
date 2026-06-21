@@ -137,8 +137,8 @@ class CreateExpenseView extends HookConsumerWidget {
                           child: NeuCard(
                             padding: const EdgeInsets.all(12),
                             radius: 14,
-                            child:
-                                Icon(Icons.add, color: neu.primary, size: 20.sp),
+                            child: Icon(Icons.add,
+                                color: neu.primary, size: 20.sp),
                           ),
                         ),
                       ],
@@ -161,15 +161,14 @@ class CreateExpenseView extends HookConsumerWidget {
                           firstDate: DateTime(2001),
                           lastDate: DateTime(2080));
                       if (newDate != null) {
-                        ref
-                            .read(selectedDateTimeStateProvider.notifier)
-                            .state = newDate;
+                        ref.read(selectedDateTimeStateProvider.notifier).state =
+                            newDate;
                       }
                     },
                     child: NeuWell(
                       radius: 15,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.7.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4.w, vertical: 1.7.h),
                       child: Row(
                         children: [
                           Icon(Icons.calendar_today_outlined,
@@ -212,8 +211,7 @@ class CreateExpenseView extends HookConsumerWidget {
     if (type == AppString.expenses) return neu.expense;
     return neu.debt;
   }
-  }
-
+}
 
 final newCategoryText = StateProvider<String>((ref) => '');
 
@@ -237,7 +235,7 @@ class AddCategories extends HookConsumerWidget {
       );
     });
     final authState = ref.watch(expenseCategoryNotifier);
-
+    final neu = context.neu;
     final text = ref.watch(newCategoryText);
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h)
@@ -252,24 +250,20 @@ class AddCategories extends HookConsumerWidget {
               onChanged: (value) =>
                   ref.read(newCategoryText.notifier).state = value),
           Gap(2.h),
-          ElevatedButton(
-              style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(
-                    Size(double.maxFinite, 2.h),
-                  ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: customBorderRadius(10))),
-                  backgroundColor: MaterialStateColor.resolveWith((states) =>
-                      authState == const AppStateManager.loading()
-                          ? AppColor.kGreyColor
-                          : AppColor.kBlackColor)),
-              onPressed: authState == const AppStateManager.loading()
+          SizedBox(
+            width: double.infinity,
+            child: NeuButton(
+              filled: true,
+              color: authState == const AppStateManager.loading()
+                  ? neu.surface
+                  : neu.primary,
+              onTap: authState == const AppStateManager.loading()
                   ? null
                   : () {
                       if (text.length <= 3) {
-                        EasyLoading.showInfo('too short');
+                        EasyLoading.showInfo('Too short');
                       } else if (text.length >= 16) {
-                        EasyLoading.showInfo('too long');
+                        EasyLoading.showInfo('Too long');
                       } else {
                         ref
                             .read(expenseCategoryNotifier.notifier)
@@ -278,10 +272,13 @@ class AddCategories extends HookConsumerWidget {
                     },
               child: TextWidget(
                   text: authState == const AppStateManager.loading()
-                      ? 'Loading'
-                      : 'Add To Catogory List',
+                      ? 'Adding…'
+                      : 'Add category',
                   fontSize: 14.sp,
-                  color: AppColor.kWhitColor)),
+                  fontWeight: FontWeight.w500,
+                  color: neu.surface),
+            ),
+          ),
         ],
       ),
     );

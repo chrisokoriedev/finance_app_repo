@@ -86,8 +86,10 @@ class MainControlComponent extends HookConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildNavItem(ref, pageCntrl, 0, LineIcons.home, selectedTab, neu),
-              _buildNavItem(ref, pageCntrl, 1, LineIcons.pieChart, selectedTab, neu),
+              _buildNavItem(
+                  ref, pageCntrl, 0, LineIcons.home, selectedTab, neu),
+              _buildNavItem(
+                  ref, pageCntrl, 1, LineIcons.pieChart, selectedTab, neu),
               GestureDetector(
                 onTap: () {
                   try {
@@ -109,8 +111,10 @@ class MainControlComponent extends HookConsumerWidget {
                   ),
                 ),
               ),
-              _buildNavItem(ref, pageCntrl, 2, LineIcons.wallet, selectedTab, neu),
-              _buildNavItem(ref, pageCntrl, 3, LineIcons.user, selectedTab, neu),
+              _buildNavItem(
+                  ref, pageCntrl, 2, LineIcons.wallet, selectedTab, neu),
+              _buildNavItem(
+                  ref, pageCntrl, 3, LineIcons.user, selectedTab, neu),
             ],
           ),
         ),
@@ -142,5 +146,4 @@ class MainControlComponent extends HookConsumerWidget {
       ),
     );
   }
-  }
-
+}

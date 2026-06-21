@@ -22,8 +22,7 @@ class CustomSwitch extends StatelessWidget {
         activeTrackColor: neu.primary,
         inactiveThumbColor: neu.textSecondary,
         inactiveTrackColor: neu.shadowDark,
-        trackOutlineColor:
-            WidgetStateProperty.all(Colors.transparent),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
       ),
     );
   }

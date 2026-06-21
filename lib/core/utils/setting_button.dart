@@ -55,8 +55,7 @@ class CustomButton extends StatelessWidget {
             if (showLastWidget ?? false)
               lastWidget ?? const SizedBox.shrink()
             else
-              Icon(Icons.chevron_right,
-                  color: neu.textSecondary, size: 18.sp),
+              Icon(Icons.chevron_right, color: neu.textSecondary, size: 18.sp),
           ],
         ),
       ),
