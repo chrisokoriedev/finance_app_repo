@@ -3,7 +3,7 @@ import 'package:expense_app/features/TransactionList/transaction_list_view.dart'
 import 'package:expense_app/features/homepage/homepage.dart';
 import 'package:expense_app/features/statistics/statistics.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
-import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,7 +22,7 @@ class MainControlComponent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).colorScheme;
+    final neu = context.neu;
     final selectedTab = ref.watch(selectedBottomTab);
     ref.listen(cloudItemsProvider, (previous, next) {
       next.maybeWhen(
@@ -64,56 +64,67 @@ class MainControlComponent extends HookConsumerWidget {
       ProfileScreen(pageCntrl),
     ];
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (index) =>
-                ref.read(selectedBottomTab.notifier).state = index,
-            controller: pageCntrl,
-            children: screenChangeList,
-          ),
-        ],
+      backgroundColor: neu.surface,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (index) =>
+                  ref.read(selectedBottomTab.notifier).state = index,
+              controller: pageCntrl,
+              children: screenChangeList,
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: neu.primary,
+        elevation: 0,
+        highlightElevation: 0,
+        shape: const CircleBorder(),
         child: LineIcon.plus(
-          color: AppColor.kWhitColor,
-          size: 18.sp,
+          color: neu.surface,
+          size: 20.sp,
         ),
         onPressed: () => context.push(AppRouter.createExpenseView),
       ),
       bottomNavigationBar: BottomAppBar(
-        height: 8.h,
+        height: 9.h,
+        color: neu.surface,
+        elevation: 0,
+        surfaceTintColor: neu.surface,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             iconData.length,
-            (index) => GestureDetector(
-              onTap: () {
-                Vibration.vibrate(duration: 500, amplitude: 6);
-                pageCntrl.jumpToPage(index);
-                ref.read(selectedBottomTab.notifier).state = index;
-              },
-              child: Container(
-                width: 20.w,
-                height: 25.h,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: selectedTab == index
-                        ? theme.onPrimaryContainer
-                        : Colors.transparent),
-                child: LineIcon(
-                  iconData[index],
-                  color: selectedTab == index
-                      ? theme.primary
-                      : AppColor.kGreyColor,
-                  size: selectedTab == index ? 20.sp : 18.sp,
+            (index) {
+              final isActive = selectedTab == index;
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Vibration.vibrate(duration: 500, amplitude: 6);
+                  pageCntrl.jumpToPage(index);
+                  ref.read(selectedBottomTab.notifier).state = index;
+                },
+                child: Container(
+                  padding: EdgeInsets.all(isActive ? 2.5.w : 0),
+                  decoration: isActive
+                      ? BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: neu.surface,
+                          boxShadow: neu.inset)
+                      : null,
+                  child: LineIcon(
+                    iconData[index],
+                    color: isActive ? neu.primary : neu.textSecondary,
+                    size: isActive ? 20.sp : 19.sp,
+                  ),
                 ),
-              ),
-            ),
-          )..insert(2, Gap(2.w)),
+              );
+            },
+          )..insert(2, Gap(8.w)),
         ),
       ),
     );

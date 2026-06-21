@@ -127,6 +127,61 @@ class NeuPill extends StatelessWidget {
   }
 }
 
+/// An inset segmented control: the track is pressed in, the active segment is
+/// a raised pill. [activeColor] tints the active label (defaults to primary).
+class NeuSegmented extends StatelessWidget {
+  final List<String> segments;
+  final int selectedIndex;
+  final ValueChanged<int> onChanged;
+  final Color? activeColor;
+
+  const NeuSegmented({
+    super.key,
+    required this.segments,
+    required this.selectedIndex,
+    required this.onChanged,
+    this.activeColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final neu = context.neu;
+    final active = activeColor ?? neu.primary;
+    return NeuWell(
+      padding: const EdgeInsets.all(5),
+      radius: 16,
+      child: Row(
+        children: List.generate(segments.length, (i) {
+          final isActive = i == selectedIndex;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => onChanged(i),
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 9),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isActive ? neu.surface : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: isActive ? neu.raised : null,
+                ),
+                child: Text(
+                  segments[i],
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
+                    color: isActive ? active : neu.textSecondary,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
 /// A raised neumorphic button. [filled] paints the [color] as the background
 /// (for the primary call-to-action); otherwise it sits on the surface.
 class NeuButton extends StatelessWidget {

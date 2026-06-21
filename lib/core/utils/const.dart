@@ -7,6 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:expense_app/core/theme/neu_theme.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'colors.dart';
 
 List<String> expenseListType = [
@@ -42,7 +44,7 @@ Future<void> launchEmail() async {
 Future<bool> launchDonation() async =>
     await launchUrl(Uri.parse('https://justpaga.me/ChrisIuil'));
 Future<bool> launchPortFolio() async =>
-    await launchUrl(Uri.parse('http://chrisdevokorie.unaux.com/'));
+    await launchUrl(Uri.parse('https://chrisokoriedev.vercel.app'));
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 
@@ -132,30 +134,33 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).colorScheme;
-    return TextFormField(
-      keyboardType: textInputType,
-      controller: textEditingController,
-      maxLines: maxLine,
-      maxLength: maxlength,
-      onChanged: onChanged,
-      style: TextStyle(
-          fontSize: 14.sp, color: theme.primary, fontWeight: FontWeight.w600),
-      cursorWidth: 1.w,
-      cursorColor: theme.primary,
-      cursorRadius: Radius.circular(10.sp),
-      textAlignVertical: TextAlignVertical.center,
-      decoration: InputDecoration(
-        counterText: '',
-        fillColor: AppColor.kGreyColor.withOpacity(0.3),
-        filled: true,
-        hintText: hintText,
-        hintStyle: TextStyle(fontSize: 14.sp, color: theme.primary),
-        isCollapsed: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.8.h),
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: customBorderRadius(10),
+    final neu = context.neu;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: neu.inset,
+      ),
+      child: TextFormField(
+        keyboardType: textInputType,
+        controller: textEditingController,
+        maxLines: maxLine,
+        maxLength: maxlength,
+        onChanged: onChanged,
+        style: TextStyle(
+            fontSize: 14.sp,
+            color: neu.textPrimary,
+            fontWeight: FontWeight.w500),
+        cursorColor: neu.primary,
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          counterText: '',
+          hintText: hintText,
+          hintStyle: TextStyle(fontSize: 14.sp, color: neu.textSecondary),
+          isCollapsed: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 1.8.h),
+          border: InputBorder.none,
         ),
       ),
     );
@@ -169,23 +174,29 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).colorScheme;
-    return ListTile(
-      title: Column(
+    final neu = context.neu;
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Gap(1.h),
-          // Image.asset(
-          //   'assets/gifs/coming_soon.gif',
-          //   width: 50.w,
-          // ),
+          NeuIconWell(
+              icon: Icons.receipt_long_outlined,
+              color: neu.primary,
+              size: 64,
+              radius: 22),
           Gap(2.h),
           TextWidget(
-            text: 'No items to display',
-            color: theme.primary,
+            text: 'Nothing here yet',
+            color: neu.textPrimary,
             fontSize: 15.sp,
-            letterSpacing: 1.0,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
+          ),
+          Gap(0.6.h),
+          TextWidget(
+            text: 'Your transactions will show up here',
+            color: neu.textSecondary,
+            fontSize: 12.sp,
           ),
         ],
       ),

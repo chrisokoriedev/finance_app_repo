@@ -3,16 +3,16 @@ import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/state/local.dart';
 import 'package:expense_app/core/utils/colors.dart';
 import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/loading.dart';
 import 'package:expense_app/core/utils/string_app.dart';
 import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:line_icons/line_icon.dart';
-
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'widget/expense_type_sub_dropdown.dart';
@@ -33,7 +33,7 @@ class CreateExpenseView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).colorScheme;
+    final neu = context.neu;
 
     final choosedDate = ref.watch(selectedDateTimeStateProvider);
     final chooseExpense = ref.watch(expenseItemTypeProvider);
@@ -63,166 +63,140 @@ class CreateExpenseView extends HookConsumerWidget {
         },
       );
     });
+    final typeIndex = expenseListType
+        .indexOf(chooseExpense)
+        .clamp(0, expenseListType.length - 1);
     return Scaffold(
+      backgroundColor: neu.surface,
       appBar: AppBar(
+        backgroundColor: neu.surface,
+        elevation: 0,
+        surfaceTintColor: neu.surface,
         centerTitle: true,
-        titleTextStyle: TextStyle(
-          fontSize: 17.sp,
-          color: AppColor.kBlackColor,
-          fontWeight: FontWeight.w700,
-        ),
+        iconTheme: IconThemeData(color: neu.textPrimary),
         title: TextWidget(
-          text: 'Create data',
-          color: theme.primary,
+          text: 'New transaction',
+          color: neu.textPrimary,
           fontSize: 17.sp,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.5,
+          fontWeight: FontWeight.w500,
         ),
       ),
       body: Stack(
         children: [
-          Positioned(
-            top: 10,
-            bottom: 10,
-            left: 10,
-            right: 10,
-            child: Center(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 600),
-                width: 80.w,
-                height: chooseExpense == AppString.expenses ? 58.h : 50.h,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                    color: theme.onPrimary,
-                    borderRadius: BorderRadius.circular(10.sp),
-                    boxShadow: [
-                      BoxShadow(
-                          color: AppColor.kGreyColor.withOpacity(1.5.sp),
-                          offset: const Offset(0, 6),
-                          blurRadius: 12,
-                          spreadRadius: 6)
-                    ]),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(6.w, 1.h, 6.w, 4.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NeuSegmented(
+                    segments: const ['Income', 'Expense', 'Debt'],
+                    selectedIndex: typeIndex,
+                    activeColor: _typeColor(neu, chooseExpense),
+                    onChanged: (i) => ref
+                        .read(expenseItemTypeProvider.notifier)
+                        .state = expenseListType[i],
+                  ),
+                  Gap(2.5.h),
+                  CustomTextFormField(
+                    textEditingController: expenseAmountController,
+                    hintText: 'Amount',
+                    textInputType: TextInputType.number,
+                    maxLine: 1,
+                    maxlength: 12,
+                  ),
+                  Gap(1.8.h),
+                  CustomTextFormField(
+                    textEditingController: expenseTitleController,
+                    hintText: 'Title',
+                    textInputType: TextInputType.text,
+                    maxLine: 1,
+                    maxlength: 15,
+                  ),
+                  Gap(1.8.h),
+                  if (chooseExpense == AppString.expenses) ...[
                     Row(
                       children: [
                         Expanded(
-                          flex: 9,
-                          child: CustomTextFormField(
-                            textEditingController: expenseTitleController,
-                            hintText: 'Title',
-                            textInputType: TextInputType.text,
-                            maxLine: 1,
-                            maxlength: 15,
+                          child: expenseCategoryList.when(
+                            data: (data) => ExpenseSubTypeComponent(
+                                chooseSubExpense: chooseSubExpense,
+                                expenseSubListType: [
+                                  ...expenseSubListType,
+                                  ...data
+                                ]),
+                            loading: () => const SizedBox.shrink(),
+                            error: (_, __) => const SizedBox.shrink(),
                           ),
                         ),
-                        Gap(2.w),
-                        Flexible(
-                          flex: 4,
-                          child: ExpenseTypeComponent(
-                              chooseExpense: chooseExpense,
-                              expenseListType: expenseListType),
+                        Gap(3.w),
+                        GestureDetector(
+                          onTap: () => showModalBottomSheet(
+                              context: context,
+                              builder: (_) => const AddCategories()),
+                          child: NeuCard(
+                            padding: const EdgeInsets.all(12),
+                            radius: 14,
+                            child:
+                                Icon(Icons.add, color: neu.primary, size: 20.sp),
+                          ),
                         ),
                       ],
                     ),
-                    Gap(2.h),
-                    chooseExpense == AppString.expenses
-                        ? Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 10,
-                                    child: expenseCategoryList.when(
-                                        data: (data) =>
-                                            ExpenseSubTypeComponent(
-                                                chooseSubExpense:
-                                                    chooseSubExpense,
-                                                expenseSubListType: [
-                                                  ...expenseSubListType,
-                                                  ...data
-                                                ]),
-                                        loading: () => const Text('data'),
-                                        error: (_, __) {
-                                          return Text('failed ');
-                                        }),
-                                  ),
-                                  Flexible(
-                                      flex: 2,
-                                      child: Center(
-                                          child: GestureDetector(
-                                              onTap: () => showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (_) =>
-                                                      const AddCategories()),
-                                              child: LineIcon.plus(
-                                                size: 6.w,
-                                              )))),
-                                ],
-                              ),
-                              Gap(2.h),
-                            ],
-                          )
-                        : Container(),
-                    CustomTextFormField(
-                        textEditingController: expenseAmountController,
-                        hintText: 'Amount',
-                        textInputType: TextInputType.number,
-                        maxLine: 1,
-                        maxlength: 12),
-                    Gap(2.h),
-                    CustomTextFormField(
-                      textEditingController: expenseDescripritionController,
-                      hintText: 'Explain',
-                      textInputType: TextInputType.text,
-                      maxLine: 3,
-                      maxlength: 30,
-                    ),
-                    Gap(2.h),
-                    GestureDetector(
-                      onTap: () async {
-                        DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate:
-                                ref.read(selectedDateTimeStateProvider),
-                            firstDate: DateTime(2001),
-                            lastDate: DateTime(2080));
-
-                        if (newDate != null) {
-                          ref
-                              .read(selectedDateTimeStateProvider.notifier)
-                              .state = newDate;
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                            color: AppColor.kGreyColor.withOpacity(0.3),
-                            borderRadius: customBorderRadius(10)),
-                        child: Text(
-                          'Day: ${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year} ',
-                          style: TextStyle(
-                              fontSize: 15.sp, fontWeight: FontWeight.w600),
-                        ),
+                    Gap(1.8.h),
+                  ],
+                  CustomTextFormField(
+                    textEditingController: expenseDescripritionController,
+                    hintText: 'Explain',
+                    textInputType: TextInputType.text,
+                    maxLine: 3,
+                    maxlength: 30,
+                  ),
+                  Gap(1.8.h),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? newDate = await showDatePicker(
+                          context: context,
+                          initialDate: ref.read(selectedDateTimeStateProvider),
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime(2080));
+                      if (newDate != null) {
+                        ref
+                            .read(selectedDateTimeStateProvider.notifier)
+                            .state = newDate;
+                      }
+                    },
+                    child: NeuWell(
+                      radius: 15,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.7.h),
+                      child: Row(
+                        children: [
+                          Icon(Icons.calendar_today_outlined,
+                              size: 15.sp, color: neu.textSecondary),
+                          Gap(3.w),
+                          TextWidget(
+                            text:
+                                '${choosedDate.day} - ${choosedDate.month} - ${choosedDate.year}',
+                            color: neu.textPrimary,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
                       ),
                     ),
-                    Gap(3.h),
-                    BuildCreateDataComponent(
-                      expenseTitleController: expenseTitleController,
-                      expenseDescripritionController:
-                          expenseDescripritionController,
-                      expenseAmountController: expenseAmountController,
-                      chooseExpense: chooseExpense,
-                      choosedDate: choosedDate,
-                      chooseSubExpense: chooseSubExpense,
-                    ),
-                  ],
-                ),
+                  ),
+                  Gap(3.h),
+                  BuildCreateDataComponent(
+                    expenseTitleController: expenseTitleController,
+                    expenseDescripritionController:
+                        expenseDescripritionController,
+                    expenseAmountController: expenseAmountController,
+                    chooseExpense: chooseExpense,
+                    choosedDate: choosedDate,
+                    chooseSubExpense: chooseSubExpense,
+                  ),
+                ],
               ),
             ),
           ),
@@ -232,7 +206,14 @@ class CreateExpenseView extends HookConsumerWidget {
       ),
     );
   }
-}
+
+  Color _typeColor(NeuColors neu, String type) {
+    if (type == AppString.income) return neu.income;
+    if (type == AppString.expenses) return neu.expense;
+    return neu.debt;
+  }
+  }
+
 
 final newCategoryText = StateProvider<String>((ref) => '');
 
