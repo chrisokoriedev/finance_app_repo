@@ -1,9 +1,9 @@
-import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/colors.dart';
-import 'package:expense_app/utils/expense_list_builder.dart';
-import 'package:expense_app/utils/routes.dart';
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/utils/expense_list_builder.dart';
+import 'package:expense_app/core/utils/routes.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,7 +18,7 @@ final calendarFormatProvider =
 class TransactionListView extends HookConsumerWidget {
   final PageController pageController;
 
-  const TransactionListView(this.pageController, {Key? key}) : super(key: key);
+  const TransactionListView(this.pageController, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

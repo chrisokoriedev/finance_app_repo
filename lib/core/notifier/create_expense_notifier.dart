@@ -1,6 +1,6 @@
-import 'package:expense_app/domain/cal.dart';
-import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/state/local.dart';
+import 'package:expense_app/core/domain/cal.dart';
+import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/state/local.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CreateExpenseNotifier extends StateNotifier<AppStateManager> {
@@ -28,10 +28,3 @@ class CreateExpenseNotifier extends StateNotifier<AppStateManager> {
     );
   }
 }
-
-final createExpenseNotifierProvider =
-    StateNotifierProvider<CreateExpenseNotifier, AppStateManager>(
-  (ref) => CreateExpenseNotifier(
-    ref.read(addExpenseProvider),
-  ),
-);

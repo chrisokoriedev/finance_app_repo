@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:expense_app/provider/firebase.dart';
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/provider/firebase.dart';
+import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

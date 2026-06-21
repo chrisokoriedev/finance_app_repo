@@ -1,6 +1,5 @@
-import 'package:expense_app/domain/local_auth.dart';
-import 'package:expense_app/provider/local_auth.dart';
-import 'package:expense_app/state/local_auth.dart';
+import 'package:expense_app/core/domain/local_auth.dart';
+import 'package:expense_app/core/state/local_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class BiometricAuthNotifier extends StateNotifier<LocalAuthState> {
@@ -40,17 +39,3 @@ class BiometricAuthNotifierII extends StateNotifier<LocalAuthState> {
     );
   }
 }
-
-final bioAuthNotifierProviderII =
-    StateNotifierProvider<BiometricAuthNotifierII, LocalAuthState>(
-  (ref) => BiometricAuthNotifierII(
-    ref.read(bioAuthDataSourceProvider),
-  ),
-);
-
-final bioAuthNotifierProvider =
-    StateNotifierProvider<BiometricAuthNotifier, LocalAuthState>(
-  (ref) => BiometricAuthNotifier(
-    ref.read(bioAuthDataSourceProvider),
-  ),
-);

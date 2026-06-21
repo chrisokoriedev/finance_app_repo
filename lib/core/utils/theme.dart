@@ -1,4 +1,4 @@
-import 'package:expense_app/utils/colors.dart';
+import 'package:expense_app/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(

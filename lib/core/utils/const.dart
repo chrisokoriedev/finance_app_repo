@@ -1,6 +1,6 @@
-import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/utils/string_app.dart';
-import 'package:expense_app/utils/text.dart';
+import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/utils/string_app.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -23,7 +23,7 @@ List<String> expenseSubListType = [
   'Clothing'
 ];
 
-launchEmail() async {
+Future<void> launchEmail() async {
   const email = 'okoriec01@gmail.com';
   const subject = "App Feedback";
   const body = 'Type here...';
@@ -39,9 +39,9 @@ launchEmail() async {
   await launchUrl(emailLaunchUri);
 }
 
-launchDonation() async =>
+Future<bool> launchDonation() async =>
     await launchUrl(Uri.parse('https://justpaga.me/ChrisIuil'));
-launchPortFolio() async =>
+Future<bool> launchPortFolio() async =>
     await launchUrl(Uri.parse('http://chrisdevokorie.unaux.com/'));
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);

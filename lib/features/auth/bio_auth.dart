@@ -1,9 +1,9 @@
-import 'package:expense_app/notifer/local_auth.dart';
-import 'package:expense_app/provider/firebase.dart';
-import 'package:expense_app/utils/const.dart';
-import 'package:expense_app/utils/routes.dart';
-import 'package:expense_app/utils/text.dart';
-import 'package:expense_app/utils/user_avatar.dart';
+import 'package:expense_app/core/provider/app_provider.dart';
+import 'package:expense_app/core/provider/firebase.dart';
+import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/utils/routes.dart';
+import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';

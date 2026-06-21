@@ -1,4 +1,4 @@
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 
 class ExpenseCatergoryModel {
   final List expenseCategory;

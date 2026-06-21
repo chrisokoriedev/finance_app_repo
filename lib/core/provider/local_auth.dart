@@ -1,5 +1,5 @@
-import 'package:expense_app/domain/local_auth.dart';
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/domain/local_auth.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -1,12 +1,12 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
 
-import 'package:expense_app/domain/cal.dart';
-import 'package:expense_app/provider/firebase.dart';
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/colors.dart';
-import 'package:expense_app/utils/const.dart';
-import 'package:expense_app/utils/text.dart';
-import 'package:expense_app/utils/user_avatar.dart';
+import 'package:expense_app/core/domain/cal.dart';
+import 'package:expense_app/core/provider/firebase.dart';
+import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/utils/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -184,9 +184,7 @@ class DashboardHeader extends ConsumerWidget {
         return 'Good Afternoon';
       case Greeting.evening:
         return 'Good Evening';
-      default:
-        return '';
-    }
+      }
   }
 
   Widget _buildExpenseDashBoardComponent(

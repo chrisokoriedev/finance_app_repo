@@ -1,6 +1,6 @@
-import 'package:expense_app/state/local.dart';
+import 'package:expense_app/core/domain/categories.dart';
+import 'package:expense_app/core/state/local.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../domain/categories.dart';
 
 class ExpenseCategoryNotifier extends StateNotifier<AppStateManager> {
   ExpenseCategoryNotifier(this._dataSource)
@@ -25,21 +25,4 @@ class ExpenseCategoryNotifier extends StateNotifier<AppStateManager> {
       (error) => AppStateManager.failed(failed: error),
     );
   }
-
-  ///method to delete user record on google firestore
-  // Future<void> deleteUserRecord() async {
-  //   state = const AppStateManager.loading();
-  //   final response = await _dataSource.deleteDataStore();
-  //   state = response.fold(
-  //     (error) => AppStateManager.failed(failed: error),
-  //     (response) => AppStateManager.success(success: response),
-  //   );
-  // }
 }
-
-final expenseCategoryNotifier =
-    StateNotifierProvider<ExpenseCategoryNotifier, AppStateManager>(
-  (ref) => ExpenseCategoryNotifier(
-    ref.read(expenseCatergoryState),
-  ),
-);

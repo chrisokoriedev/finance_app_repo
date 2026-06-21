@@ -1,5 +1,5 @@
-import 'package:expense_app/provider/local_auth.dart';
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/provider/local_auth.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

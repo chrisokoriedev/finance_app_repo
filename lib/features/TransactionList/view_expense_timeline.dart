@@ -1,18 +1,18 @@
-import 'package:expense_app/domain/cal.dart';
-import 'package:expense_app/model/create_expense.dart';
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/colors.dart';
-import 'package:expense_app/utils/const.dart';
-import 'package:expense_app/utils/format_date.dart';
-import 'package:expense_app/utils/string_app.dart';
-import 'package:expense_app/utils/text.dart';
+import 'package:expense_app/core/domain/cal.dart';
+import 'package:expense_app/core/model/create_expense.dart';
+import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/utils/format_date.dart';
+import 'package:expense_app/core/utils/string_app.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ViewExpensesTimeline extends HookConsumerWidget {
-  const ViewExpensesTimeline({Key? key}) : super(key: key);
+  const ViewExpensesTimeline({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

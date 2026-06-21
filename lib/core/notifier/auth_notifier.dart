@@ -1,6 +1,5 @@
-import 'package:expense_app/domain/auth.dart';
-import 'package:expense_app/provider/auth.dart';
-import 'package:expense_app/state/auth.dart';
+import 'package:expense_app/core/domain/auth.dart';
+import 'package:expense_app/core/state/auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthenticationState> {
@@ -37,13 +36,4 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
       (response) => AuthenticationState.success(success: response),
     );
   }
-
- 
 }
-
-final authNotifierProvider =
-    StateNotifierProvider<AuthNotifier, AuthenticationState>(
-  (ref) => AuthNotifier(
-    ref.read(authDataSourceProvider),
-  ),
-);

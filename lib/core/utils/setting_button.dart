@@ -1,5 +1,5 @@
 
-import 'package:expense_app/utils/text.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:line_icons/line_icon.dart';

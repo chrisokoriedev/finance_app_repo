@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:expense_app/provider/item_provider.dart';
-import 'package:expense_app/utils/expense_list_builder.dart';
-import 'package:expense_app/utils/text.dart';
+import 'package:expense_app/core/provider/item_provider.dart';
+import 'package:expense_app/core/utils/expense_list_builder.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../utils/colors.dart';
+import '../../core/utils/colors.dart';
 import '../HeaderDashboard/header.dart';
 
 class HomePage extends ConsumerWidget {

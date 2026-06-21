@@ -1,9 +1,8 @@
 import 'package:expense_app/features/Profile/bottomsheet/setting_and_support.dart';
-import 'package:expense_app/notifer/auth_notifer.dart';
-import 'package:expense_app/notifer/create_expense_notifer.dart';
-import 'package:expense_app/provider/firebase.dart';
-import 'package:expense_app/utils/colors.dart';
-import 'package:expense_app/utils/const.dart';
+import 'package:expense_app/core/provider/app_provider.dart';
+import 'package:expense_app/core/provider/firebase.dart';
+import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';

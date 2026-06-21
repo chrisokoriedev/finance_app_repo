@@ -1,7 +1,7 @@
 import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
-import 'package:expense_app/utils/colors.dart';
-import 'package:expense_app/utils/const.dart';
-import 'package:expense_app/utils/text.dart';
+import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/utils/const.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:expense_app/provider/local_auth.dart';
-import 'package:expense_app/utils/string_app.dart';
+import 'package:expense_app/core/provider/local_auth.dart';
+import 'package:expense_app/core/utils/string_app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
