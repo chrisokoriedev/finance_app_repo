@@ -3,6 +3,7 @@ import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/widgets/neu.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/text.dart';
+import 'package:expense_app/core/utils/setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -151,38 +152,19 @@ class _CategorySelectionSheetState extends State<CategorySelectionSheet> {
                 final cat = filteredCategories[index];
                 final isSelected = cat == widget.currentSelection;
                 final catIcon = getCategoryIcon(cat, 'Expense');
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 1.h),
-                  child: NeuCard(
-                    onTap: () {
-                      widget.onSelected(cat);
-                      Navigator.pop(context);
-                    },
-                    radius: 14,
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-                    color: isSelected ? neu.primary.withOpacity(0.08) : neu.surface,
-                    child: Row(
-                      children: [
-                        NeuIconWell(
-                          icon: catIcon,
-                          color: isSelected ? neu.primary : neu.textSecondary,
-                          size: 36,
-                          radius: 10,
-                        ),
-                        Gap(4.w),
-                        Expanded(
-                          child: TextWidget(
-                            text: cat,
-                            color: isSelected ? neu.primary : neu.textPrimary,
-                            fontSize: 14.sp,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                          ),
-                        ),
-                        if (isSelected)
-                          Icon(Icons.check_circle, color: neu.primary, size: 18.sp)
-                      ],
-                    ),
-                  ),
+                return CustomButton(
+                  icons: catIcon,
+                  title: cat,
+                  color: isSelected ? neu.primary : null,
+                  margin: 10,
+                  showLastWidget: true,
+                  lastWidget: isSelected
+                      ? Icon(Icons.check_circle, color: neu.primary, size: 16.sp)
+                      : const SizedBox.shrink(),
+                  press: () {
+                    widget.onSelected(cat);
+                    Navigator.pop(context);
+                  },
                 );
               },
             ),
