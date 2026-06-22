@@ -2,7 +2,7 @@ import 'package:expense_app/core/domain/cal.dart';
 import 'package:expense_app/core/model/create_expense.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/theme/neu_theme.dart';
-import 'package:expense_app/core/utils/string_app.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:expense_app/core/widgets/neu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,12 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-final selectedTabProvider = StateProvider<int>((ref) => 0);
-final expenseItemTypeProvider =
-    StateProvider<String>((ref) => AppString.income);
-
-/// Labels for the statistics time-range tabs.
-const List<String> dayType = ['Day', 'Week', 'Month', 'Year'];
+final selectedPeriodTabProvider = StateProvider.autoDispose<int>((ref) => 1); // Daily, Weekly, Monthly
+final selectedSubPeriodTabProvider = StateProvider.autoDispose<int>((ref) => 2); // D, W, M, Y
 
 class Statistics extends ConsumerWidget {
   final PageController pageController;
@@ -25,9 +21,10 @@ class Statistics extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final neu = context.neu;
-    final selectedTab = ref.watch(selectedTabProvider);
     final itemProvider = ref.watch(cloudItemsProvider);
     final totals = ref.watch(totalsProvider);
+    final selectedPeriodTab = ref.watch(selectedPeriodTabProvider);
+    final selectedSubPeriodTab = ref.watch(selectedSubPeriodTabProvider);
 
     return PopScope(
       canPop: false,
@@ -47,7 +44,7 @@ class Statistics extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Statistics',
+                      'Statics',
                       style: TextStyle(
                         color: neu.textPrimary,
                         fontSize: 20.sp,
@@ -56,7 +53,7 @@ class Statistics extends ConsumerWidget {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.tune_outlined,
+                        Icons.more_horiz,
                         color: neu.textSecondary,
                         size: 18.sp,
                       ),
@@ -64,16 +61,81 @@ class Statistics extends ConsumerWidget {
                     ),
                   ],
                 ),
-                Gap(2.h),
+                Gap(1.5.h),
+                // Top Tab Selector (Daily, Weekly, Monthly)
                 NeuSegmented(
-                  segments: const ['Day', 'Week', 'Month', 'Year'],
-                  selectedIndex: selectedTab,
+                  segments: const ['Daily', 'Weekly', 'Monthly'],
+                  selectedIndex: selectedPeriodTab,
                   activeColor: neu.primary,
                   onChanged: (index) {
-                    ref.read(selectedTabProvider.notifier).state = index;
+                    ref.read(selectedPeriodTabProvider.notifier).state = index;
                   },
                 ),
                 Gap(2.5.h),
+                // Total Balance with Trend Indicator
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextWidget(
+                          text: 'Total Balance',
+                          color: neu.textSecondary,
+                          fontSize: 12.5.sp,
+                        ),
+                        Gap(0.4.h),
+                        TextWidget(
+                          text: _money(totals.grandTotal),
+                          color: neu.textPrimary,
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 4.sp),
+                      decoration: BoxDecoration(
+                        color: neu.primary.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(20.sp),
+                        border: Border.all(
+                          color: neu.primary.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.trending_up,
+                            color: neu.primary,
+                            size: 13.sp,
+                          ),
+                          Gap(1.w),
+                          TextWidget(
+                            text: '+2.4%',
+                            color: neu.primary,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(2.h),
+                // Sub-period selector (D, W, M, Y)
+                NeuSegmented(
+                  segments: const ['D', 'W', 'M', 'Y'],
+                  selectedIndex: selectedSubPeriodTab,
+                  activeColor: neu.primary,
+                  onChanged: (index) {
+                    ref.read(selectedSubPeriodTabProvider.notifier).state = index;
+                  },
+                ),
+                Gap(2.5.h),
+                // Dynamic Data Section
                 itemProvider.when(
                   loading: () => const Expanded(
                     child: Center(child: CircularProgressIndicator()),
@@ -87,13 +149,7 @@ class Statistics extends ConsumerWidget {
                     ),
                   ),
                   data: (data) {
-                    final chartData = [
-                      ChartData('Income', totals.totalIncome, neu.income),
-                      ChartData('Expense', totals.totalExpense, neu.expense),
-                      ChartData('Debt', totals.totalDebt, neu.debt),
-                    ];
-
-                    final topCategories = _calculateTopCategories(data);
+                    final barData = _calculateMonthlyBarData(data);
 
                     return Expanded(
                       child: SingleChildScrollView(
@@ -101,120 +157,141 @@ class Statistics extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Donut Chart Card
+                            // Custom Vertical Bar Chart Container
                             Container(
                               padding: EdgeInsets.all(16.sp),
+                              height: 25.h,
                               decoration: BoxDecoration(
                                 color: neu.surface,
                                 borderRadius: BorderRadius.circular(22.sp),
                                 boxShadow: neu.raised,
                               ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: SizedBox(
-                                      height: 16.h,
-                                      child: SfCircularChart(
-                                        margin: EdgeInsets.zero,
-                                        annotations: <CircularChartAnnotation>[
-                                          CircularChartAnnotation(
-                                            widget: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  _compact(totals.totalExpense),
-                                                  style: TextStyle(
-                                                    color: neu.textPrimary,
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'spent',
-                                                  style: TextStyle(
-                                                    color: neu.textSecondary,
-                                                    fontSize: 11.sp,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                        series: <CircularSeries>[
-                                          DoughnutSeries<ChartData, String>(
-                                            dataSource: chartData,
-                                            xValueMapper: (ChartData d, _) =>
-                                                d.x,
-                                            yValueMapper: (ChartData d, _) =>
-                                                d.y,
-                                            pointColorMapper:
-                                                (ChartData d, _) => d.color,
-                                            innerRadius: '75%',
-                                            radius: '100%',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                              child: SfCartesianChart(
+                                plotAreaBorderWidth: 0,
+                                margin: EdgeInsets.zero,
+                                primaryXAxis: CategoryAxis(
+                                  majorGridLines: const MajorGridLines(width: 0),
+                                  majorTickLines: const MajorTickLines(size: 0),
+                                  axisLine: const AxisLine(width: 0),
+                                  labelStyle: TextStyle(
+                                    color: neu.textSecondary,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  Expanded(
-                                    flex: 5,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        _legendItem(neu.income, 'Income',
-                                            totals.totalIncome, neu),
-                                        Gap(1.2.h),
-                                        _legendItem(neu.expense, 'Expense',
-                                            totals.totalExpense, neu),
-                                        Gap(1.2.h),
-                                        _legendItem(neu.debt, 'Debt',
-                                            totals.totalDebt, neu),
-                                      ],
-                                    ),
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  isVisible: false,
+                                  majorGridLines: const MajorGridLines(width: 0),
+                                ),
+                                series: <ColumnSeries<MonthlyBarData, String>>[
+                                  ColumnSeries<MonthlyBarData, String>(
+                                    dataSource: barData,
+                                    xValueMapper: (MonthlyBarData d, _) => d.label,
+                                    yValueMapper: (MonthlyBarData d, _) => d.value,
+                                    pointColorMapper: (MonthlyBarData d, _) =>
+                                        d.isActive ? neu.primary : neu.textSecondary.withOpacity(0.12),
+                                    borderRadius: BorderRadius.circular(8),
+                                    width: 0.32,
+                                    animationDuration: 600,
                                   ),
                                 ],
                               ),
                             ),
                             Gap(3.h),
-                            Text(
-                              'Top categories',
-                              style: TextStyle(
-                                color: neu.textPrimary,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Gap(1.5.h),
-                            if (topCategories.isEmpty)
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.h),
-                                child: Center(
-                                  child: Text(
-                                    'No expenses recorded yet',
-                                    style: TextStyle(
-                                      color: neu.textSecondary,
-                                      fontSize: 13.sp,
+                            // Side-by-Side Withdrawal & Deposit Metrics
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.all(15.sp),
+                                    decoration: BoxDecoration(
+                                      color: neu.surface,
+                                      borderRadius: BorderRadius.circular(18.sp),
+                                      boxShadow: neu.raised,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            TextWidget(
+                                              text: 'Total Withdrawal',
+                                              color: neu.textSecondary,
+                                              fontSize: 12.sp,
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: neu.expense.withOpacity(0.12),
+                                              ),
+                                              child: Icon(
+                                                Icons.arrow_downward,
+                                                color: neu.expense,
+                                                size: 14.sp,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Gap(1.h),
+                                        TextWidget(
+                                          text: _money(totals.totalExpense),
+                                          color: neu.textPrimary,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              )
-                            else
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: topCategories.length,
-                                itemBuilder: (context, idx) {
-                                  return _categoryProgressBar(
-                                      topCategories[idx],
-                                      totals.totalExpense,
-                                      neu);
-                                },
-                              ),
+                                Gap(4.w),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.all(15.sp),
+                                    decoration: BoxDecoration(
+                                      color: neu.surface,
+                                      borderRadius: BorderRadius.circular(18.sp),
+                                      boxShadow: neu.raised,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            TextWidget(
+                                              text: 'Total Deposit',
+                                              color: neu.textSecondary,
+                                              fontSize: 12.sp,
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: neu.income.withOpacity(0.12),
+                                              ),
+                                              child: Icon(
+                                                Icons.arrow_upward,
+                                                color: neu.income,
+                                                size: 14.sp,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Gap(1.h),
+                                        TextWidget(
+                                          text: _money(totals.totalIncome),
+                                          color: neu.textPrimary,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -229,142 +306,35 @@ class Statistics extends ConsumerWidget {
     );
   }
 
-  Widget _legendItem(Color color, String label, double value, NeuColors neu) {
-    return Row(
-      children: [
-        Container(
-          width: 10.sp,
-          height: 10.sp,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(3.sp),
-          ),
-        ),
-        Gap(2.5.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: neu.textSecondary,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Gap(0.2.h),
-            Text(
-              _money(value),
-              style: TextStyle(
-                color: neu.textPrimary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  // Calculate actual expenses for the last 6 months ending with the current month
+  List<MonthlyBarData> _calculateMonthlyBarData(List<CreateExpenseModel> expenses) {
+    final now = DateTime.now();
+    final List<MonthlyBarData> list = [];
+    final formatter = DateFormat('MMM');
 
-  Widget _categoryProgressBar(
-      CategorySpend cat, double totalExpense, NeuColors neu) {
-    final ratio =
-        totalExpense > 0 ? (cat.amount / totalExpense).clamp(0.0, 1.0) : 0.0;
-    Color barColor = neu.primary;
-    final nameLower = cat.category.toLowerCase();
-    if (nameLower.contains('grocer') ||
-        nameLower.contains('food') ||
-        nameLower.contains('house') ||
-        nameLower.contains('general')) {
-      barColor = neu.expense; // coral
-    } else if (nameLower.contains('transport') ||
-        nameLower.contains('data') ||
-        nameLower.contains('cloth')) {
-      barColor = neu.debt; // slate blue
-    } else if (nameLower.contains('eat') || nameLower.contains('cafe')) {
-      barColor = neu.primary; // green
-    } else {
-      barColor = neu.accent; // gold
-    }
+    for (int i = 5; i >= 0; i--) {
+      final targetMonth = DateTime(now.year, now.month - i, 1);
+      final monthLabel = formatter.format(targetMonth);
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 1.2.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                cat.category,
-                style: TextStyle(
-                  color: neu.textPrimary,
-                  fontSize: 14.5.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                _money(cat.amount),
-                style: TextStyle(
-                  color: neu.textPrimary,
-                  fontSize: 14.5.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          Gap(0.8.h),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              height: 8,
-              width: double.infinity,
-              color: neu.shadowDark,
-              alignment: Alignment.centerLeft,
-              child: FractionallySizedBox(
-                widthFactor: ratio,
-                child: Container(color: barColor),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<CategorySpend> _calculateTopCategories(
-      List<CreateExpenseModel> expenses) {
-    final Map<String, double> categorySums = {};
-    for (final item in expenses) {
-      if (item.expenseType == 'Expense') {
-        final cat =
-            item.expenseSubList == '..' ? 'General' : item.expenseSubList;
-        categorySums[cat] = (categorySums[cat] ?? 0) + item.amount;
+      double monthlySum = 0;
+      for (final exp in expenses) {
+        if (exp.expenseType == 'Expense' &&
+            exp.dateTime.year == targetMonth.year &&
+            exp.dateTime.month == targetMonth.month) {
+          monthlySum += exp.amount;
+        }
       }
+      list.add(MonthlyBarData(monthLabel, monthlySum, i == 0));
     }
-    final sorted = categorySums.entries
-        .map((e) => CategorySpend(e.key, e.value))
-        .toList()
-      ..sort((a, b) => b.amount.compareTo(a.amount));
-    return sorted;
+    return list;
   }
 
   String _money(num v) => '₦${NumberFormat('#,##0').format(v)}';
-
-  String _compact(num v) =>
-      NumberFormat.compactCurrency(symbol: '₦', decimalDigits: 0).format(v);
 }
 
-class ChartData {
-  ChartData(this.x, this.y, this.color);
-  final String x;
-  final double y;
-  final Color color;
-}
-
-class CategorySpend {
-  final String category;
-  final double amount;
-  CategorySpend(this.category, this.amount);
+class MonthlyBarData {
+  final String label;
+  final double value;
+  final bool isActive;
+  MonthlyBarData(this.label, this.value, this.isActive);
 }

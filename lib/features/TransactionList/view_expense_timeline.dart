@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:gap/gap.dart';
+
+final selectedFilterProvider = StateProvider.autoDispose<int>((ref) => 0); // 0: All, 1: Income, 2: Expense, 3: Debt
 
 class ViewExpensesTimeline extends HookConsumerWidget {
   const ViewExpensesTimeline({super.key});
@@ -19,6 +22,11 @@ class ViewExpensesTimeline extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final neu = context.neu;
     final historyProvider = ref.watch(cloudItemsProvider);
+    final selectedFilterIndex = ref.watch(selectedFilterProvider);
+    
+    final filterTypes = ['All', 'Income', 'Expense', 'Debt'];
+    final activeFilter = filterTypes[selectedFilterIndex];
+
     return Scaffold(
       backgroundColor: neu.surface,
       appBar: AppBar(
@@ -27,72 +35,105 @@ class ViewExpensesTimeline extends HookConsumerWidget {
         surfaceTintColor: neu.surface,
         iconTheme: IconThemeData(color: neu.textPrimary),
         title: TextWidget(
-            text: AppString.viewTimeline,
-            color: neu.textPrimary,
-            fontSize: 17.sp,
-            fontWeight: FontWeight.w500),
+          text: AppString.viewTimeline,
+          color: neu.textPrimary,
+          fontSize: 17.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        centerTitle: true,
       ),
-      body: historyProvider.when(
-        skipLoadingOnReload: true,
-        error: (_, __) => Center(
-            child: TextWidget(
-                text: 'Something went wrong',
-                color: neu.textSecondary,
-                fontSize: 14.sp)),
-        loading: () =>
-            Center(child: CircularProgressIndicator(color: neu.primary)),
-        data: (data) {
-          final expenseData = [...data]
-            ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
-          if (expenseData.isEmpty) {
-            return const Center(child: NoDataView());
-          }
-          final Map<DateTime, List<CreateExpenseModel>> grouped = {};
-          for (final e in expenseData) {
-            final d =
-                DateTime(e.dateTime.year, e.dateTime.month, e.dateTime.day);
-            grouped.putIfAbsent(d, () => []).add(e);
-          }
-          return ListView.builder(
-            padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 3.h),
-            itemCount: grouped.length,
-            itemBuilder: (context, index) {
-              final date = grouped.keys.elementAt(index);
-              final items = grouped[date] ?? [];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
-                    child: TextWidget(
-                        text: formatDate(date),
-                        color: neu.textSecondary,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Filter Bar directly below the App Bar
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              child: NeuSegmented(
+                segments: const ['All', 'Income', 'Expense', 'Debt'],
+                selectedIndex: selectedFilterIndex,
+                activeColor: neu.primary,
+                onChanged: (index) {
+                  ref.read(selectedFilterProvider.notifier).state = index;
+                },
+              ),
+            ),
+            Gap(1.h),
+            Expanded(
+              child: historyProvider.when(
+                skipLoadingOnReload: true,
+                error: (_, __) => Center(
+                  child: TextWidget(
+                    text: 'Something went wrong',
+                    color: neu.textSecondary,
+                    fontSize: 14.sp,
                   ),
-                  NeuCard(
-                    radius: 18,
-                    padding: EdgeInsets.symmetric(vertical: 0.6.h),
-                    child: Column(
-                      children: [
-                        for (final history in items)
-                          _row(context, ref, neu, history),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 1.6.h),
-                ],
-              );
-            },
-          );
-        },
+                ),
+                loading: () => Center(
+                  child: CircularProgressIndicator(color: neu.primary),
+                ),
+                data: (data) {
+                  // Apply dynamic filtering based on active filter choice
+                  final filteredList = data.where((e) {
+                    if (activeFilter == 'All') return true;
+                    return e.expenseType == activeFilter;
+                  }).toList();
+
+                  final expenseData = [...filteredList]
+                    ..sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+                  if (expenseData.isEmpty) {
+                    return const Center(child: NoDataView());
+                  }
+
+                  final Map<DateTime, List<CreateExpenseModel>> grouped = {};
+                  for (final e in expenseData) {
+                    final d = DateTime(e.dateTime.year, e.dateTime.month, e.dateTime.day);
+                    grouped.putIfAbsent(d, () => []).add(e);
+                  }
+
+                  return ListView.builder(
+                    padding: EdgeInsets.fromLTRB(4.w, 0.h, 4.w, 3.h),
+                    itemCount: grouped.length,
+                    itemBuilder: (context, index) {
+                      final date = grouped.keys.elementAt(index);
+                      final items = grouped[date] ?? [];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                            child: TextWidget(
+                              text: formatDate(date),
+                              color: neu.textSecondary,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          NeuCard(
+                            radius: 18,
+                            padding: EdgeInsets.symmetric(vertical: 0.6.h),
+                            child: Column(
+                              children: [
+                                for (final history in items)
+                                  _row(context, ref, neu, history),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 1.6.h),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _row(BuildContext context, WidgetRef ref, NeuColors neu,
-      CreateExpenseModel history) {
+  Widget _row(BuildContext context, WidgetRef ref, NeuColors neu, CreateExpenseModel history) {
     final Color catColor;
     final IconData catIcon;
     if (history.expenseType == 'Income') {
@@ -123,28 +164,34 @@ class ViewExpensesTimeline extends HookConsumerWidget {
               builder: (context) => AlertDialog(
                 backgroundColor: neu.surface,
                 title: TextWidget(
-                    text: 'Delete transaction?',
-                    color: neu.textPrimary,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500),
+                  text: 'Delete transaction?',
+                  color: neu.textPrimary,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
                 content: TextWidget(
-                    text: 'This cannot be undone.',
-                    color: neu.textSecondary,
-                    fontSize: 13.sp),
+                  text: 'This cannot be undone.',
+                  color: neu.textSecondary,
+                  fontSize: 13.sp,
+                ),
                 actions: [
                   TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: TextWidget(
-                          text: 'Cancel',
-                          color: neu.textSecondary,
-                          fontSize: 14.sp)),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: TextWidget(
+                      text: 'Cancel',
+                      color: neu.textSecondary,
+                      fontSize: 14.sp,
+                    ),
+                  ),
                   TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: TextWidget(
-                          text: 'Delete',
-                          color: neu.expense,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500)),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: TextWidget(
+                      text: 'Delete',
+                      color: neu.expense,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
             ) ??
@@ -160,21 +207,24 @@ class ViewExpensesTimeline extends HookConsumerWidget {
         contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.2.h),
         leading: NeuIconWell(icon: catIcon, color: catColor, size: 42),
         title: TextWidget(
-            text: history.name,
-            color: neu.textPrimary,
-            fontSize: 14.sp,
-            maxLine: 1,
-            fontWeight: FontWeight.w500),
+          text: history.name,
+          color: neu.textPrimary,
+          fontSize: 14.sp,
+          maxLine: 1,
+          fontWeight: FontWeight.w500,
+        ),
         subtitle: TextWidget(
-            text: subtitle,
-            color: neu.textSecondary,
-            fontSize: 12.sp,
-            maxLine: 1),
+          text: subtitle,
+          color: neu.textSecondary,
+          fontSize: 12.sp,
+          maxLine: 1,
+        ),
         trailing: TextWidget(
-            text: '$sign₦${NumberFormat('#,##0').format(history.amount)}',
-            color: catColor,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500),
+          text: '$sign₦${NumberFormat('#,##0').format(history.amount)}',
+          color: catColor,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }

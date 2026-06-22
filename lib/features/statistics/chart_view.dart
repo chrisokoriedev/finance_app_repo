@@ -1,4 +1,5 @@
 import 'package:expense_app/features/statistics/statistics.dart';
+import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
 import 'package:expense_app/core/model/create_expense.dart';
 import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/utils/colors.dart';
@@ -14,7 +15,7 @@ class ChartComponent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final itemProvider = ref.watch(cloudItemsProvider);
-    final selectDatetime = ref.watch(selectedTabProvider);
+    final selectDatetime = ref.watch(selectedPeriodTabProvider);
     final expenseType = ref.watch(expenseItemTypeProvider);
 
     return itemProvider.when(
