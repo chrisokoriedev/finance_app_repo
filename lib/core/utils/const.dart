@@ -47,6 +47,41 @@ Future<bool> launchPortFolio() async =>
 BorderRadius customBorderRadius(double amount) =>
     BorderRadius.circular(amount.sp);
 
+IconData getCategoryIcon(String category, String type) {
+  if (type == "Income") {
+    return Icons.account_balance_wallet_outlined;
+  }
+  final catLower = category.toLowerCase();
+  if (catLower.contains("grocer") || catLower.contains("shop")) {
+    return Icons.shopping_cart_outlined;
+  } else if (catLower.contains("transport") ||
+      catLower.contains("gas") ||
+      catLower.contains("fuel") ||
+      catLower.contains("car")) {
+    return Icons.local_gas_station_outlined;
+  } else if (catLower.contains("eat") ||
+      catLower.contains("cafe") ||
+      catLower.contains("coffee") ||
+      catLower.contains("restaurant") ||
+      catLower.contains("food")) {
+    return Icons.coffee_outlined;
+  } else if (catLower.contains("house") || catLower.contains("rent")) {
+    return Icons.home_outlined;
+  } else if (catLower.contains("data") ||
+      catLower.contains("wifi") ||
+      catLower.contains("phone")) {
+    return Icons.wifi;
+  } else if (catLower.contains("cloth") || catLower.contains("dress")) {
+    return Icons.checkroom_outlined;
+  }
+
+  if (type == "Expense") {
+    return Icons.north_east;
+  }
+  return Icons.account_balance_outlined;
+}
+
+
 class BuildExpenseDashBoardComponent extends StatelessWidget {
   final String title;
   final Widget icon;

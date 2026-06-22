@@ -109,17 +109,11 @@ class ViewExpensesTimeline extends HookConsumerWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          NeuCard(
-                            radius: 18,
-                            padding: EdgeInsets.symmetric(vertical: 0.6.h),
-                            child: Column(
-                              children: [
-                                for (final history in items)
-                                  _row(context, ref, neu, history),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 1.6.h),
+                          for (final history in items) ...[
+                            _row(context, ref, neu, history),
+                            Gap(1.2.h),
+                          ],
+                          Gap(0.8.h),
                         ],
                       );
                     },
@@ -135,17 +129,14 @@ class ViewExpensesTimeline extends HookConsumerWidget {
 
   Widget _row(BuildContext context, WidgetRef ref, NeuColors neu, CreateExpenseModel history) {
     final Color catColor;
-    final IconData catIcon;
     if (history.expenseType == 'Income') {
       catColor = neu.income;
-      catIcon = Icons.south_west;
     } else if (history.expenseType == 'Expense') {
       catColor = neu.expense;
-      catIcon = Icons.north_east;
     } else {
       catColor = neu.debt;
-      catIcon = Icons.account_balance;
     }
+    final catIcon = getCategoryIcon(history.expenseSubList, history.expenseType);
     final sign = history.expenseType == 'Income' ? '+' : '-';
     final subtitle = history.expenseSubList != '..'
         ? history.expenseSubList
@@ -155,7 +146,11 @@ class ViewExpensesTimeline extends HookConsumerWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 4.w),
+        padding: EdgeInsets.only(right: 5.w),
+        decoration: BoxDecoration(
+          color: neu.expense.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Icon(Icons.delete_outline, color: neu.expense, size: 20.sp),
       ),
       confirmDismiss: (_) async {
@@ -203,29 +198,49 @@ class ViewExpensesTimeline extends HookConsumerWidget {
           ref.read(deleteExpenseProvider.notifier).state.deleteExpense(id);
         }
       },
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.2.h),
-        leading: NeuIconWell(icon: catIcon, color: catColor, size: 42),
-        title: TextWidget(
-          text: history.name,
-          color: neu.textPrimary,
-          fontSize: 14.sp,
-          maxLine: 1,
-          fontWeight: FontWeight.w500,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+        decoration: BoxDecoration(
+          color: neu.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: neu.raised,
         ),
-        subtitle: TextWidget(
-          text: subtitle,
-          color: neu.textSecondary,
-          fontSize: 12.sp,
-          maxLine: 1,
-        ),
-        trailing: TextWidget(
-          text: '$sign₦${NumberFormat('#,##0').format(history.amount)}',
-          color: catColor,
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w500,
+        child: Row(
+          children: [
+            NeuIconWell(icon: catIcon, color: catColor, size: 42),
+            Gap(3.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextWidget(
+                    text: history.name,
+                    color: neu.textPrimary,
+                    fontSize: 14.5.sp,
+                    maxLine: 1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  Gap(0.4.h),
+                  TextWidget(
+                    text: subtitle,
+                    color: neu.textSecondary,
+                    fontSize: 12.sp,
+                    maxLine: 1,
+                  ),
+                ],
+              ),
+            ),
+            Gap(2.w),
+            TextWidget(
+              text: '$sign₦${NumberFormat('#,##0').format(history.amount)}',
+              color: catColor,
+              fontSize: 14.5.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
         ),
       ),
     );
   }
 }
+

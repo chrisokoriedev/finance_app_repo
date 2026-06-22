@@ -58,6 +58,7 @@ class HomePage extends ConsumerWidget {
                   ),
                   ExpenseListBuilder(
                       data: dataNew,
+                      horizontalPadding: 5.w,
                       childCount:
                           dataNew.isNotEmpty ? min(dataNew.length, 6) : 1),
                   const SliverToBoxAdapter(child: Gap(12)),
