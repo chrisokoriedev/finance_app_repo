@@ -66,11 +66,11 @@ class CreateExpenseView extends HookConsumerWidget {
         .indexOf(chooseExpense)
         .clamp(0, expenseListType.length - 1);
     return Scaffold(
-      backgroundColor: neu.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: neu.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        surfaceTintColor: neu.surface,
+        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
         centerTitle: true,
         iconTheme: IconThemeData(color: neu.textPrimary),
         title: TextWidget(
@@ -132,6 +132,8 @@ class CreateExpenseView extends HookConsumerWidget {
                         GestureDetector(
                           onTap: () => showModalBottomSheet(
                               context: context,
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
                               builder: (_) => const AddCategories()),
                           child: NeuCard(
                             padding: const EdgeInsets.all(12),
@@ -236,19 +238,42 @@ class AddCategories extends HookConsumerWidget {
     final authState = ref.watch(expenseCategoryNotifier);
     final neu = context.neu;
     final text = ref.watch(newCategoryText);
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h)
-          .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 20.spa),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h)
+          .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 4.h),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border(
+          top: BorderSide(color: neu.primary, width: 3),
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextWidget(
+                text: 'Add Custom Category',
+                color: neu.textPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: neu.textSecondary, size: 18.sp),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ),
+          Gap(2.h),
           CustomTextFormField(
-              hintText: 'Enter text',
+              hintText: 'Category name',
               textInputType: TextInputType.text,
               maxLine: 1,
               onChanged: (value) =>
                   ref.read(newCategoryText.notifier).state = value),
-          Gap(2.h),
+          Gap(2.5.h),
           SizedBox(
             width: double.infinity,
             child: NeuButton(
@@ -273,8 +298,8 @@ class AddCategories extends HookConsumerWidget {
                   text: authState == const AppStateManager.loading()
                       ? 'Adding…'
                       : 'Add category',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14.5.sp,
+                  fontWeight: FontWeight.w600,
                   color: neu.surface),
             ),
           ),

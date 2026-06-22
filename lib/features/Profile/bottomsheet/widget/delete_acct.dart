@@ -57,18 +57,36 @@ class _ConfirmEmailSheet extends HookConsumerWidget {
     final firebaseProvider = ref.watch(firebaseAuthProvider);
     final emailValidation = ref.watch(emailValidationProvider);
     String emailText = '';
-    return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(6.w, 3.h, 6.w, 0)
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h)
           .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 4.h),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border(
+          top: BorderSide(color: neu.primary, width: 3),
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextWidget(
-              text: title,
-              color: neu.textPrimary,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500),
-          Gap(0.6.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextWidget(
+                text: title,
+                color: neu.textPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: neu.textSecondary, size: 18.sp),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ),
+          Gap(1.h),
           TextWidget(
               text: 'Confirm your email to continue',
               color: neu.textSecondary,
@@ -91,15 +109,13 @@ class _ConfirmEmailSheet extends HookConsumerWidget {
               filled: emailValidation,
               color: emailValidation ? neu.expense : neu.surface,
               onTap: emailValidation ? onConfirm : null,
-              child: Text(action,
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color:
-                          emailValidation ? Colors.white : neu.textSecondary)),
+              child: TextWidget(
+                  text: action,
+                  fontSize: 14.5.sp,
+                  fontWeight: FontWeight.w600,
+                  color: emailValidation ? Colors.white : neu.textSecondary),
             ),
           ),
-          Gap(2.h),
         ],
       ),
     );

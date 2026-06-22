@@ -1,15 +1,18 @@
 import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/provider/local_auth.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/routes.dart';
 import 'package:expense_app/core/utils/setting_button.dart';
 import 'package:expense_app/core/utils/switch.dart';
+import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:gap/gap.dart';
 
 import 'widget/delete_acct.dart';
 
@@ -56,56 +59,97 @@ class SettingAndSupport extends HookConsumerWidget {
         },
       );
     });
+    
     final biometricAuthState = ref.watch(biometricAuthStateProvider);
+    final neu = context.neu;
 
-    return ListView(
-      shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 20.sp),
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomButton(
-                title: 'Biometrie',
-                icons: LineIcons.fingerprint,
-                showLastWidget: true,
-                lastWidget: CustomSwitch(
-                    value: biometricAuthState,
-                    onChanged: (value) {
-                      ref.read(biometricAuthStateProvider.notifier).state =
-                          value;
-                      if (biometricAuthState) {
-                        ref
-                            .read(bioAuthNotifierProvider.notifier)
-                            .disableBioWithLocalAuth();
-                      } else {
-                        ref
-                            .read(bioAuthNotifierProvider.notifier)
-                            .createdBioWithLocalAuth();
-                      }
-                    })),
-            CustomButton(
-                icons: LineIcons.userCircle,
-                title: 'About us',
-                press: () => launchPortFolio()),
-            CustomButton(
-              title: 'Clear all data',
-              icons: LineIcons.userInjured,
-              press: () => showModalBottomSheet(
-                  context: context,
-                  builder: (context) => const ClearUserData()),
-            ),
-            CustomButton(
-              title: 'Delete Account',
-              icons: LineIcons.userInjured,
-              margin: 0,
-              press: () => showModalBottomSheet(
-                  context: context,
-                  builder: (context) => const DeleteUserAccount()),
-            ),
-          ],
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h)
+          .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 4.h),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border(
+          top: BorderSide(color: neu.primary, width: 3),
         ),
-      ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextWidget(
+                text: 'Setting & Support',
+                color: neu.textPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: neu.textSecondary, size: 18.sp),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ),
+          Gap(2.h),
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomButton(
+                        title: 'Biometrie',
+                        icons: LineIcons.fingerprint,
+                        showLastWidget: true,
+                        lastWidget: CustomSwitch(
+                            value: biometricAuthState,
+                            onChanged: (value) {
+                              ref.read(biometricAuthStateProvider.notifier).state =
+                                  value;
+                              if (biometricAuthState) {
+                                ref
+                                    .read(bioAuthNotifierProvider.notifier)
+                                    .disableBioWithLocalAuth();
+                              } else {
+                                ref
+                                    .read(bioAuthNotifierProvider.notifier)
+                                    .createdBioWithLocalAuth();
+                              }
+                            })),
+                    CustomButton(
+                        icons: LineIcons.userCircle,
+                        title: 'About us',
+                        press: () => launchPortFolio()),
+                    CustomButton(
+                      title: 'Clear all data',
+                      icons: LineIcons.userInjured,
+                      press: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: (context) => const ClearUserData()),
+                    ),
+                    CustomButton(
+                      title: 'Delete Account',
+                      icons: LineIcons.userInjured,
+                      margin: 0,
+                      press: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: (context) => const DeleteUserAccount()),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

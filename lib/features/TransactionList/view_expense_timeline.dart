@@ -28,11 +28,11 @@ class ViewExpensesTimeline extends HookConsumerWidget {
     final activeFilter = filterTypes[selectedFilterIndex];
 
     return Scaffold(
-      backgroundColor: neu.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: neu.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        surfaceTintColor: neu.surface,
+        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
         iconTheme: IconThemeData(color: neu.textPrimary),
         title: TextWidget(
           text: AppString.viewTimeline,

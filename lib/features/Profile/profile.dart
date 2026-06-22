@@ -117,6 +117,8 @@ class ProfileScreen extends HookConsumerWidget {
                     title: 'Setting & Support',
                     press: () => showModalBottomSheet(
                         context: context,
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
                         builder: (_) => const SettingAndSupport()),
                   ),
                   CustomButton(

@@ -81,12 +81,12 @@ class AuthScreen extends HookConsumerWidget {
             alignment: Alignment.bottomCenter,
             child: SingleChildScrollView(
               child: Container(
-                width: 100.w,
+                width: double.infinity,
                 padding: EdgeInsets.only(
                   left: 6.w,
                   right: 6.w,
-                  top: 3.h,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 4.h,
+                  top: 10.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 1.h,
                 ),
                 decoration: BoxDecoration(
                     color: AppColor.kDarkGreyColor.withOpacity(0.95),
@@ -287,53 +287,6 @@ class AuthScreen extends HookConsumerWidget {
                             fontSize: 14.sp),
                       ),
                     ),
-
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                                color: AppColor.kWhitColor.withOpacity(0.2))),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: Text('OR',
-                              style: TextStyle(
-                                  color: AppColor.kWhitColor.withOpacity(0.5),
-                                  fontSize: 13.sp)),
-                        ),
-                        Expanded(
-                            child: Divider(
-                                color: AppColor.kWhitColor.withOpacity(0.2))),
-                      ],
-                    ),
-                    Gap(2.h),
-
-                    // Google Login Button
-                    GestureDetector(
-                      onTap: () => ref
-                          .read(authNotifierProvider.notifier)
-                          .continueWithGoogle(),
-                      child: Container(
-                        width: 60.w,
-                        padding: EdgeInsets.symmetric(vertical: 8.sp),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColor.kWhitColor, width: 0.4.w),
-                            borderRadius: BorderRadius.circular(10.sp)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            LineIcon.googlePlay(
-                                color: AppColor.kWhitColor, size: 19.sp),
-                            Gap(2.w),
-                            Text(
-                              'Continue with google',
-                              style: TextStyle(
-                                  color: AppColor.kWhitColor, fontSize: 15.sp),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ]),
                 ),
               ),

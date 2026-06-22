@@ -1,70 +1,12 @@
 import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
-import 'package:expense_app/core/utils/colors.dart';
+import 'package:expense_app/core/theme/neu_theme.dart';
+import 'package:expense_app/core/widgets/neu.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
-
-class ExpenseTypeComponent extends ConsumerWidget {
-  const ExpenseTypeComponent({
-    super.key,
-    required this.chooseExpense,
-    required this.expenseListType,
-  });
-
-  final String chooseExpense;
-  final List<String> expenseListType;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      height: 5.h,
-      decoration: BoxDecoration(
-          color: AppColor.kGreyColor.withOpacity(0.3),
-          borderRadius: customBorderRadius(10)),
-      child: DropdownButton<String>(
-        value: chooseExpense,
-        underline: Container(),
-        isExpanded: true,
-        hint: Text(
-          'Type',
-          style: TextStyle(fontSize: 14.sp, color: AppColor.kBlackColor),
-        ),
-        selectedItemBuilder: (context) => expenseListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: TextWidget(
-                  text: e,
-                  fontSize: 13.9.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            )
-            .toList(),
-        items: expenseListType
-            .map(
-              (e) => DropdownMenuItem(
-                value: e,
-                child: TextWidget(
-                  text: e,
-                  fontSize: 13.9.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (value) {
-          ref.read(expenseItemTypeProvider.notifier).state = value!;
-        },
-      ),
-    );
-  }
-}
+import 'package:gap/gap.dart';
 
 class ExpenseSubTypeComponent extends ConsumerWidget {
   const ExpenseSubTypeComponent({
@@ -78,31 +20,174 @@ class ExpenseSubTypeComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).colorScheme;
-    return SizedBox(
-      height: 5.h,
-      child: CustomDropdown.search(
-        closedHeaderPadding:
-            EdgeInsets.symmetric(horizontal: 2.w, vertical: 16.sp),
-        decoration: CustomDropdownDecoration(
-            closedBorderRadius: customBorderRadius(10),
-            headerStyle: TextStyle(
-                color: theme.primary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600),
-            hintStyle: TextStyle(
-                color: theme.primary,
-                fontSize: 13.9.sp,
-                fontWeight: FontWeight.w600),
-            closedFillColor: AppColor.kGreyColor.withOpacity(0.3),
-            expandedFillColor: theme.onPrimary),
-        hintText: 'Select expense category',
-        noResultFoundText: 'Cat not find any result',
-        items: expenseSubListType,
-        excludeSelected: false,
-        onChanged: (value) => ref
-            .read(expenseSubItemTypeProvider.notifier)
-            .state = value.toString(),
+    final neu = context.neu;
+    final displayValue = chooseSubExpense == '..' ? 'Select expense category' : chooseSubExpense;
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: CategorySelectionSheet(
+              currentSelection: chooseSubExpense,
+              categories: expenseSubListType.cast<String>(),
+              onSelected: (val) {
+                ref.read(expenseSubItemTypeProvider.notifier).state = val;
+              },
+            ),
+          ),
+        );
+      },
+      child: NeuWell(
+        radius: 15,
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.7.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextWidget(
+              text: displayValue,
+              color: chooseSubExpense == '..' ? neu.textSecondary : neu.textPrimary,
+              fontSize: 14.sp,
+              fontWeight: chooseSubExpense == '..' ? FontWeight.normal : FontWeight.w500,
+            ),
+            Icon(
+              Icons.keyboard_arrow_down,
+              color: neu.textSecondary,
+              size: 18.sp,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CategorySelectionSheet extends StatefulWidget {
+  final String currentSelection;
+  final List<String> categories;
+  final ValueChanged<String> onSelected;
+
+  const CategorySelectionSheet({
+    super.key,
+    required this.currentSelection,
+    required this.categories,
+    required this.onSelected,
+  });
+
+  @override
+  State<CategorySelectionSheet> createState() => _CategorySelectionSheetState();
+}
+
+class _CategorySelectionSheetState extends State<CategorySelectionSheet> {
+  String searchPattern = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final neu = context.neu;
+    final filteredCategories = widget.categories
+        .where((cat) => cat != '..' && cat.toLowerCase().contains(searchPattern.toLowerCase()))
+        .toList();
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: neu.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border(
+          top: BorderSide(color: neu.primary, width: 3),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextWidget(
+                text: 'Select Category',
+                color: neu.textPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: neu.textSecondary, size: 18.sp),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ),
+          Gap(1.h),
+          // Search Field
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            decoration: BoxDecoration(
+              color: neu.surface,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: neu.inset,
+            ),
+            child: TextFormField(
+              onChanged: (val) => setState(() => searchPattern = val),
+              style: TextStyle(color: neu.textPrimary, fontSize: 14.sp),
+              cursorColor: neu.primary,
+              decoration: InputDecoration(
+                hintText: 'Search categories...',
+                hintStyle: TextStyle(color: neu.textSecondary, fontSize: 13.5.sp),
+                prefixIcon: Icon(Icons.search, color: neu.textSecondary, size: 18.sp),
+                border: InputBorder.none,
+                isCollapsed: false,
+                contentPadding: EdgeInsets.symmetric(vertical: 1.5.h),
+              ),
+            ),
+          ),
+          Gap(2.h),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 40.h),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: filteredCategories.length,
+              itemBuilder: (context, index) {
+                final cat = filteredCategories[index];
+                final isSelected = cat == widget.currentSelection;
+                final catIcon = getCategoryIcon(cat, 'Expense');
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 1.h),
+                  child: NeuCard(
+                    onTap: () {
+                      widget.onSelected(cat);
+                      Navigator.pop(context);
+                    },
+                    radius: 14,
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
+                    color: isSelected ? neu.primary.withOpacity(0.08) : neu.surface,
+                    child: Row(
+                      children: [
+                        NeuIconWell(
+                          icon: catIcon,
+                          color: isSelected ? neu.primary : neu.textSecondary,
+                          size: 36,
+                          radius: 10,
+                        ),
+                        Gap(4.w),
+                        Expanded(
+                          child: TextWidget(
+                            text: cat,
+                            color: isSelected ? neu.primary : neu.textPrimary,
+                            fontSize: 14.sp,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                          ),
+                        ),
+                        if (isSelected)
+                          Icon(Icons.check_circle, color: neu.primary, size: 18.sp)
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

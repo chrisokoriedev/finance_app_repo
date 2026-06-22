@@ -362,7 +362,7 @@ class Statistics extends ConsumerWidget {
         final label = formatter.format(targetDate);
         double sum = 0;
         for (final exp in expenses) {
-          if (exp.expenseType == 'Expense' &&
+          if ((exp.expenseType == 'Expense' || exp.expenseType == 'Debt') &&
               exp.dateTime.year == targetDate.year &&
               exp.dateTime.month == targetDate.month &&
               exp.dateTime.day == targetDate.day) {
@@ -380,7 +380,7 @@ class Statistics extends ConsumerWidget {
         final label = i == 0 ? 'This Wk' : 'Wk -$i';
         double sum = 0;
         for (final exp in expenses) {
-          if (exp.expenseType == 'Expense' &&
+          if ((exp.expenseType == 'Expense' || exp.expenseType == 'Debt') &&
               exp.dateTime
                   .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
               exp.dateTime
@@ -398,7 +398,7 @@ class Statistics extends ConsumerWidget {
         final label = formatter.format(targetMonth);
         double sum = 0;
         for (final exp in expenses) {
-          if (exp.expenseType == 'Expense' &&
+          if ((exp.expenseType == 'Expense' || exp.expenseType == 'Debt') &&
               exp.dateTime.year == targetMonth.year &&
               exp.dateTime.month == targetMonth.month) {
             sum += exp.amount;
@@ -413,7 +413,7 @@ class Statistics extends ConsumerWidget {
         final label = targetYear.toString();
         double sum = 0;
         for (final exp in expenses) {
-          if (exp.expenseType == 'Expense' && exp.dateTime.year == targetYear) {
+          if ((exp.expenseType == 'Expense' || exp.expenseType == 'Debt') && exp.dateTime.year == targetYear) {
             sum += exp.amount;
           }
         }
@@ -451,7 +451,7 @@ class Statistics extends ConsumerWidget {
     for (final exp in expenses) {
       if (exp.dateTime.isAfter(start.subtract(const Duration(seconds: 1))) &&
           exp.dateTime.isBefore(end.add(const Duration(seconds: 1)))) {
-        if (exp.expenseType == 'Expense') {
+        if (exp.expenseType == 'Expense' || exp.expenseType == 'Debt') {
           withdrawal += exp.amount;
         } else if (exp.expenseType == 'Income') {
           deposit += exp.amount;
@@ -483,7 +483,7 @@ class Statistics extends ConsumerWidget {
 
     final Map<String, double> categorySums = {};
     for (final exp in expenses) {
-      if (exp.expenseType == 'Expense' &&
+      if ((exp.expenseType == 'Expense' || exp.expenseType == 'Debt') &&
           exp.dateTime.isAfter(start.subtract(const Duration(seconds: 1))) &&
           exp.dateTime.isBefore(end.add(const Duration(seconds: 1)))) {
         final cat =
@@ -497,6 +497,7 @@ class Statistics extends ConsumerWidget {
       ..sort((a, b) => b.amount.compareTo(a.amount));
     return sorted;
   }
+
 
   Widget _categoryProgressBar(
       CategorySpend cat, double totalExpense, NeuColors neu) {
