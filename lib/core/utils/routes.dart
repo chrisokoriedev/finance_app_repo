@@ -1,5 +1,6 @@
 import 'package:expense_app/features/CreateExpense/create_expense_view.dart';
 import 'package:expense_app/features/TransactionList/view_expense_timeline.dart';
+import 'package:expense_app/features/Profile/theme_selection_screen.dart';
 import 'package:expense_app/features/auth/auth.dart';
 import 'package:expense_app/features/auth/bio_auth.dart';
 import 'package:expense_app/features/auth/splashscreen.dart';
@@ -14,6 +15,7 @@ class AppRouter {
   static const mainControl = '/mainControl';
   static const createExpenseView = '/createExpenseView';
   static const viewAllExpenses = '/viewAllExpenses';
+  static const themeSelection = '/themeSelection';
   static final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
@@ -50,6 +52,11 @@ class AppRouter {
         name: '/viewAllExpenses',
         path: viewAllExpenses,
         builder: (context, state) => const ViewExpensesTimeline(),
+      ),
+      GoRoute(
+        name: '/themeSelection',
+        path: themeSelection,
+        builder: (context, state) => const ThemeSelectionScreen(),
       ),
     ],
   );

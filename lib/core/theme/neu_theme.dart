@@ -53,31 +53,125 @@ class NeuColors extends ThemeExtension<NeuColors> {
   /// Faint tinted fill for colored icon wells.
   Color tint(Color c) => c.withOpacity(0.16);
 
-  static const NeuColors dark = NeuColors(
-    surface: Color(0xFF202328), // Sleek slightly lighter card surface
-    shadowDark: Color(0xFF0F1113), // Deep dark shadow for contrast
-    shadowLight: Color(0xFF2E323A),
-    textPrimary: Color(0xFFECEEF2),
-    textSecondary: Color(0xFF8A909F),
-    primary: Color(0xFF60D3A8), // Elegant mint/teal green
-    accent: Color(0xFFECAE5C), // Warm gold/amber
-    income: Color(0xFF60D3A8),
-    expense: Color(0xFFDE7D6B), // Soft coral/red
-    debt: Color(0xFF7D99D6), // Slate blue
+  static const NeuColors limeBlack = NeuColors(
+    surface: Color(0xFF121212),
+    shadowDark: Color(0xFF000000),
+    shadowLight: Color(0xFF262626),
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xFFA3A3A3),
+    primary: Color(0xFFBEF532),
+    accent: Color(0xFFBEF532),
+    income: Color(0xFFBEF532),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
   );
 
-  static const NeuColors light = NeuColors(
-    surface: Color(0xFFE8EBF0),
-    shadowDark: Color(0xFFC4C8D0),
-    shadowLight: Color(0xFFFFFFFF),
-    textPrimary: Color(0xFF2A2D34),
-    textSecondary: Color(0xFF6E727C),
-    primary: Color(0xFF2BA597),
-    accent: Color(0xFFC4881C),
-    income: Color(0xFF2BA597),
-    expense: Color(0xFFCB5B5B),
-    debt: Color(0xFF4F79C7),
+  static const NeuColors mintCarbon = NeuColors(
+    surface: Color(0xFF171F20),
+    shadowDark: Color(0xFF070A0B),
+    shadowLight: Color(0xFF253132),
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xFF8CA5A7),
+    primary: Color(0xFF54E6D4),
+    accent: Color(0xFF54E6D4),
+    income: Color(0xFF54E6D4),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
   );
+
+  static const NeuColors goldBlack = NeuColors(
+    surface: Color(0xFF081424),
+    shadowDark: Color(0xFF000206),
+    shadowLight: Color(0xFF10243C),
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xFFA1B2C6),
+    primary: Color(0xFFF5CE0A),
+    accent: Color(0xFFF5CE0A),
+    income: Color(0xFFF5CE0A),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
+  );
+
+  static const NeuColors plumMilk = NeuColors(
+    surface: Color(0xFF492442),
+    shadowDark: Color(0xFF210C1D),
+    shadowLight: Color(0xFF5D3355),
+    textPrimary: Color(0xFFFFF3E6),
+    textSecondary: Color(0xFFD4C4B5),
+    primary: Color(0xFFFFF3E6),
+    accent: Color(0xFFFFF3E6),
+    income: Color(0xFFFFF3E6),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
+  );
+
+  static const NeuColors indigoGhost = NeuColors(
+    surface: Color(0xFF34258C),
+    shadowDark: Color(0xFF140B4B),
+    shadowLight: Color(0xFF4838A6),
+    textPrimary: Color(0xFFF7F7FF),
+    textSecondary: Color(0xFFAEA6E6),
+    primary: Color(0xFFF7F7FF),
+    accent: Color(0xFFFFD700),
+    income: Color(0xFF00F2FE),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFFFFD700),
+  );
+
+  static const NeuColors aureolinBistre = NeuColors(
+    surface: Color(0xFF331F0A),
+    shadowDark: Color(0xFF120901),
+    shadowLight: Color(0xFF4A2F14),
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xFFC4A78A),
+    primary: Color(0xFFFAE311),
+    accent: Color(0xFFFAE311),
+    income: Color(0xFFFAE311),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
+  );
+
+  static const NeuColors gambogePenn = NeuColors(
+    surface: Color(0xFF131952),
+    shadowDark: Color(0xFF03051F),
+    shadowLight: Color(0xFF20276E),
+    textPrimary: Color(0xFFF7F7FF),
+    textSecondary: Color(0xFF8E95C7),
+    primary: Color(0xFFE59500),
+    accent: Color(0xFFFAE311),
+    income: Color(0xFFE59500),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
+  );
+
+  static const NeuColors wineSand = NeuColors(
+    surface: Color(0xFF910D27),
+    shadowDark: Color(0xFF4D000B),
+    shadowLight: Color(0xFFB01D3A),
+    textPrimary: Color(0xFFF5EBD0),
+    textSecondary: Color(0xFFD6C8A6),
+    primary: Color(0xFFF5EBD0),
+    accent: Color(0xFFE59500),
+    income: Color(0xFFF5EBD0),
+    expense: Color(0xFFFFA39E),
+    debt: Color(0xFFE59500),
+  );
+
+  static const NeuColors cyberCharcoal = NeuColors(
+    surface: Color(0xFF16161C),
+    shadowDark: Color(0xFF07070A),
+    shadowLight: Color(0xFF22222B),
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xFF8A909F),
+    primary: Color(0xFFF1FF0A),
+    accent: Color(0xFFFAE311),
+    income: Color(0xFFF1FF0A),
+    expense: Color(0xFFDE7D6B),
+    debt: Color(0xFF7D99D6),
+  );
+
+  static const NeuColors dark = cyberCharcoal;
+  static const NeuColors light = cyberCharcoal;
 
   @override
   NeuColors copyWith({

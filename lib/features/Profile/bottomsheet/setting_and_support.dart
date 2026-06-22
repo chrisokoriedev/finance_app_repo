@@ -1,6 +1,5 @@
 import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/provider/local_auth.dart';
-import 'package:expense_app/core/provider/theme.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/routes.dart';
 import 'package:expense_app/core/utils/setting_button.dart';
@@ -58,8 +57,6 @@ class SettingAndSupport extends HookConsumerWidget {
       );
     });
     final biometricAuthState = ref.watch(biometricAuthStateProvider);
-    final themeCntrl = ref.watch(themeStateNofiter.notifier);
-    final themeState = ref.watch(themeProvider);
 
     return ListView(
       shrinkWrap: true,
@@ -88,26 +85,9 @@ class SettingAndSupport extends HookConsumerWidget {
                       }
                     })),
             CustomButton(
-                title: themeState ? 'Light Mode' : 'Dark Mode',
-                icons: LineIcons.lightbulb,
-                showLastWidget: true,
-                lastWidget: CustomSwitch(
-                  value: themeState,
-                  onChanged: (value) {
-                    ref.read(themeProvider.notifier).state = value;
-                    themeCntrl.switchTheme(value);
-                  },
-                )),
-            const CustomButton(
-              title: 'Email us',
-              icons: LineIcons.facebookMessenger,
-              press: launchEmail,
-            ),
-            const CustomButton(
-              title: 'Donate to us',
-              icons: LineIcons.gift,
-              press: launchDonation,
-            ),
+                icons: LineIcons.userCircle,
+                title: 'About us',
+                press: () => launchPortFolio()),
             CustomButton(
               title: 'Clear all data',
               icons: LineIcons.userInjured,

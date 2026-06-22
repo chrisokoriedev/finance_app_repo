@@ -1,10 +1,8 @@
 import 'package:expense_app/core/provider/app_provider.dart';
 import 'package:expense_app/core/provider/firebase.dart';
-import 'package:expense_app/core/provider/item_provider.dart';
 import 'package:expense_app/core/state/auth.dart';
 import 'package:expense_app/core/theme/neu_theme.dart';
 import 'package:expense_app/core/utils/colors.dart';
-import 'package:expense_app/core/widgets/neu.dart';
 import 'package:expense_app/core/utils/const.dart';
 import 'package:expense_app/core/utils/loading.dart';
 import 'package:expense_app/core/utils/routes.dart';
@@ -18,7 +16,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:expense_app/core/utils/string_app.dart';
 
 import 'bottomsheet/setting_and_support.dart';
@@ -31,7 +28,6 @@ class ProfileScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final neu = context.neu;
     final firebaseAuth = ref.watch(firebaseAuthProvider);
-    final itemProvider = ref.watch(cloudItemsProvider);
     final authState = ref.watch(authNotifierProvider);
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -52,7 +48,7 @@ class ProfileScreen extends HookConsumerWidget {
         PopScope(
             canPop: false,
             onPopInvoked: (value) => pageController.jumpToPage(0),
-            child: Padding(
+            child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 5.sp)
                   .copyWith(top: 30.sp),
               child: Column(
@@ -93,90 +89,43 @@ class ProfileScreen extends HookConsumerWidget {
                           fontWeight: FontWeight.w400),
                     ],
                   ),
-                  Gap(2.h),
-                  itemProvider.when(
-                    data: (data) {
-                      Map<String, int> lengths = calculateLengths(data);
-
-                      return NeuCard(
-                        radius: 22,
-                        padding: const EdgeInsets.all(12),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 22.h,
-                          child: SfCircularChart(
-                            margin: EdgeInsets.zero,
-                            palette: [neu.income, neu.expense, neu.debt],
-                            series: <CircularSeries>[
-                              DoughnutSeries<MapEntry<String, int>, String>(
-                                dataSource: lengths.entries.toList(),
-                                xValueMapper: (entry, _) => entry.key,
-                                yValueMapper: (entry, _) => entry.value,
-                                innerRadius: '65%',
-                                dataLabelMapper: (entry, _) =>
-                                    '${entry.key}: ${entry.value}',
-                                dataLabelSettings: DataLabelSettings(
-                                    isVisible: true,
-                                    textStyle:
-                                        TextStyle(color: neu.textSecondary)),
-                              ),
-                            ],
-                            legend: Legend(
-                                isVisible: true,
-                                textStyle: TextStyle(color: neu.textPrimary)),
-                          ),
-                        ),
-                      );
-                    },
-                    error: (_, __) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 3.h),
-                      child: TextWidget(
-                          text: 'Could not load chart',
-                          color: neu.textSecondary,
-                          fontSize: 13.sp),
-                    ),
-                    loading: () => Center(
-                        child: CircularProgressIndicator(color: neu.primary)),
+                  Gap(5.h),
+                  CustomButton(
+                    icons: LineIcons.barChart,
+                    title: AppString.viewTimeline,
+                    press: () => context.push(AppRouter.viewAllExpenses),
                   ),
-                  Gap(1.h),
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      children: [
-                        CustomButton(
-                          icons: LineIcons.barChart,
-                          title: AppString.viewTimeline,
-                          press: () => context.push(AppRouter.viewAllExpenses),
-                        ),
-                        CustomButton(
-                          icons: LineIcons.phoenixFramework,
-                          title: 'Setting & Support',
-                          press: () => showModalBottomSheet(
-                              context: context,
-                              builder: (_) => const SettingAndSupport()),
-                        ),
-                        CustomButton(
-                            icons: LineIcons.userCircle,
-                            title: 'About us',
-                            press: () => launchPortFolio()),
-                        CustomButton(
-                          icons: LineIcons.bookReader,
-                          title: 'Terms & Condition',
-                          press: () => showModalBottomSheet(
-                              context: context,
-                              builder: (_) => const ComingSoon()),
-                        ),
-                        CustomButton(
-                            icons: LineIcons.doorClosed,
-                            title: 'Logout',
-                            color: AppColor.kredColor,
-                            press: () => ref
-                                .read(authNotifierProvider.notifier)
-                                .signOutGoogle()),
-                      ],
-                    ),
-                  )
+                  CustomButton(
+                    title: 'App Theme',
+                    icons: LineIcons.palette,
+                    press: () {
+                      context.push(AppRouter.themeSelection);
+                    },
+                  ),
+                  const CustomButton(
+                    title: 'Email us',
+                    icons: LineIcons.facebookMessenger,
+                    press: launchEmail,
+                  ),
+                  const CustomButton(
+                    title: 'Donate to us',
+                    icons: LineIcons.gift,
+                    press: launchDonation,
+                  ),
+                  CustomButton(
+                    icons: LineIcons.phoenixFramework,
+                    title: 'Setting & Support',
+                    press: () => showModalBottomSheet(
+                        context: context,
+                        builder: (_) => const SettingAndSupport()),
+                  ),
+                  CustomButton(
+                      icons: LineIcons.doorClosed,
+                      title: 'Logout',
+                      color: AppColor.kredColor,
+                      press: () => ref
+                          .read(authNotifierProvider.notifier)
+                          .signOutGoogle())
                 ],
               ),
             )),

@@ -41,7 +41,8 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeCntrl = ref.watch(themeProvider);
+    final themeName = ref.watch(themeProvider);
+    final activeTheme = getThemeData(themeName);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return MaterialApp.router(
@@ -49,9 +50,9 @@ class MyApp extends HookConsumerWidget {
           title: AppString.appName,
           debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: themeCntrl ? ThemeMode.dark : ThemeMode.light,
+          theme: activeTheme,
+          darkTheme: activeTheme,
+          themeMode: ThemeMode.dark,
         );
       },
     );
